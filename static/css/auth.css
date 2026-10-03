@@ -1,0 +1,315 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:"Poppins",sans-serif;
+}
+
+body{
+
+    min-height:100vh;
+    overflow-y:auto;
+    overflow-x:hidden;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:
+    linear-gradient(rgba(248,250,252,.82),rgba(248,250,252,.82)),url("../images/loginbg.png");
+    background-size:cover;
+    background-position:center;
+    background-repeat:no-repeat;
+    position:relative;
+}
+
+/* Soft blue glow */
+
+body::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+    radial-gradient(circle at top left,
+    rgba(37,99,235,.10),transparent 35%),
+
+    radial-gradient(circle at bottom right,
+    rgba(37,99,235,.08),transparent 35%);
+
+    pointer-events:none;
+}
+
+/* ---------- LOGO ---------- */
+
+.logo{
+    position:fixed;
+    top:28px;
+    left:34px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    z-index:100;
+}
+
+.logo img{
+    width:72px;
+    height:72px;
+    object-fit:contain;
+}
+
+.rent{
+    font-size:34px;
+    font-weight:700;
+    color:#111827;
+}
+ 
+.ez{
+    color:#2563EB;
+}
+
+/* ---------- LOGIN CARD ---------- */
+
+.login-card{
+    width:470px;
+    background:rgba(255,255,255,.92);
+    backdrop-filter:blur(18px);
+    -webkit-backdrop-filter:blur(18px);
+    border:1px solid rgba(255,255,255,.5);
+    border-radius:24px;
+    padding:36px 40px 32px;
+    box-shadow:0 20px 60px rgba(37,99,235,.10);
+    position:relative;
+    margin:120px auto 50px;
+
+}
+.login-card h2{
+    font-size:38px;
+    font-weight:700;
+    color:#111827;
+    margin-bottom:8px;
+    text-align:center;
+}
+
+.welcome{
+    text-align:center;
+    color:#64748B;
+    font-size:15px;
+    line-height:1.7;
+    margin-bottom:30px;
+}
+
+.login-card label{
+    display:block;
+    font-size:14px;
+    font-weight:600;
+    color:#374151;
+    margin-bottom:8px;
+}
+
+.login-card input[type="email"],
+.login-card input[type="text"],
+.login-card input[type="tel"]{
+    width:100%;
+    height:54px;
+    border:1px solid #DCEBFF;
+    border-radius:14px;
+    padding:0 18px;
+    font-size:15px;
+    outline:none;
+    margin-bottom:18px;
+    transition:.25s;
+}
+
+.password-field{
+    position:relative;
+    margin-bottom:14px;
+}
+
+.password-field input{
+    width:100%;
+    height:56px;
+    line-height:56px;
+    border:1px solid #DCEBFF;
+    border-radius:14px;
+    padding:0 50px 0 18px;
+    outline:none;
+    font-size:15px;
+    box-sizing:border-box;
+    appearance:none;
+    -webkit-appearance:none;
+}
+
+.login-card input:focus{
+    border-color:#2563EB;
+    box-shadow:0 0 0 4px rgba(37,99,235,.08);
+}
+
+.eye{
+    position:absolute;
+    right:18px;
+    top:50%;
+    transform:translateY(-50%);
+    width:22px;
+    height:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    line-height:1;
+    font-size:20px;
+    color:#94A3B8;
+    cursor:pointer;
+    user-select:none;
+}
+.options{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:22px;
+}
+
+.remember{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    font-size:14px;
+    color:#64748B;
+}
+
+.remember input{
+    accent-color:#2563EB;
+}
+
+.options a{
+    text-decoration:none;
+    color:#2563EB;
+    font-size:14px;
+    font-weight:500;
+}
+
+.options a:hover{
+    text-decoration:underline;
+}
+
+.login-btn{
+    width:100%;
+    height:54px;
+    border:none;
+    border-radius:14px;
+    background:#2563EB;
+    color:#FFFFFF;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+    transition:.3s;
+}
+
+.login-btn:hover{
+    background:#1D4ED8;
+    transform:translateY(-2px);
+}
+
+
+.register{
+    margin-top:24px;
+    text-align:center;
+    font-size:14px;
+    color:#64748B;
+}
+
+.register a{
+    text-decoration:none;
+    color:#2563EB;
+    font-weight:600;
+}
+
+.register a:hover{
+    text-decoration:underline;
+}
+
+/* ================= REGISTER PAGE ================= */
+
+.register-card{
+    width:560px;
+        margin:70px auto 50px;
+}
+
+
+.terms{
+    display:flex !important;
+    align-items:center;
+    gap:8px;
+    margin:18px 0 22px !important;
+    font-size:14px;
+    color:#4B5563;
+}
+
+.terms input{
+    accent-color:#2563EB;
+}
+
+.terms a{
+    color:#2563EB;
+    text-decoration:none;
+    font-weight:600;
+}
+
+.terms a:hover{
+    text-decoration:underline;
+}
+
+/* ------------------- ERROR POPUP ------------------- */
+.error-popup{
+    position:fixed;
+    top:30px;
+    left:50%;
+    transform:translateX(-50%);
+
+    z-index:9999;
+
+    display:flex;
+    align-items:center;
+    gap:14px;
+
+    padding:18px 28px;
+
+    background:#FFFFFF;
+    color:#DC2626;
+
+    border-left:5px solid #EF4444;
+    border-radius:14px;
+
+    box-shadow:0 12px 35px rgba(15,23,42,.18);
+
+    font-size:16px;
+    font-weight:500;
+
+    min-width:360px;
+
+    animation:popupIn .3s ease;
+}
+
+.error-popup > i:first-child{
+    font-size:24px;
+}
+
+.close-popup{
+    margin-left:auto;
+    color:#94A3B8;
+    cursor:pointer;
+    font-size:21px;
+}
+
+.close-popup:hover{
+    color:#475569;
+}
+
+@keyframes popupIn{
+    from{
+        opacity:0;
+        transform:translate(-50%,-20px);
+    }
+
+    to{
+        opacity:1;
+        transform:translate(-50%,0);
+    }
+}

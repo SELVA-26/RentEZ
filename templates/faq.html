@@ -1,0 +1,268 @@
+{% extends "info_base.html" %}
+
+{% set page_title = "FAQs" %}
+
+
+{% block content %}
+
+
+<section class="info-hero">
+
+    <span class="info-eyebrow">
+        HELP & INFORMATION
+    </span>
+
+    <h1>
+        Frequently Asked Questions
+    </h1>
+
+    <p>
+        Answers to common questions about RentEZ accounts,
+        rentals, bookings, payments and businesses.
+    </p>
+
+</section>
+
+
+
+<section class="info-card">
+
+
+    <div class="faq-list">
+
+
+        <details class="faq-item">
+
+            <summary>
+
+                How does RentEZ work?
+
+                <i class="ri-add-line"></i>
+
+            </summary>
+
+            <div class="faq-answer">
+                Customers browse equipment or rental packages,
+                choose their rental dates, add the required items
+                to the cart, complete checkout and make payment
+                securely through the platform.
+            </div>
+
+        </details>
+
+
+
+        <details class="faq-item">
+
+            <summary>
+
+                Are businesses verified?
+
+                <i class="ri-add-line"></i>
+
+            </summary>
+
+            <div class="faq-answer">
+                Yes. Businesses are reviewed by the RentEZ
+                administrator before they can operate as an
+                approved rental business on the marketplace.
+            </div>
+
+        </details>
+
+
+
+        <details class="faq-item">
+
+            <summary>
+
+                How is equipment availability checked?
+
+                <i class="ri-add-line"></i>
+
+            </summary>
+
+            <div class="faq-answer">
+                Availability is calculated using the selected
+                rental dates and existing bookings. Package
+                rentals also account for the physical equipment
+                required by the package.
+            </div>
+
+        </details>
+
+
+
+        <details class="faq-item">
+
+            <summary>
+
+                Can I rent multiple pieces of equipment?
+
+                <i class="ri-add-line"></i>
+
+            </summary>
+
+            <div class="faq-answer">
+                Yes. Customers can add multiple equipment items
+                and rental packages to the same order, subject
+                to availability for the selected rental period.
+            </div>
+
+        </details>
+
+
+
+        <details class="faq-item">
+
+            <summary>
+
+                How do rental packages work?
+
+                <i class="ri-add-line"></i>
+
+            </summary>
+
+            <div class="faq-answer">
+                A package groups multiple pieces of equipment
+                into a single rental offering. The business defines
+                which equipment and quantities are included.
+            </div>
+
+        </details>
+
+
+
+        <details class="faq-item">
+
+            <summary>
+
+                What payment method does RentEZ use?
+
+                <i class="ri-add-line"></i>
+
+            </summary>
+
+            <div class="faq-answer">
+                RentEZ uses Razorpay for online payments.
+                Payment status is recorded against the rental
+                order after successful verification.
+            </div>
+
+        </details>
+
+
+
+        <details class="faq-item">
+
+            <summary>
+
+                Can I cancel a rental?
+
+                <i class="ri-add-line"></i>
+
+            </summary>
+
+            <div class="faq-answer">
+                Cancellation is available when the booking is
+                eligible under the platform's cancellation rules.
+                Refund handling depends on the payment and
+                booking state.
+            </div>
+
+        </details>
+
+
+
+        <details class="faq-item">
+
+            <summary>
+
+                What happens after payment?
+
+                <i class="ri-add-line"></i>
+
+            </summary>
+
+            <div class="faq-answer">
+                After successful payment verification, the order
+                and associated bookings are confirmed and the
+                business can manage the rental from its dashboard.
+            </div>
+
+        </details>
+
+
+
+        <details class="faq-item">
+
+            <summary>
+
+                How can businesses manage their inventory?
+
+                <i class="ri-add-line"></i>
+
+            </summary>
+
+            <div class="faq-answer">
+                Approved businesses have a dedicated business
+                portal where they can add equipment, update
+                details, manage availability, create packages
+                and manage bookings.
+            </div>
+
+        </details>
+
+
+
+        <details class="faq-item">
+
+            <summary>
+
+                Who can I contact for support?
+
+                <i class="ri-add-line"></i>
+
+            </summary>
+
+            <div class="faq-answer">
+                You can contact the RentEZ support team through
+                the Contact page for account, booking, payment
+                or platform-related assistance.
+            </div>
+
+        </details>
+
+
+    </div>
+
+</section>
+
+
+<section class="info-cta">
+
+    <div>
+
+        <h2>
+            Still need help?
+        </h2>
+
+        <p>
+            Our support team is available for RentEZ-related questions.
+        </p>
+
+    </div>
+
+
+    <a href="{{ url_for('contact') }}">
+
+        Contact Support
+
+        <i class="ri-arrow-right-line"></i>
+
+    </a>
+
+</section>
+
+
+{% endblock %}

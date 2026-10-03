@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    >
+
+    <title>RentEZ | My Equipment</title>
+
+
+    <!-- GOOGLE FONT -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- REMIX ICONS -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- BUSINESS DASHBOARD BASE -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/business_dashboard.css'
+        ) }}"
+    >
+
+
+    <!-- NOTIFICATIONS -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/notifications.css'
+        ) }}"
+    >
+
+
+    <!-- EQUIPMENT MANAGEMENT -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/business_equipment.css'
+        ) }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="dashboard-container">
+
+
+    <!-- =================================================
+         SIDEBAR
+    ================================================= -->
+
+    <aside class="sidebar">
+
+
+        <a
+            href="{{ url_for('business_dashboard') }}"
+            class="logo"
+        >
+
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='images/logo.png'
+                ) }}"
+                alt="RentEZ"
+            >
+
+            <p class="rent">
+                Rent<span>EZ</span>
+            </p>
+
+        </a>
+
+
+        <!-- BUSINESS PROFILE -->
+
+        <div class="user-profile">
+
+            <div class="avatar">
+                {{ business[1][0] | upper }}
+            </div>
+
+            <div class="user-info">
+
+                <span class="user-name">
+                    {{ business[1] }}
+                </span>
+
+                <span class="user-loc">
+                    {{ business[2] }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- NAVIGATION -->
+
+        <nav class="sidebar-nav">
+
+
+            <p class="nav-heading">
+                BUSINESS
+            </p>
+
+
+            <ul>
+
+                <li>
+
+                    <a
+                        href="{{ url_for('business_dashboard') }}"
+                    >
+                        Overview
+                    </a>
+
+                </li>
+
+
+                <li class="active">
+
+                    <a
+                        href="{{ url_for('business_equipment') }}"
+                    >
+                        My Equipment
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a
+                        href="{{ url_for('business_bookings') }}"
+                    >
+                        Bookings
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a
+                        href="{{ url_for('business_packages') }}"
+                    >
+                        My Packages
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a
+                        href="{{ url_for('business_profile') }}"
+                    >
+                        Business Profile
+                    </a>
+
+                </li>
+
+            </ul>
+
+
+            <p class="nav-heading system-heading">
+                SYSTEM
+            </p>
+
+
+            <ul>
+
+                <li>
+
+                    <a
+                        href="{{ url_for('business_settings') }}"
+                    >
+                        Settings
+                    </a>
+
+                </li>
+
+
+                <li>
+
+                    <a
+                        href="{{ url_for('logout') }}"
+                        class="logout"
+                    >
+                        Log Out
+                    </a>
+
+                </li>
+
+            </ul>
+
+        </nav>
+
+    </aside>
+
+
+
+    <!-- =================================================
+         MAIN
+    ================================================= -->
+
+    <main class="main-content">
+
+
+        <!-- TOP HEADER -->
+
+        <header class="top-header">
+
+
+            <div class="header-titles">
+
+                <span class="portal-label">
+                    BUSINESS PORTAL
+                </span>
+
+                <div class="header-title-row">
+
+                    <h2>
+                        Equipment Management
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <!-- HEADER ACTIONS -->
+
+            <div class="business-header-actions">
+
+
+                <!-- ADD EQUIPMENT -->
+
+                <a
+                    href="{{ url_for('add_equipment') }}"
+                    class="header-add-equipment"
+                >
+
+                    <i class="ri-add-line"></i>
+
+                    Add Equipment
+
+                </a>
+
+
+                <!-- NOTIFICATIONS -->
+
+                <div class="notification-wrapper">
+
+
+                    <button
+                        type="button"
+                        class="icon-btn notification-btn"
+                        id="notificationButton"
+                    >
+
+                        <i class="ri-notification-3-line"></i>
+
+
+                        {% if unread_notification_count > 0 %}
+
+                            <span class="notification-badge">
+                                {{ unread_notification_count }}
+                            </span>
+
+                        {% endif %}
+
+                    </button>
+
+
+                    <div
+                        class="notification-panel"
+                        id="notificationPanel"
+                    >
+
+                        <div class="notification-panel-header">
+
+                            <div>
+
+                                <strong>
+                                    Notifications
+                                </strong>
+
+                                <span>
+                                    {{ unread_notification_count }}
+                                    unread
+                                </span>
+
+                            </div>
+
+
+                            {% if unread_notification_count > 0 %}
+
+                            <button
+                                type="button"
+                                class="mark-read-btn"
+                                id="markAllNotificationsRead"
+                            >
+                                Mark all read
+                            </button>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="notification-list">
+
+                            {% for notification in notifications %}
+
+                            <a
+                                href="{{ notification[4] or '#' }}"
+                                class="notification-item{% if not notification[5] %} unread{% endif %}"
+                                data-notification-id="{{ notification[0] }}"
+                            >
+
+                                <div class="notification-item-icon">
+
+                                    {% if notification[1] == "business_approved" %}
+
+                                        <i class="ri-shield-check-line"></i>
+
+                                    {% elif notification[1] == "business_rejected" %}
+
+                                        <i class="ri-error-warning-line"></i>
+
+                                    {% elif notification[1] == "payout_released" %}
+
+                                        <i class="ri-money-rupee-circle-line"></i>
+
+                                    {% else %}
+
+                                        <i class="ri-notification-3-line"></i>
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <div class="notification-item-content">
+
+                                    <strong>
+                                        {{ notification[2] }}
+                                    </strong>
+
+                                    <p>
+                                        {{ notification[3] }}
+                                    </p>
+
+                                    <time>
+                                        {{ notification[6].strftime(
+                                            "%d %b %Y, %I:%M %p"
+                                        ) }}
+                                    </time>
+
+                                </div>
+
+                            </a>
+
+                            {% else %}
+
+                            <div class="notification-empty">
+
+                                <i class="ri-notification-off-line"></i>
+
+                                <p>
+                                    No notifications yet.
+                                </p>
+
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             PAGE HEADER
+        ================================================= -->
+
+        <section class="equipment-page">
+
+
+            <!-- =================================================
+                 SEARCH + FILTERS
+            ================================================= -->
+
+            <section class="equipment-filters">
+
+
+                <div class="equipment-search">
+
+                    <i class="ri-search-line"></i>
+
+                    <input
+                        type="text"
+                        id="equipmentSearch"
+                        placeholder="Search your equipment..."
+                    >
+
+                </div>
+
+
+                <div class="equipment-filter">
+
+                    <i class="ri-filter-3-line"></i>
+
+                    <select id="categoryFilter">
+
+                        <option value="all">
+                            All Categories
+                        </option>
+
+                        <option value="Audio">
+                            Audio
+                        </option>
+
+                        <option value="Cameras">
+                            Cameras
+                        </option>
+
+                        <option value="Lighting">
+                            Lighting
+                        </option>
+
+                        <option value="Projectors">
+                            Projectors
+                        </option>
+
+                        <option value="DJ Equipment">
+                            DJ Equipment
+                        </option>
+
+                        <option value="Musical Instruments">
+                            Musical Instruments
+                        </option>
+
+                        <option value="Others">
+                            Others
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="equipment-filter">
+
+                    <i class="ri-sort-desc"></i>
+
+                    <select id="sortFilter">
+
+                        <option value="latest">
+                            Sort: Latest
+                        </option>
+
+                        <option value="price-low">
+                            Price: Low to High
+                        </option>
+
+                        <option value="price-high">
+                            Price: High to Low
+                        </option>
+
+                        <option value="name">
+                            Name: A to Z
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+            </section>
+
+
+
+            <div
+                class="equipment-results"
+                id="equipmentResults"
+            >
+
+                Showing {{ equipment|length }} equipment item{% if equipment|length != 1 %}s{% endif %}
+
+            </div>
+
+
+
+            <!-- =================================================
+                 EQUIPMENT GRID
+            ================================================= -->
+
+            <section
+                class="manage-equipment-grid"
+                id="manageEquipmentGrid"
+            >
+
+
+                {% for item in equipment %}
+
+
+                <article
+                    class="manage-equipment-card"
+                    data-name="{{ item[1] | lower }}"
+                    data-category="{{ item[2] | lower }}"
+                    data-price="{{ item[4] }}"
+                    data-order="{{ loop.index }}"
+                >
+
+
+                    <!-- IMAGE -->
+
+                    <div class="manage-equipment-image">
+
+
+                        {% if item[5] %}
+
+                            <img
+                                src="{{ url_for(
+                                    'equipment_image',
+                                    filename=item[5]
+                                ) }}"
+                                alt="{{ item[1] }}"
+                            >
+
+                        {% else %}
+
+                            <div class="equipment-image-placeholder">
+
+                                <i class="ri-image-line"></i>
+
+                                <span>
+                                    No image available
+                                </span>
+
+                            </div>
+
+                        {% endif %}
+
+
+
+                        <!-- STATUS -->
+
+                        {% if item[9] %}
+
+                            {% if item[6] %}
+
+                                <span class="management-status available">
+                                    <span></span>
+                                    Available
+                                </span>
+
+                            {% else %}
+
+                                <span class="management-status unavailable">
+                                    <span></span>
+                                    Out of Stock
+                                </span>
+
+                            {% endif %}
+
+                        {% else %}
+
+                            <span class="management-status archived">
+                                <span></span>
+                                Archived
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+
+                    <!-- DETAILS -->
+
+                    <div class="manage-equipment-details">
+
+
+                        <span class="management-category">
+                            {{ item[2] }}
+                        </span>
+
+
+                        <h2>
+                            {{ item[1] }}
+                        </h2>
+
+
+                        <p class="management-description">
+                            {{ item[3] or 'No description provided.' }}
+                        </p>
+
+
+                        <!-- FOOTER -->
+
+                        <div class="management-footer">
+
+
+                            <div class="management-price">
+
+                                <strong>
+                                    ₹{{ "%.0f"|format(item[4]) }}
+                                </strong>
+
+                                <span>
+                                    / day
+                                </span>
+
+                            </div>
+
+
+                            <div class="management-actions">
+
+
+                                <a
+                                    href="{{ url_for(
+                                        'edit_equipment',
+                                        equipment_id=item[0]
+                                    ) }}"
+                                    class="management-btn"
+                                >
+
+                                    <i class="ri-pencil-line"></i>
+
+                                    Manage
+
+                                </a>
+
+
+                                <button
+                                    type="button"
+                                    class="status-btn
+                                    {% if item[9] %}
+                                        deactivate
+                                    {% else %}
+                                        activate
+                                    {% endif %}"
+                                    data-equipment-id="{{ item[0] }}"
+                                    data-active="{{ 'true' if item[9] else 'false' }}"
+                                >
+
+                                    {% if item[9] %}
+
+                                        Deactivate
+
+                                    {% else %}
+
+                                        Reactivate
+
+                                    {% endif %}
+
+                                </button>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+
+                {% else %}
+
+
+                <!-- EMPTY STATE -->
+
+                <div class="equipment-empty-state">
+
+                    <div class="equipment-empty-icon">
+
+                        <i class="ri-box-3-line"></i>
+
+                    </div>
+
+
+                    <h3>
+                        Your equipment shelf is empty
+                    </h3>
+
+
+                    <p>
+                        Add your first camera, speaker, light,
+                        projector or other professional equipment.
+                    </p>
+
+
+                    <a
+                        href="{{ url_for('add_equipment') }}"
+                        class="empty-add-btn"
+                    >
+
+                        <i class="ri-add-line"></i>
+
+                        Add Your First Equipment
+
+                    </a>
+
+                </div>
+
+
+                {% endfor %}
+
+
+                <!-- NO SEARCH RESULTS -->
+
+                <div
+                    class="equipment-no-results"
+                    id="equipmentNoResults"
+                >
+
+                    <i class="ri-search-line"></i>
+
+                    <h3>
+                        No equipment found
+                    </h3>
+
+                    <p>
+                        Try changing your search or category filter.
+                    </p>
+
+                </div>
+
+
+            </section>
+
+        </section>
+
+    </main>
+
+</div>
+
+
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/rentz_ui.js'
+    ) }}"
+></script>
+
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/business_dashboard.js'
+    ) }}"
+></script>
+
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/notifications.js'
+    ) }}"
+></script>
+
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/business_equipment.js'
+    ) }}"
+></script>
+
+
+</body>
+</html>

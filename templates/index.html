@@ -1,0 +1,1457 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+        <link rel="stylesheet"
+        href="{{ url_for('static', filename='css/notifications.css') }}">
+
+    <meta name="csrf-token"
+        content="{{ csrf_token() }}">
+    <title>RentEZ | Professional Event Equipment Rental</title>
+     
+</head>
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <a href="/" class="logo">
+        <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RentEZ">
+        <p class="rent">Rent<span>EZ</span></p>
+    </a>
+
+    <ul class="nav-links">
+
+        <li  class="nav-links-item"><a href="/">Home</a></li>
+        <li class="nav-links-item"><a href="{{ url_for('equipment') }}">Equipment</a></li>
+        <li class="nav-links-item">
+            <a href="{{ url_for('packages') }}">
+                Packages
+            </a>
+        </li>
+
+        <li class="nav-links-item">
+            <a href="{{ url_for('home') }}#businesses">
+                Businesses
+            </a>
+        </li>
+
+        <li class="nav-links-item">
+            <a href="{{ url_for('home') }}#how-it-works">How It Works</a>
+        </li>
+
+        <li class="nav-links-item">
+           <a href="{{ url_for('contact') }}">Contact</a>
+        </li>
+
+    </ul>
+ 
+ 
+    <div class="nav-buttons">
+
+        {% if session.get("user_id") and session.get("user_type") == "Customer" %}
+
+            <!-- ================= NOTIFICATIONS ================= -->
+
+            <div class="homepage-notification-wrapper">
+
+                <button
+                    type="button"
+                    class="homepage-icon-btn"
+                    id="notificationButton"
+                    aria-label="Notifications"
+                >
+
+                    <i class="ri-notification-3-line"></i>
+
+                    {% if unread_notification_count > 0 %}
+
+                    <span class="homepage-notification-badge">
+                        {{ unread_notification_count }}
+                    </span>
+
+                    {% endif %}
+
+                </button>
+
+
+                <!-- Notification Panel -->
+
+                <div
+                    class="notification-panel homepage-notification-panel"
+                    id="notificationPanel"
+                >
+
+                    <div class="notification-panel-header">
+
+                        <div>
+
+                            <strong>
+                                Notifications
+                            </strong>
+
+                            <span>
+                                {{ unread_notification_count }}
+                                unread
+                            </span>
+
+                        </div>
+
+
+                        {% if unread_notification_count > 0 %}
+
+                        <button
+                            type="button"
+                            class="mark-read-btn"
+                            id="markAllNotificationsRead"
+                        >
+                            Mark all read
+                        </button>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="notification-list">
+
+                        {% for notification in notifications %}
+
+                        <a
+                            href="{{ notification[4] or '#' }}"
+                            class="notification-item{% if not notification[5] %} unread{% endif %}"
+                            data-notification-id="{{ notification[0] }}"
+                        >
+
+                            <div class="notification-item-icon">
+
+                                {% if notification[1] == "booking_confirmed" %}
+
+                                    <i class="ri-checkbox-circle-line"></i>
+
+                                {% elif notification[1] == "booking_cancelled" %}
+
+                                    <i class="ri-close-circle-line"></i>
+
+                                {% elif notification[1] == "delivery_started" %}
+
+                                    <i class="ri-truck-line"></i>
+
+                                {% elif notification[1] == "rental_active" %}
+
+                                    <i class="ri-home-heart-line"></i>
+
+                                {% elif notification[1] == "equipment_returned" %}
+
+                                    <i class="ri-arrow-go-back-line"></i>
+
+                                {% elif notification[1] == "booking_completed" %}
+
+                                    <i class="ri-checkbox-circle-line"></i>
+
+                                {% else %}
+
+                                    <i class="ri-notification-3-line"></i>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="notification-item-content">
+
+                                <strong>
+                                    {{ notification[2] }}
+                                </strong>
+
+                                <p>
+                                    {{ notification[3] }}
+                                </p>
+
+                                <time>
+                                    {{ notification[6].strftime(
+                                        "%d %b %Y, %I:%M %p"
+                                    ) }}
+                                </time>
+
+                            </div>
+
+                        </a>
+
+                        {% else %}
+
+                        <div class="notification-empty">
+
+                            <i class="ri-notification-off-line"></i>
+
+                            <p>
+                                No notifications yet.
+                            </p>
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= CART ================= -->
+
+            <a
+                href="{{ url_for('cart') }}"
+                class="homepage-cart-link"
+                aria-label="Cart"
+            >
+
+                <i class="ri-shopping-cart-2-line"></i>
+
+                {% if cart_count > 0 %}
+
+                <span class="homepage-cart-badge">
+                    {{ cart_count }}
+                </span>
+
+                {% endif %}
+
+            </a>
+
+
+            <!-- ================= PROFILE ================= -->
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="profile-menu"
+                aria-label="Profile"
+            >
+
+                <div class="profile-icon">
+                    {{ session.get("user_name", "")[0] | upper }}
+                </div>
+
+            </a>
+
+
+        {% else %}
+
+            <a href="{{ url_for('login') }}" class="login-btn">
+                Login
+            </a>
+
+            <button
+                class="signup-btn"
+                onclick="window.location.href='{{ url_for('register') }}'"
+            >
+                Sign Up
+            </button>
+
+        {% endif %}
+
+    </div>
+
+</nav>
+
+
+<!-- ================= WELCOME ================= -->
+
+{% if session.get("user_id") and session.get("user_type") == "Customer" %}
+
+<section class="welcome-section">
+    <h1>
+        Welcome back, <span>{{ session.get("user_name") }}</span> 👋
+    </h1>
+</section>
+
+{% endif %}
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+    <div class="hero-left">
+
+        <span class="hero-badge">
+            <i class="ri-verified-badge-fill"></i>
+
+            India's Professional Event Equipment Marketplace
+        </span>
+
+        <h1>
+            Everything Your
+
+            <span>Event</span>
+
+            Needs.
+
+            <br>
+
+            One Platform.
+        </h1>
+
+
+        <p>
+            Rent speakers, digital mixers, projectors,
+
+            cameras, lighting, LED walls, musical instruments,
+
+            stage equipment and complete event packages
+
+            from verified rental businesses.
+        </p>
+
+        <form
+            class="search-box"
+            action="{{ url_for('equipment') }}"
+            method="GET"
+        >
+
+            <input
+                type="text"
+                name="search"
+                placeholder="Search equipment or businesses..."
+                required
+            >
+
+            <button type="submit">
+
+                <i class="ri-search-line"></i>
+
+                Search
+
+            </button>
+
+        </form>
+
+
+        <div class="popular-searches">
+
+            <span>Popular :</span>
+
+            <a href="{{ url_for('equipment') }}?search=PA System">
+                PA System
+            </a>
+
+            <a href="{{ url_for('equipment') }}?search=Audio">
+                Audio
+            </a>
+
+            <a href="{{ url_for('equipment') }}?search=LED">
+                LED
+            </a>
+
+            <a href="{{ url_for('equipment') }}?search=Camera">
+                Camera
+            </a>
+
+            <a href="{{ url_for('equipment') }}?search=DJ">
+                DJ
+            </a>
+
+        </div>
+
+        <div class="hero-buttons">
+            <a
+                href="{{ url_for('equipment') }}"
+                class="primary-btn"
+            >
+                Browse Equipment
+            </a>
+
+            <a
+                href="#packages"
+                class="secondary-btn"
+            >
+                Explore Packages
+            </a>
+        </div>
+
+    </div>
+
+    <div class="hero-right">
+
+        <div class="equipment-grid">
+
+            <!-- AUDIO -->
+            <a href="{{ url_for('equipment') }}?category=Audio"
+            class="equipment-card">
+
+                <i class="ri-speaker-3-line"></i>
+
+                <h3>PA Speaker</h3>
+
+                <p>Explore Audio Equipment</p>
+
+            </a>
+
+
+            <!-- CAMERA -->
+            <a href="{{ url_for('equipment') }}?category=Cameras"
+            class="equipment-card">
+
+                <i class="ri-camera-3-line"></i>
+
+                <h3>Cinema Camera</h3>
+
+                <p>Explore Cameras</p>
+
+            </a>
+
+
+            <!-- AUDIO -->
+            <a href="{{ url_for('equipment') }}?category=Audio"
+            class="equipment-card">
+
+                <i class="ri-mic-line"></i>
+
+                <h3>Wireless Mic</h3>
+
+                <p>Explore Audio Equipment</p>
+
+            </a>
+
+
+            <!-- LIGHTING -->
+            <a href="{{ url_for('equipment') }}?category=Lighting"
+            class="equipment-card">
+
+                <i class="ri-lightbulb-flash-line"></i>
+
+                <h3>Stage Lights</h3>
+
+                <p>Explore Lighting</p>
+
+            </a>
+
+
+            <!-- PROJECTORS -->
+            <a href="{{ url_for('equipment') }}?category=Projectors"
+            class="equipment-card">
+
+                <i class="ri-projector-2-line"></i>
+
+                <h3>Projectors</h3>
+
+                <p>Explore Projectors</p>
+
+            </a>
+
+
+            <!-- AUDIO -->
+            <a href="{{ url_for('equipment') }}?category=Audio"
+            class="equipment-card">
+
+                <i class="ri-equalizer-2-line"></i>
+
+                <h3>Digital Mixer</h3>
+
+                <p>Explore Audio Equipment</p>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- ================= CATEGORIES ================= -->
+
+<section class="categories">
+
+    <div class="section-heading">
+
+        <span>Browse Categories</span>
+
+        <h2>Find Equipment By Category</h2>
+
+        <p>
+            Explore thousands of professional event equipment
+            from verified rental businesses.
+        </p>
+
+    </div>
+    <div class="carousel">
+
+    <button class="carousel-btn left">&#10094;</button>
+
+    <div class="carousel-viewport">
+
+        <div class="carousel-track">
+
+           <div class="carousel-card category-card">
+
+                <a href="{{ url_for('equipment') }}?category=Audio"
+                class="category-link">
+
+                    <img src="{{ url_for('static', filename='images/audio.jpg') }}" alt="Audio">
+
+                    <div class="category-content">
+                        <h3>Audio Systems</h3>
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <div class="carousel-card category-card">
+
+                <a href="{{ url_for('equipment') }}?category=Lighting"
+                class="category-link">
+
+                    <img src="{{ url_for('static', filename='images/lighting.jpg') }}" alt="Lighting">
+
+                    <div class="category-content">
+                        <h3>Lighting</h3>
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <div class="carousel-card category-card">
+
+                <a href="{{ url_for('equipment') }}?category=Cameras"
+                class="category-link">
+
+                    <img src="{{ url_for('static', filename='images/cameras.jpg') }}" alt="Cameras">
+
+                    <div class="category-content">
+                        <h3>Cameras</h3>
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <div class="carousel-card category-card">
+
+                <a href="{{ url_for('equipment') }}?category=Projectors"
+                class="category-link">
+
+                    <img src="{{ url_for('static', filename='images/projector.jpg') }}" alt="Projectors">
+
+                    <div class="category-content">
+                        <h3>Projectors</h3>
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <div class="carousel-card category-card">
+
+                <a href="{{ url_for('equipment') }}?category=DJ Equipment"
+                class="category-link">
+
+                    <img src="{{ url_for('static', filename='images/dj.jpg') }}" alt="DJ Equipment   ">
+
+                    <div class="category-content">
+                        <h3>DJ Equipment</h3>
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <div class="carousel-card category-card">
+
+                <a href="{{ url_for('equipment') }}?category=Musical Instruments"
+                class="category-link">
+
+                    <img src="{{ url_for('static', filename='images/instruments.jpg') }}" alt="Musical Instruments">
+
+                    <div class="category-content">
+                        <h3>Musical Instruments</h3>
+                    </div>
+
+                </a>
+
+            </div>
+
+
+            <div class="carousel-card category-card">
+
+                <a href="{{ url_for('equipment') }}?category=Others"
+                class="category-link">
+
+                    <img src="{{ url_for('static', filename='images/others.jpg') }}" alt="Audio">
+
+                    <div class="category-content">
+                        <h3>Others</h3>
+                    </div>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <button class="carousel-btn right">&#10095;</button>
+
+</div>
+
+</section>
+
+
+
+<!-- ================= RENTAL PACKAGES ================= -->
+
+<section class="packages" id="packages">
+
+    <div class="section-heading">
+
+        <span>Complete Solutions</span>
+
+        <h2>Popular Rental Packages</h2>
+
+        <p>
+            Rent complete event setups instead of individual equipment.
+        </p>
+
+    </div>
+
+    <div class="carousel">
+    
+    <button class="carousel-btn left">&#10094;</button>
+
+    <div class="carousel-viewport">
+
+    <div class="carousel-track">
+
+        {% for package in package_list %}
+
+        <a
+            href="{{ url_for(
+                'package_details',
+                package_id=package[0]
+            ) }}"
+            class="carousel-card package-card"
+        >
+
+            <div class="package-image">
+
+                {% if package[3] %}
+
+                <img
+                    src="{{ url_for(
+                        'package_image',
+                        filename=package[3]
+                    ) }}"
+                    alt="{{ package[1] }}"
+                >
+
+                {% else %}
+
+                <div class="package-image-placeholder">
+                    <i class="ri-stack-line"></i>
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="package-content">
+
+                <span class="package-business">
+                    {{ package[5] }}
+                </span>
+
+                <h3>
+                    {{ package[1] }}
+                </h3>
+
+                <p>
+                    {{ package[2] or
+                    'Complete equipment solution for your event.' }}
+                </p>
+
+
+                <div class="package-footer">
+
+                    <div class="package-price">
+
+                        <strong>
+                            ₹{{ "%.0f"|format(package[4]) }}
+                        </strong>
+
+                        <span>
+                            / day
+                        </span>
+
+                    </div>
+
+
+                    <span class="package-book-btn">
+
+                        View Package
+
+                        <i class="ri-arrow-right-line"></i>
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </a>
+
+        {% else %}
+
+        <div class="package-empty">
+            Packages from verified businesses will appear here.
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    </div>
+
+    <button class="carousel-btn right">&#10095;</button>
+
+    </div>  
+
+</section>
+
+<!-- ================= FEATURED EQUIPMENT ================= -->
+
+<section class="featured-equipment">
+
+    <div class="section-heading">
+
+        <span>Featured Equipment</span>
+
+        <h2>Trending Rentals</h2>
+
+        <p>
+            Browse professional equipment listed by verified businesses.
+        </p>
+
+    </div>
+
+
+    {% if equipment_list %}
+
+    <div class="carousel">
+
+        <button class="carousel-btn left">
+            &#10094;
+        </button>
+
+
+        <div class="carousel-viewport">
+
+            <div class="carousel-track">
+
+                {% for item in equipment_list %}
+
+                <a
+                    href="{{ url_for('equipment_details', equipment_id=item[0]) }}"
+                    class="carousel-card product-card"
+                >
+
+                    {% if item[5] %}
+
+                    <img src="{{ url_for('equipment_image', filename=item[5]) }}"
+                    alt="{{ item[1] }}">
+
+                    {% else %}
+
+                    <div class="product-image-placeholder">
+                        <i class="ri-image-line"></i>
+                    </div>
+
+                    {% endif %}
+
+
+                    <div class="product-content">
+
+                        <h3>
+                            {{ item[1] }}
+                        </h3>
+
+                        <p>
+                            {{ item[2] }}
+                        </p>
+
+
+                        <div class="price-row">
+
+                            <h4>
+                                ₹{{ "%.0f"|format(item[4]) }}/day
+                            </h4>
+
+                            <span class="view-button">
+                                View
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+                {% endfor %}
+
+            </div>
+
+        </div>
+
+
+        <button class="carousel-btn right">
+            &#10095;
+        </button>
+
+    </div>
+
+    {% else %}
+
+    <div class="featured-empty">
+
+        <i class="ri-box-3-line"></i>
+
+        <h3>
+            No Equipment Available Yet
+        </h3>
+
+        <p>
+            Equipment listed by verified businesses will appear here.
+        </p>
+
+        <a href="{{ url_for('equipment') }}">
+            Browse Equipment
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</section>
+
+
+<!-- ================= FEATURED BUSINESSES ================= -->
+
+<section class="businesses" id="businesses">
+
+    <div class="section-heading">
+
+        <span>Verified Businesses</span>
+
+        <h2>Top Rental Partners</h2>
+
+        <p>
+            Trusted businesses serving thousands of successful events.
+        </p>
+
+    </div>
+
+    
+    <div class="carousel">
+
+    <button class="carousel-btn left">&#10094;</button>
+
+    <div class="carousel-viewport">
+
+    <div class="carousel-track">
+
+
+        {% for business in business_list %}
+
+            <div class="carousel-card business-card">
+
+                <div class="business-placeholder-image">
+
+                    <i class="ri-store-2-line"></i>
+
+
+                    <!-- VERIFIED BADGE -->
+                    <span class="business-verified-badge" title="Verified Business" aria-label="Verified Business">
+                        <i class="ri-verified-badge-fill"></i>
+                    </span>
+
+                </div>
+
+
+                <div class="business-content">
+
+                    <h3>
+                        {{ business[1] }}
+                    </h3>
+
+                    <p>
+                        {{ business[2] }}
+                    </p>
+
+                    <div class="business-stats">
+
+                        <span>
+                            {{ business[3] }} Equipment
+                        </span>
+
+                    </div>
+
+                    <a
+                        href="{{ url_for(
+                            'business_store',
+                            business_id=business[0]
+                        ) }}"
+                        class="visit-store-btn"
+                    >
+                        Visit Store
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% else %}
+
+            <div class="featured-empty">
+
+                <i class="ri-store-2-line"></i>
+
+                <h3>
+                    No verified businesses yet
+                </h3>
+
+                <p>
+                    Approved rental businesses will appear here.
+                </p>
+
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+    </div>
+
+    <button class="carousel-btn right">&#10095;</button>
+
+    </div>  
+
+</section>
+
+
+<!-- ================= BUSINESS PARTNER CTA ================= -->
+
+<section class="business-partner-cta">
+
+    <div class="business-partner-content">
+
+        <span class="business-partner-label">
+            FOR RENTAL BUSINESSES
+        </span>
+
+        <h2>
+            Turn Your Equipment Into
+            <span>More Business.</span>
+        </h2>
+
+        <p>
+            List your professional equipment on RentEZ,
+            connect with customers, and manage your rentals
+            from one place.
+        </p>
+
+        <a
+            href="{{ url_for('business_register') }}"
+            class="business-partner-btn"
+        >
+            Become a Rental Partner
+            <i class="ri-arrow-right-line"></i>
+        </a>
+
+    </div>
+
+
+    <div class="business-partner-visual">
+
+        <div class="partner-circle circle-one"></div>
+        <div class="partner-circle circle-two"></div>
+
+        <div class="partner-card">
+
+            <div class="partner-card-icon">
+                <i class="ri-store-3-line"></i>
+            </div>
+
+            <div>
+                <strong>
+                    Your Business
+                </strong>
+
+                <span>
+                    On RentEZ
+                </span>
+            </div>
+
+        </div>
+
+        <div class="partner-mini-card mini-one">
+            <i class="ri-box-3-line"></i>
+            <span>
+                List Equipment
+            </span>
+        </div>
+
+        <div class="partner-mini-card mini-two">
+            <i class="ri-user-3-line"></i>
+            <span>
+                Reach Customers
+            </span>
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= WHY RENTEZ ================= -->
+
+<section class="why-rentez">
+
+    <div class="section-heading">
+
+        <span>Why Choose RentEZ</span>
+
+        <h2>Designed For Modern Event Professionals</h2>
+
+        <p>
+
+            Everything you need to rent event equipment with confidence.
+
+        </p>
+
+    </div>
+
+    <div class="why-grid">
+
+        <div class="why-card">
+
+            <i class="ri-shield-check-fill"></i>
+
+            <h3>Verified Businesses</h3>
+
+            <p>
+                Every rental partner is verified before listing equipment.
+            </p>
+
+        </div>
+
+        <div class="why-card">
+
+            <i class="ri-stack-fill"></i>
+
+            <h3>Package Deals</h3>
+
+            <p>
+                Rent complete event setups instead of individual products.
+            </p>
+
+        </div>
+
+        <div class="why-card">
+
+            <i class="ri-secure-payment-fill"></i>
+
+            <h3>Secure Payments</h3>
+
+            <p>
+                Safe online transactions with booking protection.
+            </p>
+
+        </div>
+
+        <div class="why-card">
+
+            <i class="ri-calendar-check-line"></i>
+
+            <h3>Easy Booking</h3>
+
+            <p>
+                Choose your equipment, dates and quantity in just a few simple steps.
+            </p>
+
+        </div>
+
+        <div class="why-card">
+
+            <i class="ri-map-pin-fill"></i>
+
+            <h3>Nearby Rentals</h3>
+
+            <p>
+                Find trusted equipment providers near your event location.
+            </p>
+
+        </div>
+
+        <div class="why-card">
+
+            <i class="ri-refresh-fill"></i>
+
+            <h3>Easy Returns</h3>
+
+            <p>
+                Hassle-free pickup and return scheduling.
+            </p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= HOW IT WORKS ================= -->
+
+<section class="how-it-works" id="how-it-works">
+
+    <div class="section-heading">
+
+        <span>Simple Process</span>
+
+        <h2>How RentEZ Works</h2>
+
+    </div>
+
+    <div class="steps">
+
+        <div class="step">
+
+            <div class="step-icon">
+
+                <i class="ri-search-line"></i>
+
+            </div>
+
+            <h3>Search</h3>
+
+            <p>Find equipment or packages near you.</p>
+
+        </div>
+
+        <div class="step-line"></div>
+
+        <div class="step">
+
+            <div class="step-icon">
+
+                <i class="ri-calendar-check-line"></i>
+
+            </div>
+
+            <h3>Book</h3>
+
+            <p>Select dates and confirm instantly.</p>
+
+        </div>
+
+        <div class="step-line"></div>
+
+        <div class="step">
+
+            <div class="step-icon">
+
+                <i class="ri-truck-line"></i>
+
+            </div>
+
+            <h3>Pickup / Delivery</h3>
+
+            <p>Collect or receive your equipment.</p>
+
+        </div>
+
+        <div class="step-line"></div>
+
+        <div class="step">
+
+            <div class="step-icon">
+
+                <i class="ri-arrow-go-back-line"></i>
+
+            </div>
+
+            <h3>Return</h3>
+
+            <p>Return equipment safely after use.</p>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================= TESTIMONIALS ================= -->
+
+<section class="testimonials">
+
+    <div class="section-heading">
+
+        <span>Testimonials</span>
+
+        <h2>What Customers Say</h2>
+
+    </div>
+
+    <div class="testimonial-grid">
+
+        <div class="testimonial-card">
+
+            <p>
+
+                "Booking a complete wedding audio package saved us both time and money."
+
+            </p>
+
+            <h4>Rahul Sharma</h4>
+
+            <span>Event Organizer</span>
+
+        </div>
+
+        <div class="testimonial-card">
+
+            <p>
+
+                "Professional businesses, quality equipment and smooth booking experience."
+
+            </p>
+
+            <h4>Sarah Joseph</h4>
+
+            <span>Photographer</span>
+
+        </div>
+
+        <div class="testimonial-card">
+
+            <p>
+
+                "Exactly what the event industry needed."
+
+            </p>
+
+            <h4>Kevin D'Souza</h4>
+
+            <span>Production Manager</span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= TRUST STRIP ================= -->
+
+<section class="trust-strip">
+
+    <div class="trust-box">
+        <i class="ri-verified-badge-fill"></i>
+
+        <div>
+            <h3>{{ verified_businesses }}</h3>
+            <p>Verified Businesses</p>
+        </div>
+    </div>
+
+
+    <div class="trust-box">
+        <i class="ri-box-3-fill"></i>
+
+        <div>
+            <h3>{{ equipment_count }}</h3>
+            <p>Equipment Listed</p>
+        </div>
+    </div>
+
+
+    <div class="trust-box">
+        <i class="ri-map-pin-2-fill"></i>
+
+        <div>
+            <h3>{{ cities_count }}</h3>
+            <p>Cities Covered</p>
+        </div>
+    </div>
+
+
+    <div class="trust-box">
+        <i class="ri-star-smile-fill"></i>
+
+        <div>
+            <h3>{{ successful_rentals }}</h3>
+            <p>Successful Rentals</p>
+        </div>
+    </div>
+
+</section>
+
+
+<!-- ================= CTA ================= -->
+
+<section class="cta">
+
+    <h2>
+        Ready To Rent Professional Event Equipment?
+    </h2>
+
+    <p>
+        Browse thousands of verified products and rental packages.
+    </p>
+
+    <a
+        href="{{ url_for('register') }}"
+        class="cta-btn"
+    >
+        Get Started
+    </a>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer id="contact">
+
+    <div class="footer-grid">
+
+        <!-- BRAND -->
+        <div class="footer-brand">
+
+            <a href="{{ url_for('home') }}" class="footer-logo">
+
+                <img
+                    src="{{ url_for('static', filename='images/logo.png') }}"
+                    alt="RentEZ"
+                >
+
+                <span class="rent">
+                    Rent<span>EZ</span>
+                </span>
+
+            </a>
+
+            <p>
+                India's Professional Event Equipment Marketplace.
+            </p>
+
+        </div>
+
+
+        <!-- PLATFORM -->
+        <div>
+
+            <h3>Platform</h3>
+
+            <a href="{{ url_for('equipment') }}">
+                Equipment
+            </a>
+
+            <a href="{{ url_for('packages') }}">
+                Packages
+            </a>
+
+            <a href="{{ url_for('home') }}#businesses">
+                Businesses
+            </a>
+
+            <a href="{{ url_for('home') }}#how-it-works">
+                How It Works
+            </a>
+
+        </div>
+
+
+        <!-- COMPANY -->
+            <div>
+
+                <h3>Company</h3>
+
+                <a href="{{ url_for('about') }}">
+                    About
+                </a>
+
+                <a href="{{ url_for('faq') }}">
+                    FAQs
+                </a>
+
+                <a href="{{ url_for('contact') }}">
+                    Contact
+                </a>
+
+            </div>
+
+
+        <!-- CONTACT & LEGAL -->
+        <div>
+
+            <h3>Contact & Legal</h3>
+
+            <a href="{{ url_for('contact') }}">
+                Contact Us
+            </a>
+
+            <a href="{{ url_for('terms_conditions') }}">
+                Terms & Conditions
+            </a>
+
+            <a href="{{ url_for('privacy') }}">
+                Privacy Policy
+            </a>
+
+            <span class="footer-contact-note">
+                We'd love to hear from you.
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="footer-bottom">
+
+        <span>
+            © 2026 RentEZ. All rights reserved.
+        </span>
+
+        <span>
+            Built for simpler equipment rentals.
+        </span>
+
+    </div>
+
+</footer>
+<script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+{% if session.get("user_id") and session.get("user_type") == "Customer" %}
+    <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+{% endif %} 
+</body>
+</html>

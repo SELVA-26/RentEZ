@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {{ page_title }} | RentEZ
+    </title>
+
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/info_pages.css'
+        ) }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="info-navbar">
+
+
+    <!-- LOGO -->
+
+    <a
+        href="{{ url_for('home') }}"
+        class="info-logo"
+    >
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='images/logo.png'
+            ) }}"
+            alt="RentEZ"
+        >
+
+        <span>
+            Rent<span>EZ</span>
+        </span>
+
+    </a>
+
+
+    <!-- NAV LINKS -->
+
+    <div class="info-nav-links">
+
+        <a href="{{ url_for('home') }}">
+            Home
+        </a>
+
+        <a href="{{ url_for('equipment') }}">
+            Equipment
+        </a>
+
+        <a href="{{ url_for('packages') }}">
+            Packages
+        </a>
+
+        <a href="{{ url_for('home') }}#businesses">
+            Businesses
+        </a>
+
+        <a href="{{ url_for('home') }}#how-it-works">
+            How It Works
+        </a>
+
+        <a href="{{ url_for('about') }}">
+            About
+        </a>
+
+        <a href="{{ url_for('faq') }}">
+            FAQs
+        </a>
+
+        <a href="{{ url_for('contact') }}">
+            Contact
+        </a>
+
+    </div>
+
+
+</nav>
+
+
+
+<!-- =====================================================
+     PAGE CONTENT
+===================================================== -->
+
+<main class="info-main">
+
+    {% block content %}{% endblock %}
+
+</main>
+
+
+
+<!-- =====================================================
+     FOOTER
+===================================================== -->
+
+<footer class="info-footer">
+
+
+    <div class="info-footer-grid">
+
+
+        <!-- BRAND -->
+
+        <div class="info-footer-brand">
+
+            <a
+                href="{{ url_for('home') }}"
+                class="footer-logo"
+            >
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='images/logo.png'
+                    ) }}"
+                    alt="RentEZ"
+                >
+
+                <span>
+                    Rent<span>EZ</span>
+                </span>
+
+            </a>
+
+
+            <p>
+                India's Professional Event Equipment Marketplace.
+            </p>
+
+        </div>
+
+
+
+        <!-- PLATFORM -->
+
+        <div class="info-footer-column">
+
+            <h3>
+                Platform
+            </h3>
+
+            <a href="{{ url_for('equipment') }}">
+                Equipment
+            </a>
+
+            <a href="{{ url_for('packages') }}">
+                Packages
+            </a>
+
+            <a href="{{ url_for('home') }}#businesses">
+                Businesses
+            </a>
+
+            <a href="{{ url_for('home') }}#how-it-works">
+                How It Works
+            </a>
+
+        </div>
+
+
+
+        <!-- COMPANY -->
+
+        <div class="info-footer-column">
+
+            <h3>
+                Company
+            </h3>
+
+            <a href="{{ url_for('about') }}">
+                About
+            </a>
+
+            <a href="{{ url_for('faq') }}">
+                FAQs
+            </a>
+
+            <a href="{{ url_for('contact') }}">
+                Contact
+            </a>
+
+        </div>
+
+
+
+        <!-- CONTACT & LEGAL -->
+
+        <div class="info-footer-column">
+
+            <h3>
+                Contact & Legal
+            </h3>
+
+            <a href="{{ url_for('contact') }}">
+                Contact Us
+            </a>
+
+            <a href="{{ url_for('terms_conditions') }}">
+                Terms & Conditions
+            </a>
+
+            <a href="{{ url_for('privacy') }}">
+                Privacy Policy
+            </a>
+
+            <span class="footer-contact-note">
+                We'd love to hear from you.
+            </span>
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- BOTTOM -->
+
+    <div class="info-footer-bottom">
+
+        <span>
+            © 2026 RentEZ. All rights reserved.
+        </span>
+
+        <span>
+            Built for simpler equipment rentals.
+        </span>
+
+    </div>
+
+
+</footer>
+
+</body>
+</html>

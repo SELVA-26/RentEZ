@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+    name="csrf-token"
+    content="{{ csrf_token() }}"
+>
+    <title>Bookings | RentEZ</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/business_bookings.css') }}">
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <img src="{{ url_for('static', filename='images/logo.png') }}"
+                 alt="RentEZ">
+
+            <span>Rent<span>EZ</span></span>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="{{ url_for('business_dashboard') }}">
+                <i class="ri-dashboard-line"></i>
+                Overview
+            </a>
+
+            <a href="{{ url_for('business_dashboard') }}">
+                <i class="ri-camera-line"></i>
+                My Equipment
+            </a>
+
+            <a href="{{ url_for('business_bookings') }}" class="active">
+                <i class="ri-calendar-check-line"></i>
+                Bookings
+            </a>
+
+            <a href="{{ url_for('business_profile') }}">
+                <i class="ri-store-2-line"></i>
+                Business Profile
+            </a>
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <span class="system-label">
+                SYSTEM
+            </span>
+
+            <a href="{{ url_for('business_settings') }}">
+                <i class="ri-settings-3-line"></i>
+                Settings
+            </a>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout"
+            >
+                Log Out
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+        <div class="top-bar">
+
+            <div>
+
+                <span class="eyebrow">
+                    BUSINESS PORTAL
+                </span>
+
+                <h1>
+                    Bookings
+                </h1>
+
+                <p>
+                    Manage rentals made for your equipment.
+                </p>
+
+            </div>
+
+
+            <a href="{{ url_for('business_dashboard') }}"
+               class="back-link">
+
+                <i class="ri-arrow-left-line"></i>
+
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+
+        <!-- ================= BOOKINGS ================= -->
+
+        <section class="bookings-section">
+
+            {% if booking_groups %}
+
+                {% for group in booking_groups %}
+
+                <article class="booking-card order-card">
+
+                    <div class="booking-main">
+
+                        <div class="booking-title">
+
+                            <span class="category">
+                                {% if group["is_order"] %}
+                                    ORDER
+                                {% else %}
+                                    BOOKING
+                                {% endif %}
+                            </span>
+
+                            <h2>
+                                #{{ group["display_id"] }}
+                            </h2>
+
+                            <p>
+
+                                {{ group["customer"] }}
+
+                                {% if group["is_order"] %}
+
+                                    ·
+                                    {{ group["items"]|length }}
+                                    rental item{% if group["items"]|length != 1 %}s{% endif %}
+
+                                {% endif %}
+
+                            </p>
+
+                        </div>
+
+
+                        <span class="booking-status">
+                            {{ group["status"] }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="order-meta">
+
+                        <div>
+                            <span>RENTAL PERIOD</span>
+
+                            <strong>
+                                {{ group["start_date"] }}
+                                →
+                                {{ group["end_date"] }}
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>DURATION</span>
+
+                            <strong>
+                                {{ group["total_days"] }}
+                                day{% if group["total_days"] != 1 %}s{% endif %}
+                            </strong>
+                        </div>
+
+                        <div>
+                            <span>ORDER</span>
+
+                            <strong>
+
+                                {% if group["is_order"] %}
+                                    #{{ group["order_id"] }}
+                                {% else %}
+                                    Individual
+                                {% endif %}
+
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="order-items">
+
+                        {% for item in group["items"] %}
+
+                        <div class="order-item">
+
+                            <div class="order-item-info">
+
+                                <span class="category">
+                                    {{ item["category"] }}
+                                </span>
+
+                                <h3>
+                                    {{ item["item_name"] }}
+                                </h3>
+
+                                <p>
+                                    {{ item["quantity"] }}
+                                    unit{% if item["quantity"] != 1 %}s{% endif %}
+
+                                    · ₹{{ "%.0f"|format(
+                                        item["daily_rate"]
+                                    ) }}/day
+                                </p>
+
+                            </div>
+
+
+                            <div class="order-item-total">
+
+                                <span>ITEM TOTAL</span>
+
+                                <strong>
+                                    ₹{{ "%.0f"|format(
+                                        item["total_amount"]
+                                    ) }}
+                                </strong>
+
+                            </div>
+
+
+                            <div class="order-item-status">
+
+                                <span class="booking-status small-status">
+                                    {{ item["booking_status"] }}
+                                </span>
+
+                            </div>
+
+
+                            <div class="booking-actions">
+
+                                {# Keep your EXISTING per-booking
+                                delivery/return action logic here #}
+
+                                {% if item["booking_status"] == "Confirmed" %}
+
+                                    <button
+                                        type="button"
+                                        class="action-btn cancel-btn"
+                                        data-booking-id="{{ item["booking_id"] }}"
+                                        data-payment-status="{{ item["payment_status"] }}"
+                                    >
+                                        <i class="ri-close-circle-line"></i>
+                                        Cancel
+                                    </button>
+
+                                    {% if today >= item["start_date"] %}
+                                        </button>
+
+                                        <form
+                                            method="POST"
+                                            action="{{ url_for(
+                                                'update_booking_status',
+                                                booking_id=item['booking_id'],
+                                                status='Out for Delivery'
+                                            ) }}"
+                                        >
+
+                                            <input
+                                                type="hidden"
+                                                name="csrf_token"
+                                                value="{{ csrf_token() }}"
+                                            >
+
+                                            <button
+                                                type="submit"
+                                                class="action-btn delivery-btn"
+                                            >
+                                                <i class="ri-truck-line"></i>
+                                                Send for Delivery
+                                            </button>
+
+                                        </form>
+
+                                    {% else %}
+
+                                        <span class="action-note">
+                                            <i class="ri-calendar-line"></i>
+                                            Delivery on {{ item["start_date"] }}
+                                        </span>
+
+                                    {% endif %}
+
+
+                                {% elif item["booking_status"] == "Out for Delivery" %}
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for(
+                                            'update_booking_status',
+                                            booking_id=item['booking_id'],
+                                            status='Delivered'
+                                        ) }}"
+                                    >
+
+                                        <input
+                                            type="hidden"
+                                            name="csrf_token"
+                                            value="{{ csrf_token() }}"
+                                        >
+
+                                        <button
+                                            type="submit"
+                                            class="action-btn delivery-btn"
+                                        >
+                                            <i class="ri-map-pin-check-line"></i>
+                                            Mark Delivered
+                                        </button>
+
+                                    </form>
+
+
+                                {% elif item["booking_status"] == "Delivered" %}
+
+                                    {% if today >= item["end_date"] %}
+
+                                        <form
+                                            method="POST"
+                                            action="{{ url_for(
+                                                'update_booking_status',
+                                                booking_id=item['booking_id'],
+                                                status='Returned'
+                                            ) }}"
+                                        >
+
+                                            <input
+                                                type="hidden"
+                                                name="csrf_token"
+                                                value="{{ csrf_token() }}"
+                                            >
+
+                                            <button
+                                                type="submit"
+                                                class="action-btn return-btn"
+                                            >
+                                                <i class="ri-inbox-unarchive-line"></i>
+                                                Mark Returned
+                                            </button>
+
+                                        </form>
+
+                                    {% else %}
+
+                                        <span class="action-note">
+                                            <i class="ri-calendar-line"></i>
+                                            Return on {{ item["end_date"] }}
+                                        </span>
+
+                                    {% endif %}
+
+
+                                {% elif item["booking_status"] == "Returned" %}
+
+                                    <form
+                                        method="POST"
+                                        action="{{ url_for(
+                                            'update_booking_status',
+                                            booking_id=item['booking_id'],
+                                            status='Completed'
+                                        ) }}"
+                                    >
+
+                                        <input
+                                            type="hidden"
+                                            name="csrf_token"
+                                            value="{{ csrf_token() }}"
+                                        >
+
+                                        <button
+                                            type="submit"
+                                            class="action-btn complete-btn"
+                                        >
+                                            <i class="ri-check-double-line"></i>
+                                            Complete
+                                        </button>
+
+                                    </form>
+
+
+                                {% elif item["booking_status"] == "Completed" %}
+
+                                    <span class="action-note completed-note">
+                                        <i class="ri-checkbox-circle-fill"></i>
+                                        Completed
+                                    </span>
+
+
+                                {% elif item["booking_status"] == "Cancelled" %}
+
+                                    <span class="action-note cancelled-note">
+                                        <i class="ri-close-circle-line"></i>
+                                        Cancelled
+                                    </span>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+
+                    <div class="booking-footer">
+
+                        <div class="footer-left">
+
+                            <span class="payment-status paid">
+
+                                <i class="ri-checkbox-circle-fill"></i>
+
+                                Payment:
+                                {{ group["order_payment_status"]
+                                    or
+                                    group["items"][0]["payment_status"] }}
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="order-total">
+
+                            {% if group["is_order"] %}
+
+                                <span>ORDER TOTAL</span>
+
+                                <strong>
+                                    ₹{{ "%.0f"|format(
+                                        group["order_total"]
+                                    ) }}
+                                </strong>
+
+                            {% else %}
+
+                                <span>BOOKING TOTAL</span>
+
+                                <strong>
+                                    ₹{{ "%.0f"|format(
+                                        group["items"][0]["total_amount"]
+                                    ) }}
+                                </strong>
+
+                            {% endif %}
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+                {% endfor %}
+
+                {% else %}
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+
+                        <i class="ri-calendar-line"></i>
+
+                    </div>
+
+                    <h2>
+                        No bookings yet
+                    </h2>
+
+                    <p>
+                        When customers rent your equipment,
+                        their bookings will appear here.
+                    </p>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+    </main>
+
+</div>
+<script
+    src="{{ url_for('static', filename='js/rentz_ui.js') }}"
+></script>
+<script src="{{ url_for('static', filename='js/business_bookings.js') }}"></script>
+</body>
+
+</html>

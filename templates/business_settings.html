@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Settings | RentEZ</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+          rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/business_settings.css') }}">
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <img src="{{ url_for('static', filename='images/logo.png') }}"
+                 alt="RentEZ">
+
+            <span>
+                Rent<span>EZ</span>
+            </span>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <a href="{{ url_for('business_dashboard') }}">
+                <i class="ri-dashboard-line"></i>
+                Overview
+            </a>
+
+            <a href="{{ url_for('business_dashboard') }}">
+                <i class="ri-camera-line"></i>
+                My Equipment
+            </a>
+
+            <a href="{{ url_for('business_bookings') }}">
+                <i class="ri-calendar-check-line"></i>
+                Bookings
+            </a>
+
+            <a href="{{ url_for('business_profile') }}">
+                <i class="ri-store-2-line"></i>
+                Business Profile
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <span class="system-label">
+                SYSTEM
+            </span>
+
+            <a href="{{ url_for('business_settings') }}"
+               class="active">
+
+                <i class="ri-settings-3-line"></i>
+
+                Settings
+
+            </a>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout"
+            >
+                Log Out
+            </a>
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+
+        <div class="top-bar">
+
+            <div>
+
+                <span class="eyebrow">
+                    BUSINESS PORTAL
+                </span>
+
+                <h1>
+                    Settings
+                </h1>
+
+                <p>
+                    Manage your account and security preferences.
+                </p>
+
+            </div>
+
+
+            <a href="{{ url_for('business_dashboard') }}"
+               class="back-link">
+
+                <i class="ri-arrow-left-line"></i>
+
+                Back to Dashboard
+
+            </a>
+
+        </div>
+
+
+        <!-- ================= ACCOUNT ================= -->
+
+        <section class="settings-card">
+
+            <div class="section-header">
+
+                <div class="section-icon">
+                    <i class="ri-user-settings-line"></i>
+                </div>
+
+                <div>
+
+                    <h2>
+                        Account
+                    </h2>
+
+                    <p>
+                        Manage your business account information.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="setting-row">
+
+                <div class="setting-info">
+
+                    <strong>
+                        Business Profile
+                    </strong>
+
+                    <span>
+                        Update your store information, address and contact details.
+                    </span>
+
+                </div>
+
+                <a href="{{ url_for('business_profile') }}"
+                   class="setting-btn">
+
+                    Edit Profile
+
+                    <i class="ri-arrow-right-line"></i>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= SECURITY ================= -->
+
+        <section class="settings-card">
+
+            <div class="section-header">
+
+                <div class="section-icon">
+                    <i class="ri-lock-password-line"></i>
+                </div>
+
+                <div>
+
+                    <h2>
+                        Security
+                    </h2>
+
+                    <p>
+                        Keep your business account secure.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form method="POST"
+                  action="{{ url_for('change_business_password') }}"
+                  class="password-form">
+                    <input
+                        type="hidden"
+                        name="csrf_token"
+                        value="{{ csrf_token() }}"
+                    >
+
+
+                <div class="password-fields">
+
+
+                    <!-- CURRENT PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="current_password">
+                            Current Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="current_password"
+                            name="current_password"
+                            placeholder="Enter your current password"
+                            required>
+
+                    </div>
+
+
+                    <!-- NEW PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="new_password">
+                            New Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="new_password"
+                            name="new_password"
+                            placeholder="Enter your new password"
+                            minlength="6"
+                            required>
+
+                    </div>
+
+
+                    <!-- CONFIRM PASSWORD -->
+
+                    <div class="form-group">
+
+                        <label for="confirm_password">
+                            Confirm New Password
+                        </label>
+
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            name="confirm_password"
+                            placeholder="Re-enter your new password"
+                            minlength="6"
+                            required>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ERROR -->
+
+                {% if password_error %}
+
+                <div class="password-message error">
+
+                    <i class="ri-error-warning-line"></i>
+
+                    <span>
+                        {{ password_error }}
+                    </span>
+
+                </div>
+
+                {% endif %}
+
+
+                <!-- SUCCESS -->
+
+                {% if password_success %}
+
+                <div class="password-message success">
+
+                    <i class="ri-checkbox-circle-line"></i>
+
+                    <span>
+                        {{ password_success }}
+                    </span>
+
+                </div>
+
+                {% endif %}
+
+
+                <!-- BUTTON -->
+
+                <div class="password-actions">
+
+                    <button type="submit"
+                            class="password-btn">
+
+                        <i class="ri-lock-password-line"></i>
+
+                        Change Password
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </section>
+
+
+        <!-- ================= LOGOUT ================= -->
+
+        <section class="danger-card">
+
+            <div>
+
+                <strong>
+                    Log out of your account
+                </strong>
+
+                <span>
+                    You'll need to log in again to access your business dashboard.
+                </span>
+
+            </div>
+
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout"
+            >
+                Log Out
+            </a>
+
+        </section>
+
+
+    </main>
+
+</div>
+
+</body>
+</html>

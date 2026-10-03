@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/equipment_details.css'
+        ) }}"
+    >
+    <link
+    rel="stylesheet"
+    href="{{ url_for(
+        'static',
+        filename='css/package_details.css'
+    ) }}"
+>
+    <meta
+    name="csrf-token"
+    content="{{ csrf_token() }}"
+>
+<link
+    rel="stylesheet"
+    href="{{ url_for(
+        'static',
+        filename='css/chat_launcher.css'
+    ) }}"
+>
+    <title>
+        {{ package[2] }} | RentEZ
+    </title>
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav>
+
+    <a
+        href="{{ url_for('home') }}"
+        class="logo"
+    >
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='images/logo.png'
+            ) }}"
+            alt="RentEZ"
+        >
+
+        <p class="rent">
+            Rent<span>EZ</span>
+        </p>
+
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="{{ url_for('home') }}">
+            Home
+        </a>
+
+        <a href="{{ url_for('equipment') }}">
+            Equipment
+        </a>
+
+        <a
+            href="{{ url_for('packages') }}"
+            class="active"
+        >
+            Packages
+        </a>
+
+        <a href="{{ url_for('home') }}#businesses">
+            Businesses
+        </a>
+
+        <a href="{{ url_for('home') }}#how-it-works">
+            How It Works
+        </a>
+
+        <a href="{{ url_for('contact') }}">
+            Contact
+        </a>
+
+    </div>
+
+
+    <a
+        href="{{ url_for('cart') }}"
+        class="cart-link"
+        aria-label="Shopping cart"
+        title="Shopping cart"
+    >
+
+        <i class="ri-shopping-cart-2-line"></i>
+
+        {% if cart_count > 0 %}
+
+            <span>
+                {{ cart_count }}
+            </span>
+
+        {% endif %}
+
+    </a>
+
+
+    <a
+        href="{{ url_for('dashboard') }}"
+        class="profile-menu"
+        aria-label="Dashboard"
+        title="Dashboard"
+    >
+
+        <div class="profile-icon">
+            {{ user_name[0] | upper }}
+        </div>
+
+    </a>
+
+</nav>
+
+
+<!-- ================= PAGE ================= -->
+
+<main class="details-page">
+
+
+    <!-- BREADCRUMB -->
+
+    <div class="breadcrumb">
+
+        <a href="{{ url_for('packages') }}">
+            Packages
+        </a>
+
+        <i class="ri-arrow-right-s-line"></i>
+
+        <span>
+            {{ package[2] }}
+        </span>
+
+    </div>
+
+
+    <!-- ================= PACKAGE ================= -->
+
+    <section class="product-section">
+
+
+        <!-- IMAGE -->
+
+        <div class="product-image-card">
+
+            {% if package[4] %}
+
+                <img
+                    src="{{ url_for(
+                        'package_image',
+                        filename=package[4]
+                    ) }}"
+                    alt="{{ package[2] }}"
+                >
+
+            {% else %}
+
+                <div class="no-image">
+
+                    <i class="ri-image-line"></i>
+
+                    <span>
+                        No image available
+                    </span>
+
+                </div>
+
+            {% endif %}
+
+
+            {% if available_packages > 0 %}
+
+                <div class="availability available">
+
+                    <span></span>
+
+                    Available to Rent
+
+                </div>
+
+            {% else %}
+
+                <div class="availability unavailable">
+
+                    <span></span>
+
+                    Currently Unavailable
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- INFORMATION -->
+
+        <div class="product-info">
+
+
+            <div class="category">
+
+                RENTAL PACKAGE
+
+            </div>
+
+
+            <h1>
+                {{ package[2] }}
+            </h1>
+
+
+            <div class="equipment-type">
+
+                <i class="ri-store-3-line"></i>
+
+                <span>
+                    {{ package[7] }}
+                    ·
+                    {{ package[8] }}
+                </span>
+
+            </div>
+
+
+            <p class="description">
+
+                {{ package[3] or
+                   'A complete professional equipment package for your rental needs.' }}
+
+            </p>
+
+
+            <div class="price-block">
+
+                <span class="price">
+
+                    ₹{{ "%.0f"|format(package[5]) }}
+
+                </span>
+
+                <span class="price-unit">
+                    / day
+                </span>
+
+            </div>
+
+
+            <!-- TRUST -->
+
+            <div class="trust-row">
+
+
+                <div class="trust-item">
+
+                    <i class="ri-stack-line"></i>
+
+                    <div>
+
+                        <strong>
+                            {{ package_items|length }}
+                        </strong>
+
+                        <small>
+                            Equipment items
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="trust-item">
+
+                    <i class="ri-shield-check-line"></i>
+
+                    <div>
+
+                        <strong>
+                            Verified
+                        </strong>
+
+                        <small>
+                            Professional package
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="trust-item">
+
+                    <i class="ri-calendar-check-line"></i>
+
+                    <div>
+
+                        <strong>
+                            Flexible
+                        </strong>
+
+                        <small>
+                            Easy rental
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+            <!-- RENT -->
+
+            {% if available_packages > 0 %}
+
+                <a
+                    href="{{ url_for(
+                        'rent_package',
+                        package_id=package[0]
+                    ) }}"
+                    class="rent-btn"
+                >
+
+                    <span>
+                        Rent This Package
+                    </span>
+
+                    <i class="ri-arrow-right-line"></i>
+
+                </a>
+
+
+                <p class="booking-note">
+
+                    <i class="ri-lock-line"></i>
+
+                    Secure checkout · No hidden charges
+
+                </p>
+                
+
+            {% else %}
+
+                <button
+                    class="rent-btn disabled"
+                    disabled
+                >
+
+                    Currently Unavailable
+
+                </button>
+
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= INCLUDED EQUIPMENT ================= -->
+
+    <section class="package-components">
+
+        <div class="package-components-heading">
+
+            <div>
+
+                <span>
+                    WHAT'S INCLUDED
+                </span>
+
+                <h2>
+                    Package Equipment
+                </h2>
+
+                <p>
+                    Everything included in this rental package.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="package-components-grid">
+
+            {% for item in package_items %}
+
+            <div class="package-component">
+
+                <div class="package-component-image">
+
+                    {% if item[6] %}
+
+                        <img
+                            src="{{ url_for(
+                                'equipment_image',
+                                filename=item[6]
+                            ) }}"
+                            alt="{{ item[2] }}"
+                        >
+
+                    {% else %}
+
+                        <i class="ri-image-line"></i>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="package-component-info">
+
+                    <span>
+                        {{ item[3] }}
+                    </span>
+
+                    <h3>
+                        {{ item[2] }}
+                    </h3>
+
+                    <p>
+                        {{ item[1] }}
+                        unit{% if item[1] != 1 %}s{% endif %}
+                        included
+                    </p>
+
+                </div>
+
+
+                <div class="package-component-price">
+
+                    ₹{{ "%.0f"|format(item[5]) }}
+
+                    <small>
+                        / day
+                    </small>
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/rentz_ui.js'
+    ) }}"
+></script>
+
+</body>
+
+</html>

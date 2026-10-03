@@ -1,0 +1,225 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    min-height: 100vh;
+    background: #f5f8fd;
+    color: #172033;
+}
+
+.status-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+.status-card {
+    width: min(620px, 100%);
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 38px;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(15, 23, 42, .05);
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 30px;
+    font-size: 21px;
+    font-weight: 700;
+}
+
+.logo img {
+    width: 34px;
+    height: 34px;
+    object-fit: contain;
+}
+
+.logo span span {
+    color: #2563eb;
+}
+
+.status-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    font-size: 34px;
+}
+
+.status-icon.pending {
+    background: #fff7df;
+    color: #d97706;
+}
+
+.status-icon.rejected {
+    background: #fff0f1;
+    color: #dc2626;
+}
+
+.status-icon.approved {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.eyebrow {
+    color: #2563eb;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+}
+
+h1 {
+    margin: 8px 0 10px;
+    font-size: 27px;
+    color: #111827;
+}
+
+.status-card > p {
+    max-width: 500px;
+    margin: 0 auto;
+    color: #64748b;
+    font-size: 13px;
+    line-height: 1.7;
+}
+
+.status-pill {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.pending-pill {
+    background: #fff7df;
+    color: #b45309;
+}
+
+.rejected-pill {
+    background: #fff0f1;
+    color: #be123c;
+}
+
+.reason-box,
+.info-box {
+    text-align: left;
+    margin-top: 22px;
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.reason-box {
+    background: #fff6f6;
+    border: 1px solid #fecaca;
+}
+
+.reason-box span {
+    display: block;
+    margin-bottom: 5px;
+    color: #be123c;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: .7px;
+}
+
+.reason-box p {
+    color: #475569;
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+.info-box {
+    background: #f8fbff;
+    border: 1px solid #dbeafe;
+}
+
+.info-box strong {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+.info-box p {
+    color: #64748b;
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.actions {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.primary-btn,
+.secondary-btn {
+    min-height: 44px;
+    padding: 0 18px;
+    border-radius: 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    text-decoration: none;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.primary-btn {
+    background: #2563eb;
+    color: #ffffff;
+}
+
+.secondary-btn {
+    background: #f1f5f9;
+    color: #475569;
+}
+
+.logout-btn {
+    margin-top: 22px;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    color: #334155;
+}
+
+@media (max-width: 600px) {
+
+    .status-page {
+        padding: 18px;
+    }
+
+    .status-card {
+        padding: 28px 20px;
+    }
+
+    .actions {
+        flex-direction: column;
+    }
+
+    .primary-btn,
+    .secondary-btn {
+        width: 100%;
+    }
+}

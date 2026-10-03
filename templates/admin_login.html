@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/admin_login.css') }}">
+
+    <title>RentEZ | Admin Login</title>
+
+</head>
+
+<body>
+
+
+<!-- LOGO -->
+
+<a href="{{ url_for('home') }}" class="logo">
+
+    <img
+        src="{{ url_for('static', filename='images/logobg.png') }}"
+        alt="RentEZ">
+
+    <p class="rent">
+        Rent<span class="ez">EZ</span>
+    </p>
+
+</a>
+
+
+<!-- LOGIN CARD -->
+
+<div class="admin-card">
+
+    <div class="admin-header">
+
+        <p class="eyebrow">
+            RENTEZ ADMIN
+        </p>
+
+        <h1>
+            Admin Login
+        </h1>
+
+        <p>
+            Sign in to manage businesses and the RentEZ platform.
+        </p>
+
+    </div>
+
+
+    {% if login_error %}
+
+    <div class="login-error">
+
+        {{ login_error }}
+
+    </div>
+
+    {% endif %}
+
+
+    <form
+        method="POST"
+        action="{{ url_for('admin_login') }}"
+    >
+    <input
+    type="hidden"
+    name="csrf_token"
+    value="{{ csrf_token() }}"
+>
+
+        <div class="form-group">
+
+            <label for="email">
+                Email Address
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter admin email"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="password">
+                Password
+            </label>
+
+            <div class="password-field">
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter admin password"
+                    required
+                >
+
+                <i
+                    id="togglePassword"
+                    class="ri-eye-off-line eye">
+                </i>
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="admin-login-btn"
+        >
+            Login to Admin Panel
+        </button>
+
+    </form>
+
+
+    <div class="back-link">
+
+        <a href="{{ url_for('home') }}">
+            ← Back to RentEZ
+        </a>
+
+    </div>
+
+</div>
+
+
+<script
+    src="{{ url_for('static', filename='js/admin_login.js') }}">
+</script>
+
+</body>
+
+</html>

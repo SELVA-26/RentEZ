@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/rent.css'
+        ) }}"
+    >
+
+    <title>
+        Rent {{ package[2] }} | RentEZ
+    </title>
+
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <a
+        href="{{ url_for('home') }}"
+        class="logo"
+    >
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='images/logo.png'
+            ) }}"
+            alt="RentEZ"
+        >
+
+        <p class="rent">
+            Rent<span>EZ</span>
+        </p>
+
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="{{ url_for('home') }}">
+            Home
+        </a>
+
+        <a href="{{ url_for('equipment') }}">
+            Equipment
+        </a>
+
+        <a
+            href="{{ url_for('packages') }}"
+            class="active"
+        >
+            Packages
+        </a>
+
+        <a href="{{ url_for('home') }}#businesses">
+            Businesses
+        </a>
+
+        <a href="{{ url_for('home') }}#how-it-works">
+            How It Works
+        </a>
+
+        <a href="{{ url_for('contact') }}">
+            Contact
+        </a>
+
+    </div>
+
+
+    <a
+        href="{{ url_for('cart') }}"
+        class="cart-link"
+        aria-label="Shopping cart"
+        title="Shopping cart"
+    >
+
+        <i class="ri-shopping-cart-2-line"></i>
+
+        {% if cart_count > 0 %}
+
+            <span class="cart-badge">
+                {{ cart_count }}
+            </span>
+
+        {% endif %}
+
+    </a>
+
+
+    <a
+        href="{{ url_for('dashboard') }}"
+        class="profile-menu"
+    >
+
+        <div class="profile-icon">
+            {{ user_name[0] | upper }}
+        </div>
+
+    </a>
+
+</nav>
+
+
+<!-- ================= PAGE ================= -->
+
+<main class="rent-page">
+
+    {% with messages = get_flashed_messages(
+        with_categories=true
+    ) %}
+
+        {% for category, message in messages %}
+
+            {% if category == "cart_error" %}
+
+                <div class="cart-error-message">
+
+                    <i class="ri-error-warning-line"></i>
+
+                    <span>
+                        {{ message }}
+                    </span>
+
+                </div>
+
+            {% endif %}
+
+        {% endfor %}
+
+    {% endwith %}
+    <!-- BREADCRUMB -->
+
+    <div class="breadcrumb">
+
+        <a href="{{ url_for('packages') }}">
+            Packages
+        </a>
+
+        <i class="ri-arrow-right-s-line"></i>
+
+        <a href="{{ url_for(
+            'package_details',
+            package_id=package[0]
+        ) }}">
+            {{ package[2] }}
+        </a>
+
+        <i class="ri-arrow-right-s-line"></i>
+
+        <span>
+            Rent
+        </span>
+
+    </div>
+
+
+    <!-- ================= RENT AREA ================= -->
+
+    <section class="rent-container">
+
+
+        <!-- ================= PACKAGE ================= -->
+
+        <div class="equipment-card">
+
+
+            <div class="equipment-image">
+
+                {% if package[4] %}
+
+                    <img
+                        src="{{ url_for(
+                            'package_image',
+                            filename=package[4]
+                        ) }}"
+                        alt="{{ package[2] }}"
+                    >
+
+                {% endif %}
+
+
+                {% if available_packages > 0 %}
+
+                    <span class="available-badge">
+
+                        <i class="ri-checkbox-circle-fill"></i>
+
+                        Available
+
+                    </span>
+
+                {% else %}
+
+                    <span class="unavailable-badge">
+
+                        <i class="ri-time-line"></i>
+
+                        Currently Unavailable
+
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="equipment-info">
+
+                <span class="category">
+                    RENTAL PACKAGE
+                </span>
+
+
+                <h2>
+                    {{ package[2] }}
+                </h2>
+
+
+                <p>
+                    {{ package[3] or
+                       'Professional equipment bundled together for a convenient rental.' }}
+                </p>
+
+
+                <div class="equipment-bottom">
+
+                    <div class="price">
+
+                        <strong>
+                            ₹{{ "%.0f"|format(package[5]) }}
+                        </strong>
+
+                        <span>
+                            / day
+                        </span>
+
+                    </div>
+
+
+                    <span class="verified">
+
+                        <i class="ri-shield-check-fill"></i>
+
+                        {{ package_items|length }}
+                        equipment items
+
+                    </span>
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= BOOKING ================= -->
+
+        <div class="booking-card">
+
+
+            <div class="booking-header">
+
+                <div>
+
+                    <span class="step-label">
+                        STEP 1 OF 2
+                    </span>
+
+                    <h2>
+                        Choose your dates
+                    </h2>
+
+                    <p>
+                        Tell us when you'll need this package.
+                    </p>
+
+                </div>
+
+
+                <div class="calendar-icon">
+
+                    <i class="ri-calendar-event-line"></i>
+
+                </div>
+
+            </div>
+
+
+            <!-- DATES -->
+
+            <div class="date-section">
+
+
+                <div class="form-group">
+
+                    <label for="startDate">
+                        START DATE
+                    </label>
+
+                    <div class="date-input">
+
+                        <i class="ri-calendar-line"></i>
+
+                        <input
+                            type="text"
+                            id="startDate"
+                            placeholder="Select start date"
+                            readonly
+                        >
+
+                        <i class="ri-arrow-down-s-line"></i>
+
+                    </div>
+
+                </div>
+
+
+                <div class="date-arrow">
+
+                    <i class="ri-arrow-right-line"></i>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="endDate">
+                        END DATE
+                    </label>
+
+                    <div class="date-input">
+
+                        <i class="ri-calendar-line"></i>
+
+                        <input
+                            type="text"
+                            id="endDate"
+                            placeholder="Select end date"
+                            readonly
+                        >
+
+                        <i class="ri-arrow-down-s-line"></i>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="date-hint">
+
+                <i class="ri-information-line"></i>
+
+                Select a start date first, then choose your return date.
+
+            </div>
+
+
+            <!-- QUANTITY -->
+
+            <div class="availability-inline">
+
+                <i class="ri-stack-line"></i>
+
+                <span id="quantityAvailable">
+                    Select dates to see package availability
+                </span>
+
+            </div>
+
+
+            <!-- PRICE -->
+
+            <div class="price-breakdown">
+
+                <div class="breakdown-row">
+
+                    <span>
+                        Price per day
+                    </span>
+
+                    <strong>
+                        ₹{{ "%.0f"|format(package[5]) }}
+                    </strong>
+
+                </div>
+
+
+                <div class="breakdown-row">
+
+                    <span>
+                        Rental duration
+                    </span>
+
+                    <strong id="totalDays">
+                        0 days
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- TOTAL -->
+
+            <div class="total-section">
+
+                <div>
+
+                    <span>
+                        Total rental cost
+                    </span>
+
+                    <small>
+                        Taxes not included
+                    </small>
+
+                </div>
+
+
+                <strong id="totalPrice">
+                    ₹0
+                </strong>
+
+            </div>
+
+
+            <!-- ERROR -->
+
+            <div
+                class="date-error"
+                id="dateError"
+            >
+
+                <i class="ri-error-warning-line"></i>
+
+                <span></span>
+
+            </div>
+
+
+
+<!-- ================= ADD TO CART ================= -->
+
+<div class="cart-action">
+
+    <button
+        type="button"
+        id="continueBtn"
+        class="continue-btn"
+    >
+
+        Add to Cart
+
+        <i class="ri-shopping-cart-line"></i>
+
+    </button>
+
+
+    <div
+        id="cartStepper"
+        class="cart-stepper"
+        hidden
+    >
+
+        <button
+            type="button"
+            id="cartMinus"
+            class="cart-stepper-btn"
+            aria-label="Decrease quantity"
+        >
+            −
+        </button>
+
+
+        <span
+            id="cartQuantityValue"
+            class="cart-stepper-value"
+        >
+            1
+        </span>
+
+
+        <button
+            type="button"
+            id="cartPlus"
+            class="cart-stepper-btn"
+            aria-label="Increase quantity"
+        >
+            +
+        </button>
+
+    </div>
+
+</div>
+
+
+            <div class="secure-note">
+
+                <i class="ri-lock-line"></i>
+
+                Secure booking · No payment yet
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+</main>
+
+
+<script>
+
+    const packageId =
+        {{ package[0] }};
+
+    const packagePrice =
+        {{ package[5] }};
+
+    const currentQuantity =
+        {{ current_quantity | int }};
+
+    const cartStartDate =
+        {{ cart_start_date | tojson }};
+
+    const cartEndDate =
+        {{ cart_end_date | tojson }};
+
+    const cartHasItems =
+        {{ "true" if cart_has_items else "false" }};
+
+</script>
+
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/rent_package.js'
+    ) }}"
+></script>
+
+
+</body>
+
+</html>

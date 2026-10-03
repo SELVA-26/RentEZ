@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Application Status | RentEZ</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/business_status.css') }}"
+    >
+
+</head>
+
+<body>
+
+<div class="status-page">
+
+    <div class="status-card">
+
+        <div class="logo">
+            <img
+                src="{{ url_for('static', filename='images/logo.png') }}"
+                alt="RentEZ"
+            >
+            <span>Rent<span>EZ</span></span>
+        </div>
+
+
+        {% if business[2] == 'Pending' %}
+
+        <div class="status-icon pending">
+            <i class="ri-time-line"></i>
+        </div>
+
+        <span class="eyebrow">
+            BUSINESS APPLICATION
+        </span>
+
+        <h1>
+            Your Application Is Under Review
+        </h1>
+
+        <p>
+            Thanks for registering your business with RentEZ.
+            Our admin team is reviewing your business details
+            and verification documents.
+        </p>
+
+        <div class="status-pill pending-pill">
+            Pending Review
+        </div>
+
+        <div class="info-box">
+            <strong>
+                What happens next?
+            </strong>
+
+            <p>
+                Once your application is approved, you'll be able
+                to list equipment, manage bookings and operate
+                your rental store.
+            </p>
+        </div>
+
+
+        {% elif business[2] == 'Rejected' %}
+
+        <div class="status-icon rejected">
+            <i class="ri-close-circle-line"></i>
+        </div>
+
+        <span class="eyebrow">
+            BUSINESS APPLICATION
+        </span>
+
+        <h1>
+            Your Application Needs Changes
+        </h1>
+
+        <p>
+            Your business application was not approved.
+            You can update the application and submit it
+            for another review.
+        </p>
+
+        <div class="status-pill rejected-pill">
+            Rejected
+        </div>
+
+
+        {% if business[3] %}
+
+        <div class="reason-box">
+
+            <span>
+                Rejection Reason
+            </span>
+
+            <p>
+                {{ business[3] }}
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+        <div class="info-box">
+
+            <strong>
+                Ready to try again?
+            </strong>
+
+            <p>
+                Update your business details, upload an updated
+                verification document and resubmit the application.
+            </p>
+
+        </div>
+
+        {% else %}
+
+        <div class="status-icon approved">
+            <i class="ri-checkbox-circle-line"></i>
+        </div>
+
+        <span class="eyebrow">
+            BUSINESS APPLICATION
+        </span>
+
+        <h1>
+            Your Business Is Approved
+        </h1>
+
+        <p>
+            Your business has been approved. Continue to your
+            business dashboard to manage your rental store.
+        </p>
+
+        <a
+            href="{{ url_for('business_dashboard') }}"
+            class="primary-btn"
+        >
+            Go to Dashboard
+        </a>
+
+        {% endif %}
+
+
+        {% if business[2] != 'Approved' %}
+
+        <div class="actions">
+
+            {% if business[2] == 'Rejected' %}
+
+            <a
+                href="{{ url_for('business_profile') }}"
+                class="primary-btn"
+            >
+                <i class="ri-edit-line"></i>
+                Edit & Resubmit
+            </a>
+
+            {% else %}
+
+            <a
+                href="{{ url_for('business_profile') }}"
+                class="primary-btn"
+            >
+                <i class="ri-user-settings-line"></i>
+                View Profile
+            </a>
+
+            {% endif %}
+
+
+            <a
+                href="{{ url_for('business_settings') }}"
+                class="secondary-btn"
+            >
+                <i class="ri-settings-3-line"></i>
+                Settings
+            </a>
+
+        </div>
+
+        {% endif %}
+
+
+        <a
+            href="{{ url_for('logout') }}"
+            class="logout"
+        >
+            Log Out
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+</html>

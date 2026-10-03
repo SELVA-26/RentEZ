@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <title>My Rentals | RentEZ</title>
+
+    <link
+    rel="stylesheet"
+    href="{{ url_for('static', filename='css/my_rentals.css') }}?v=2">
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <a href="/" class="logo">
+
+        <img
+            src="{{ url_for('static', filename='images/logo.png') }}"
+            alt="RentEZ"
+        >
+
+        <p class="rent">
+            Rent<span>EZ</span>
+        </p>
+
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="{{ url_for('equipment') }}">
+            Equipment
+        </a>
+
+        <a href="{{ url_for('packages') }}">
+            Packages
+        </a>
+
+        <a href="{{ url_for('home') }}#businesses">
+            Businesses
+        </a>
+
+        <a href="{{ url_for('home') }}#how-it-works">
+            How It Works
+        </a>
+
+        <a href="{{ url_for('contact') }}">
+            Contact
+        </a>
+
+    </div>
+
+
+    <div class="nav-right">
+
+        <a
+            href="{{ url_for('cart') }}"
+            class="cart-link"
+            aria-label="Shopping cart"
+            title="Shopping cart"
+        >
+
+            <i class="ri-shopping-cart-2-line"></i>
+
+            {% if cart_count > 0 %}
+
+                <span class="cart-badge">
+                    {{ cart_count }}
+                </span>
+
+            {% endif %}
+
+        </a>
+
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="user"
+        >
+
+            <div class="avatar">
+                {{ user_name[0] | upper }}
+            </div>
+
+        </a>
+
+    </div>
+
+</nav>
+
+<!-- =========================
+     MAIN
+========================= -->
+
+<main class="rentals-container">
+
+    <div class="page-heading">
+
+        <div>
+
+            <div class="eyebrow">
+                YOUR RENTALS
+            </div>
+
+            <h1>My Rentals</h1>
+
+            <p>
+                Track your orders, rental dates and delivery details.
+            </p>
+
+        </div>
+
+        <a
+            href="{{ url_for('equipment') }}"
+            class="browse-btn"
+        >
+            <i class="ri-add-line"></i>
+            Rent Equipment
+        </a>
+
+    </div>
+
+
+    {% if rentals %}
+
+    <div class="rentals-list">
+
+        {% for rental in rentals %}
+
+        <article class="rental-card">
+
+            <!-- ================= ORDER HEADER ================= -->
+
+            <div class="order-top">
+
+                <div class="order-identity">
+
+                    <div class="order-icon">
+                        <i class="ri-shopping-bag-3-line"></i>
+                    </div>
+
+                    <div>
+                        <span class="order-kicker">
+                            {% if rental.is_order %}
+                                RENTAL ORDER
+                            {% else %}
+                                RENTAL BOOKING
+                            {% endif %}
+                        </span>
+
+                        <h2>
+                            #{{ rental.display_id }}
+                        </h2>
+                    </div>
+
+                </div>
+
+
+                <div class="order-status">
+
+                    {% if rental.status == 'Confirmed' %}
+
+                        <span class="status confirmed">
+                            <span></span>
+                            Confirmed
+                        </span>
+
+                    {% elif rental.status == 'Out for Delivery' %}
+
+                        <span class="status delivery">
+                            <span></span>
+                            Out for Delivery
+                        </span>
+
+                    {% elif rental.status == 'Active Rental' %}
+
+                        <span class="status active">
+                            <span></span>
+                            Active Rental
+                        </span>
+
+                    {% elif rental.status == 'Completed' %}
+
+                        <span class="status completed">
+                            <span></span>
+                            Completed
+                        </span>
+
+                    {% elif rental.status == 'Cancelled' %}
+
+                        <span class="status cancelled">
+                            <span></span>
+                            Cancelled
+                        </span>
+
+                    {% elif rental.payment_status == 'Refund Pending' %}
+
+                        <span class="status pending">
+                            <span></span>
+                            Refund Pending
+                        </span>
+
+                    {% else %}
+
+                        <span class="status pending">
+                            <span></span>
+                            Pending
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= RENTAL TIMELINE ================= -->
+
+            <div class="rental-timeline">
+
+                <div class="timeline-point">
+
+                    <span class="timeline-label">
+                        PICKUP
+                    </span>
+
+                    <strong>
+                        {{ rental.start_date }}
+                    </strong>
+
+                </div>
+
+
+                <div class="timeline-line">
+
+                    <span>
+                        {{ rental.total_days }}
+                        day{% if rental.total_days != 1 %}s{% endif %}
+                    </span>
+
+                </div>
+
+
+                <div class="timeline-point end">
+
+                    <span class="timeline-label">
+                        RETURN
+                    </span>
+
+                    <strong>
+                        {{ rental.end_date }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= RENTAL ITEMS ================= -->
+
+            <div class="items-section">
+
+                <div class="items-heading">
+
+                    <span>
+                        YOUR RENTAL
+                    </span>
+
+                    <span class="items-count">
+                        {{ rental["items"]|length }}
+                        item{% if rental["items"]|length != 1 %}s{% endif %}
+                    </span>
+
+                </div>
+
+
+                <div class="rental-items">
+
+                    {% for item in rental["items"] %}
+
+                    <div class="rental-item">
+
+                        <!-- IMAGE -->
+
+                        <div class="item-visual">
+
+                            {% if item.image %}
+
+                                {% if item.is_package %}
+
+                                    <img
+                                        src="{{ url_for(
+                                            'package_image',
+                                            filename=item.image
+                                        ) }}"
+                                        alt="{{ item.name }}"
+                                    >
+
+                                {% else %}
+
+                                    <img
+                                        src="{{ url_for(
+                                            'equipment_image',
+                                            filename=item.image
+                                        ) }}"
+                                        alt="{{ item.name }}"
+                                    >
+
+                                {% endif %}
+
+                            {% else %}
+
+                                <div class="no-image">
+                                    <i class="ri-image-line"></i>
+                                </div>
+
+                            {% endif %}
+
+                            <div class="visual-glow"></div>
+
+                        </div>
+
+
+                        <!-- DETAILS -->
+
+                        <div class="item-details">
+
+                            <span class="item-category">
+                                {{ item.category }}
+                            </span>
+
+                            <h3>
+                                {{ item.name }}
+                            </h3>
+
+                            <div class="item-specs">
+
+                                <span>
+                                    <i class="ri-stack-line"></i>
+                                    {{ item.quantity }}
+                                    unit{% if item.quantity != 1 %}s{% endif %}
+                                </span>
+
+                                <span>
+                                    <i class="ri-price-tag-3-line"></i>
+                                    ₹{{ "%.0f"|format(item.daily_rate) }}/day
+                                </span>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ITEM TOTAL -->
+
+                        <div class="item-total">
+
+                            <span>
+                                ITEM TOTAL
+                            </span>
+
+                            <strong>
+                                ₹{{ "%.0f"|format(item.total_amount) }}
+                            </strong>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= BOTTOM DETAILS ================= -->
+
+            <div class="order-bottom">
+
+                <!-- DELIVERY -->
+
+                <div class="bottom-detail">
+
+                    <div class="bottom-icon delivery-icon">
+                        <i class="ri-map-pin-2-line"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            DELIVERY ADDRESS
+                        </span>
+
+                        <strong>
+                            {% if rental.address %}
+                                {{ rental.address }},
+                                {{ rental.city }},
+                                {{ rental.state }}
+                                - {{ rental.pincode }}
+                            {% else %}
+                                Address unavailable
+                            {% endif %}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <!-- PAYMENT -->
+
+                <div class="bottom-detail">
+
+                    <div class="bottom-icon payment-icon">
+                        <i class="ri-shield-check-line"></i>
+                    </div>
+
+                    <div>
+
+                        <span>
+                            PAYMENT STATUS
+                        </span>
+
+                        <strong class="payment-value">
+                            {{ rental.payment_status }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- ================= FOOTER ================= -->
+
+            <div class="order-footer">
+
+                <div class="total-block">
+
+                    <span>
+                        {% if rental.is_order %}
+                            ORDER TOTAL
+                        {% else %}
+                            RENTAL TOTAL
+                        {% endif %}
+                    </span>
+
+                    <strong>
+                        ₹{{ "%.0f"|format(rental.total) }}
+                    </strong>
+
+                </div>
+
+
+                {% if rental.is_order %}
+
+                    {% if rental.status in ['Pending', 'Confirmed'] %}
+
+                    <form
+                        action="{{ url_for(
+                            'cancel_order',
+                            order_id=rental.order_id
+                        ) }}"
+                        method="POST"
+                        class="cancel-form"
+                    >
+
+                        <input
+                            type="hidden"
+                            name="csrf_token"
+                            value="{{ csrf_token() }}"
+                        >
+
+                        <button
+                            type="button"
+                            class="cancel-booking-btn order-cancel-btn"
+                            data-is-order="true"
+                            data-payment-status="{{ rental.payment_status }}"
+                            onclick="openCancelModal(this)"
+                        >
+                            Cancel Order
+                        </button>
+
+                    </form>
+
+                    {% endif %}
+
+                {% else %}
+
+                    {% if rental.status in ['Pending', 'Confirmed'] %}
+
+                    <form
+                        action="{{ url_for(
+                            'cancel_booking',
+                            booking_id=rental["items"][0].booking_id
+                        ) }}"
+                        method="POST"
+                        class="cancel-form"
+                    >
+
+                        <input
+                            type="hidden"
+                            name="csrf_token"
+                            value="{{ csrf_token() }}"
+                        >
+
+                        <button
+                            type="button"
+                            class="cancel-booking-btn"
+                            data-is-order="false"
+                            data-payment-status="{{ rental.payment_status }}"
+                            onclick="openCancelModal(this)"
+                        >
+                            Cancel Booking
+                        </button>
+
+                    </form>
+
+                    {% endif %}
+
+                {% endif %}
+
+            </div>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <div class="empty-state">
+
+        <div class="empty-icon">
+            <i class="ri-calendar-close-line"></i>
+        </div>
+
+        <h2>No rentals yet</h2>
+
+        <p>
+            You haven't rented any equipment yet.
+            Find the right equipment for your next event.
+        </p>
+
+        <a
+            href="{{ url_for('equipment') }}"
+            class="browse-btn"
+        >
+            Browse Equipment
+            <i class="ri-arrow-right-line"></i>
+        </a>
+
+    </div>
+
+    {% endif %}
+
+</main>
+
+
+
+<!-- =========================
+     CANCEL CONFIRMATION MODAL
+========================= -->
+
+<div id="cancelModal" class="cancel-modal">
+
+    <div class="cancel-modal-content">
+
+        <button
+            type="button"
+            class="cancel-modal-close"
+            onclick="closeCancelModal()"
+            aria-label="Close"
+        >
+            <i class="ri-close-line"></i>
+        </button>
+
+        <div class="cancel-modal-icon">
+            <i class="ri-error-warning-line"></i>
+        </div>
+
+        <h2 id="cancelModalTitle">
+            Cancel Booking?
+        </h2>
+
+        <p id="cancelModalMessage">
+            Are you sure you want to cancel this booking?
+        </p>
+
+        <div class="cancel-modal-actions">
+
+            <button
+                type="button"
+                class="keep-booking-btn"
+                onclick="closeCancelModal()"
+            >
+                Keep Booking
+            </button>
+
+            <button
+                type="button"
+                class="confirm-cancel-btn"
+                id="confirmCancelButton"
+                onclick="confirmCancellation()"
+            >
+                Yes, Cancel
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script src="{{ url_for('static', filename='js/my_rentals.js') }}"></script>
+
+</body>
+</html>

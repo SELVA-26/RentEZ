@@ -1,0 +1,1726 @@
+/* =========================================================
+   RENTEZ CHECKOUT
+   CLEAN / PREMIUM / POLISHED
+========================================================= */
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+
+    box-sizing: border-box;
+
+    font-family: "Poppins", sans-serif;
+}
+
+
+html {
+    scroll-behavior: smooth;
+}
+
+
+body {
+    min-height: 100vh;
+
+    color: #172033;
+
+    background:
+        radial-gradient(
+            circle at 5% 0%,
+            rgba(37,99,235,.045),
+            transparent 25%
+        ),
+        radial-gradient(
+            circle at 100% 30%,
+            rgba(56,189,248,.025),
+            transparent 22%
+        ),
+        #F5F8FD;
+}
+
+
+/* =========================================================
+   NAVBAR
+   SAME STYLE AS EQUIPMENT / MY RENTALS
+========================================================= */
+
+.navbar {
+    width: 90%;
+    height: 80px;
+
+    margin: 30px auto;
+
+    padding: 0 30px 0 55px;
+
+    display: flex;
+    align-items: center;
+
+    background: rgba(255,255,255,.78);
+
+    backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,.55);
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 30px rgba(37,99,235,.08);
+
+    position: relative;
+
+    z-index: 50;
+}
+
+
+/* =========================================================
+   LOGO
+========================================================= */
+
+.logo {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    color: #0F172A;
+
+    text-decoration: none;
+
+    font-size: 30px;
+
+    font-weight: 700;
+}
+
+
+.logo img {
+    width: 58px;
+    height: 58px;
+
+    object-fit: contain;
+}
+
+
+.rent span {
+    color: #2563EB;
+}
+
+
+/* =========================================================
+   NAV LINKS
+========================================================= */
+
+.nav-links {
+    flex: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 55px;
+
+    margin: 0 50px;
+}
+
+
+.nav-links a {
+    margin: 10px;
+
+    color: #64748B;
+
+    text-decoration: none;
+
+    font-size: 18px;
+
+    font-weight: 500;
+
+    transition:
+        color .2s ease;
+}
+
+
+.nav-links a:hover {
+    color: #2563EB;
+}
+
+
+/* =========================================================
+   NAV RIGHT
+========================================================= */
+
+.nav-right {
+    display: flex;
+    align-items: center;
+}
+
+
+/* =========================================================
+   CART
+========================================================= */
+
+.cart-link {
+    position: relative;
+
+    width: 42px;
+    height: 42px;
+
+    margin-right: 19px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #334155;
+
+    text-decoration: none;
+
+    flex-shrink: 0;
+
+    transition:
+        color .2s ease;
+}
+
+
+.cart-link i {
+    font-size: 24px;
+
+    line-height: 1;
+}
+
+
+.cart-link:hover {
+    color: #2563EB;
+}
+
+
+.cart-badge {
+    position: absolute;
+
+    top: -3px;
+    right: -6px;
+
+    min-width: 19px;
+    height: 19px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 5px;
+
+    color: #FFFFFF;
+
+    background: #2563EB;
+
+    border: 2px solid #FFFFFF;
+
+    border-radius: 999px;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    line-height: 1;
+}
+
+
+/* =========================================================
+   PROFILE
+========================================================= */
+
+.user {
+    display: flex;
+    align-items: center;
+
+    text-decoration: none;
+}
+
+
+.avatar {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 10px;
+
+    border-radius: 50%;
+
+    background: #EFF6FF;
+
+    color: #2563EB;
+
+    font-size: 18px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   MAIN PAGE
+========================================================= */
+
+.checkout-page {
+    width: 92%;
+    max-width: 1580px;
+
+    margin: 42px auto 100px;
+}
+
+
+/* =========================================================
+   BACK
+========================================================= */
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 8px;
+
+    color: #52657B;
+
+    text-decoration: none;
+
+    font-size: 14px;
+
+    font-weight: 500;
+
+    transition:
+        color .2s ease;
+}
+
+
+.back-link:hover {
+    color: #2563EB;
+}
+
+
+.back-link i {
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.page-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    margin-top: 28px;
+
+    margin-bottom: 34px;
+}
+
+
+.page-heading > span {
+    display: block;
+
+    color: #2563EB;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.4px;
+}
+
+
+.page-heading h1 {
+    margin-top: 6px;
+
+    color: #0F172A;
+
+    font-size: 48px;
+
+    line-height: 1.12;
+
+    letter-spacing: -1.5px;
+
+    font-weight: 700;
+}
+
+
+.page-heading p {
+    margin-top: 9px;
+
+    color: #64748B;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   CHECKOUT STEP
+========================================================= */
+
+.checkout-step {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    min-width: 145px;
+
+    padding: 11px 14px;
+
+    background: #FFFFFF;
+
+    border: 1px solid #DCE5EE;
+
+    border-radius: 13px;
+
+    box-shadow:
+        0 5px 14px rgba(15,23,42,.025);
+}
+
+
+.step-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #2563EB;
+
+    background: #EFF6FF;
+
+    border-radius: 10px;
+
+    font-size: 17px;
+}
+
+
+.checkout-step span {
+    display: block;
+
+    color: #8493A5;
+
+    font-size: 7px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+
+.checkout-step strong {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #34465C;
+
+    font-size: 10px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   GRID
+========================================================= */
+
+.checkout-grid {
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1.58fr)
+        minmax(390px, .72fr);
+
+    gap: 28px;
+
+    align-items: start;
+}
+
+
+/* =========================================================
+   MAIN CARDS
+========================================================= */
+
+.checkout-card {
+    background:
+        linear-gradient(
+            115deg,
+            #FFFFFF 0%,
+            #FFFFFF 58%,
+            #F8FBFF 100%
+        );
+
+    border: 1px solid #D8E3ED;
+
+    border-radius: 20px;
+
+    box-shadow:
+        0 10px 28px rgba(15,23,42,.035);
+
+    position: relative;
+
+    overflow: hidden;
+}
+
+
+.checkout-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 520px;
+    height: 520px;
+
+    left: 50%;
+    top: 48%;
+
+    transform: translate(-50%, -50%);
+
+    border-radius: 50%;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(37,99,235,.028),
+            transparent 70%
+        );
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   DELIVERY CARD
+========================================================= */
+
+.delivery-card {
+    padding: 34px;
+}
+
+
+/* =========================================================
+   CARD HEADING
+========================================================= */
+
+.card-heading {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    position: relative;
+
+    z-index: 2;
+
+    margin-bottom: 28px;
+
+}
+
+
+.heading-icon {
+    width: 52px;
+    height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    color: #2563EB;
+
+    background:
+        linear-gradient(
+            145deg,
+            #F7FBFF,
+            #EDF5FF
+        );
+
+    border: 1px solid #D6E5F7;
+
+    border-radius: 13px;
+
+    font-size: 22px;
+
+    box-shadow:
+        0 5px 12px rgba(37,99,235,.055);
+}
+
+
+.card-heading > div:last-child > span {
+    display: block;
+
+    color: #2563EB;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+}
+
+
+.card-heading h2 {
+    margin-top: 4px;
+
+    color: #101828;
+
+    font-size: 28px;
+
+    line-height: 1.2;
+
+    letter-spacing: -.6px;
+}
+
+
+.card-heading p {
+    margin-top: 4px;
+
+    color: #64748B;
+
+    font-size: 12px;
+
+    line-height: 1.5;
+}
+
+
+/* =========================================================
+   FIELD GROUP
+========================================================= */
+
+.field-group {
+    position: relative;
+
+    z-index: 2;
+
+    margin-bottom: 20px;
+}
+
+
+.field-group label {
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #334155;
+
+    font-size: 11px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   INPUT WRAPPER
+========================================================= */
+
+.input-wrap {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+}
+
+
+.input-wrap i {
+    position: absolute;
+
+    left: 15px;
+
+    color: #8A99AA;
+
+    font-size: 17px;
+
+    pointer-events: none;
+}
+
+
+.checkout-card input {
+    width: 100%;
+    height: 53px;
+
+    padding: 0 16px 0 43px;
+
+    color: #1F3045;
+
+    background: rgba(255,255,255,.94);
+
+    border: 1px solid #D6E1EC;
+
+    border-radius: 11px;
+
+    outline: none;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    box-shadow:
+        inset 0 1px 2px rgba(15,23,42,.015);
+
+    transition:
+        border-color .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+}
+
+
+.checkout-card input::placeholder {
+    color: #A2AFBE;
+}
+
+
+.checkout-card input:focus {
+    background: #FFFFFF;
+
+    border-color: #8BB4F3;
+
+    box-shadow:
+        0 0 0 4px rgba(37,99,235,.07);
+}
+
+
+.checkout-card input:hover {
+    border-color: #C6D5E4;
+}
+
+
+/* =========================================================
+   TWO COLUMNS
+========================================================= */
+
+.two-columns {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0,1fr));
+
+    gap: 16px;
+
+    position: relative;
+
+    z-index: 2;
+}
+
+
+/* =========================================================
+   RENTAL CARD
+========================================================= */
+
+.rental-card {
+    position: relative;
+
+    z-index: 2;
+
+    margin-top: 30px;
+
+    padding: 20px 21px;
+
+    background:
+        linear-gradient(
+            105deg,
+            #F5F9FF,
+            #EDF5FF
+        );
+
+    border: 1px solid #D6E5F6;
+
+    border-radius: 15px;
+
+    box-shadow:
+        0 7px 17px rgba(37,99,235,.045);
+}
+
+
+/* =========================================================
+   RENTAL HEADER
+========================================================= */
+
+.rental-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding-bottom: 18px;
+
+    border-bottom: 1px solid #D7E3F1;
+}
+
+
+.rental-card-header span {
+    display: block;
+
+    color: #2563EB;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.1px;
+}
+
+
+.rental-card-header strong {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #26384E;
+
+    font-size: 12px;
+
+    font-weight: 600;
+}
+
+
+.rental-duration {
+    min-height: 34px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    padding: 0 11px;
+
+    color: #2563EB;
+
+    background: #FFFFFF;
+
+    border: 1px solid #D6E5F6;
+
+    border-radius: 999px;
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+.rental-duration i {
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   RENTAL TIMELINE
+========================================================= */
+
+.rental-timeline {
+    min-height: 68px;
+
+    display: grid;
+
+    grid-template-columns:
+        125px
+        minmax(180px,1fr)
+        125px;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding-top: 13px;
+}
+
+
+.timeline-point {
+    display: flex;
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+.timeline-point.return {
+    align-items: flex-end;
+
+    text-align: right;
+}
+
+
+.timeline-point span {
+    color: #7B8DA1;
+
+    font-size: 8px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+
+.timeline-point strong {
+    color: #172033;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   TIMELINE LINE
+========================================================= */
+
+.timeline-line {
+    height: 35px;
+
+    display: flex;
+    align-items: center;
+
+    width: 100%;
+}
+
+
+.timeline-bar {
+    flex: 1;
+
+    height: 2px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #C9DCEC,
+            #BCD2EA
+        );
+}
+
+
+.timeline-dot {
+    width: 9px;
+    height: 9px;
+
+    flex-shrink: 0;
+
+    background: #2563EB;
+
+    border: 2px solid #FFFFFF;
+
+    border-radius: 50%;
+
+    box-shadow:
+        0 0 0 4px #E2EEFC;
+}
+
+
+.timeline-middle {
+    min-width: 60px;
+    height: 29px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 8px;
+
+    color: #2563EB;
+
+    background: #FFFFFF;
+
+    border: 1px solid #D5E3F3;
+
+    border-radius: 999px;
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+    box-shadow:
+        0 3px 8px rgba(37,99,235,.05);
+}
+
+
+/* =========================================================
+   ADDRESS NOTE
+========================================================= */
+
+.address-note {
+    min-height: 58px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    margin-top: 22px;
+
+    padding: 13px 15px;
+
+    color: #52657B;
+
+    background: #F8FBFF;
+
+    border: 1px solid #D9E5F1;
+
+    border-radius: 11px;
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    line-height: 1.55;
+}
+
+
+.address-note i {
+    color: #2563EB;
+
+    font-size: 20px;
+
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   SUMMARY CARD
+========================================================= */
+
+.summary-card {
+    padding: 32px 30px;
+
+    position: sticky;
+
+    top: 25px;
+}
+
+
+/* =========================================================
+   SUMMARY HEADER
+========================================================= */
+
+.summary-heading {
+    margin-bottom: 27px;
+}
+.summary-heading p {
+    margin-top: 5px;
+
+    color: #64748B;
+
+    font-size: 12px;
+
+    font-weight: 500;
+}
+
+/* =========================================================
+   SUMMARY ITEMS
+========================================================= */
+
+.summary-items {
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 0;
+}
+
+
+/* =========================================================
+   ORDER SUMMARY ITEMS
+========================================================= */
+
+.summary-item {
+    min-height: 62px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 12px 0;
+
+    border-bottom: 1px solid #E6ECF2;
+}
+
+
+.summary-item-info {
+    min-width: 0;
+}
+
+
+.summary-item-info strong {
+    display: block;
+
+    color: #172033;
+
+    font-size: 15px;
+
+    font-weight: 600;
+}
+
+
+.summary-item-info span {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #64748B;
+
+    font-size: 10px;
+
+    font-weight: 500;
+}
+
+
+.summary-item-total {
+    color: #172033;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   SUMMARY CALCULATIONS
+========================================================= */
+
+.summary-calculations {
+    margin-top: 5px;
+}
+
+
+.summary-row {
+    min-height: 52px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 5px 0;
+
+    border-bottom: 1px solid #EDF1F5;
+}
+
+
+.summary-row span {
+    color: #4F6176;
+
+    font-size: 15px;
+
+    font-weight: 500;
+}
+
+
+.summary-row strong {
+    color: #26374C;
+
+    font-size: 15px;
+
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   TOTAL
+========================================================= */
+
+.summary-total {
+    min-height: 88px;
+
+    margin-top: 18px;
+
+    padding: 18px 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background:
+        linear-gradient(
+            105deg,
+            #F4F8FF,
+            #EAF3FF
+        );
+
+    border: 1px solid #D5E4F6;
+
+    border-radius: 14px;
+}
+
+
+.summary-total > div {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+
+.summary-total span {
+    color: #34465B;
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    line-height: 1.2;
+}
+
+
+.summary-total small {
+    color: #64748B;
+
+    font-size: 11px;
+
+    font-weight: 500;
+
+    line-height: 1.2;
+}
+
+
+.summary-total strong {
+    color: #2563EB;
+
+    font-size: 30px;
+
+    line-height: 1;
+
+    font-weight: 700;
+
+    letter-spacing: -.8px;
+}
+
+
+/* =========================================================
+   PAYMENT BUTTON
+========================================================= */
+
+.payment-button {
+    width: 100%;
+
+    min-height: 57px;
+
+    margin-top: 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    color: #FFFFFF;
+
+    background:
+        linear-gradient(
+            100deg,
+            #2563EB,
+            #306FED
+        );
+
+    border: none;
+
+    border-radius: 11px;
+
+    cursor: pointer;
+
+    font-family: inherit;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    box-shadow:
+        0 9px 20px rgba(37,99,235,.17);
+
+    transition:
+        transform .2s ease,
+        box-shadow .2s ease,
+        background .2s ease;
+}
+
+
+.payment-button:hover {
+    background:
+        linear-gradient(
+            100deg,
+            #2059D6,
+            #2865E3
+        );
+
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 12px 25px rgba(37,99,235,.22);
+}
+
+
+.payment-button i {
+    font-size: 17px;
+}
+
+
+/* =========================================================
+   SECURE PAYMENT
+========================================================= */
+
+.secure-note {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 12px;
+
+    margin-top: 16px;
+
+    padding-top: 15px;
+
+    border-top: 1px solid #E1E8EF;
+}
+
+
+.secure-note > i {
+    color: #059669;
+
+    font-size: 22px;
+
+    margin-top: 1px;
+
+    flex-shrink: 0;
+}
+
+
+.secure-note strong {
+    display: block;
+
+    color: #40546A;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    line-height: 1.3;
+}
+
+
+.secure-note span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #64748B;
+
+    font-size: 11px;
+
+    font-weight: 500;
+
+    line-height: 1.55;
+}
+/* =========================================================
+   LARGE DESKTOP
+========================================================= */
+
+@media (min-width: 1500px) {
+
+    .checkout-page {
+        width: 92%;
+        max-width: 1640px;
+    }
+
+
+    .page-heading h1 {
+        font-size: 50px;
+    }
+
+
+    .delivery-card {
+        padding: 38px;
+    }
+
+
+    .summary-card {
+        padding: 34px;
+    }
+
+
+    .checkout-grid {
+        grid-template-columns:
+            minmax(0,1.6fr)
+            minmax(410px,.72fr);
+
+        gap: 32px;
+    }
+
+}
+
+
+/* =========================================================
+   LAPTOP
+========================================================= */
+
+@media (max-width: 1250px) {
+
+    .navbar {
+        width: calc(100% - 40px);
+    }
+
+
+    .nav-links {
+        gap: 28px;
+
+        margin: 0 20px;
+    }
+
+
+    .nav-links a {
+        font-size: 15px;
+    }
+
+
+    .checkout-page {
+        width: calc(100% - 50px);
+    }
+
+
+    .checkout-grid {
+        grid-template-columns:
+            minmax(0,1.4fr)
+            minmax(350px,.75fr);
+
+        gap: 22px;
+    }
+
+
+    .rental-timeline {
+        grid-template-columns:
+            105px
+            minmax(150px,1fr)
+            105px;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 950px) {
+
+    .nav-links {
+        display: none;
+    }
+
+
+    .navbar {
+        width: calc(100% - 30px);
+
+        height: 72px;
+
+        padding: 0 24px;
+    }
+
+
+    .logo {
+        font-size: 25px;
+    }
+
+
+    .logo img {
+        width: 49px;
+        height: 49px;
+    }
+
+
+    .avatar {
+        width: 43px;
+        height: 43px;
+
+        margin-right: 0;
+    }
+
+
+    .checkout-page {
+        width: calc(100% - 34px);
+
+        margin-top: 34px;
+    }
+
+
+    .page-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 18px;
+    }
+
+
+    .checkout-grid {
+        grid-template-columns: 1fr;
+    }
+
+
+    .summary-card {
+        position: relative;
+
+        top: auto;
+    }
+
+
+    .summary-card {
+        order: 2;
+    }
+
+
+    .delivery-card {
+        order: 1;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .navbar {
+        width: calc(100% - 22px);
+
+        height: 64px;
+
+        margin: 15px auto;
+
+        padding: 0 15px;
+
+        border-radius: 16px;
+    }
+
+
+    .logo {
+        font-size: 21px;
+
+        gap: 7px;
+    }
+
+
+    .logo img {
+        width: 40px;
+        height: 40px;
+    }
+
+
+    .cart-link {
+        margin-right: 12px;
+    }
+
+
+    .avatar {
+        width: 38px;
+        height: 38px;
+
+        font-size: 13px;
+    }
+
+
+    .checkout-page {
+        width: calc(100% - 22px);
+
+        margin-top: 28px;
+
+        margin-bottom: 70px;
+    }
+
+
+    .back-link {
+        font-size: 12px;
+    }
+
+
+    .page-header {
+        margin-top: 23px;
+
+        margin-bottom: 27px;
+    }
+
+
+    .page-heading h1 {
+        font-size: 34px;
+
+        letter-spacing: -1px;
+    }
+
+
+    .page-heading p {
+        font-size: 11px;
+    }
+
+
+    .checkout-step {
+        padding: 9px 11px;
+    }
+
+
+    .delivery-card,
+    .summary-card {
+        padding: 22px 18px;
+
+        border-radius: 16px;
+    }
+
+
+    .card-heading {
+        gap: 11px;
+
+        margin-bottom: 23px;
+    }
+
+
+    .heading-icon {
+        width: 45px;
+        height: 45px;
+
+        border-radius: 11px;
+
+        font-size: 19px;
+    }
+
+
+    .card-heading h2 {
+        font-size: 22px;
+    }
+
+
+    .card-heading p {
+        font-size: 9px;
+    }
+
+
+    .two-columns {
+        grid-template-columns: 1fr;
+
+        gap: 0;
+    }
+
+
+    .checkout-card input {
+        height: 51px;
+
+        font-size: 12px;
+    }
+
+
+    .rental-card {
+        padding: 17px;
+
+        margin-top: 23px;
+    }
+
+
+    .rental-card-header {
+        align-items: flex-start;
+
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+
+    .rental-timeline {
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+
+        padding-top: 15px;
+    }
+
+
+    .timeline-point,
+    .timeline-point.return {
+        align-items: flex-start;
+
+        text-align: left;
+    }
+
+
+    .timeline-line {
+        order: 2;
+
+        width: 100%;
+    }
+
+
+    .timeline-point {
+        order: 1;
+    }
+
+
+    .timeline-point.return {
+        order: 3;
+
+        padding-top: 9px;
+
+        border-top: 1px solid #D7E3F1;
+    }
+
+
+    .summary-heading {
+        margin-bottom: 20px;
+    }
+
+
+    .summary-item {
+        min-height: 65px;
+    }
+
+
+    .summary-total strong {
+        font-size: 28px;
+    }
+
+
+    .payment-button {
+        min-height: 56px;
+
+        font-size: 11px;
+    }
+
+
+    .secure-note span {
+        font-size: 8px;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL MOBILE
+========================================================= */
+
+@media (max-width: 390px) {
+
+    .page-heading h1 {
+        font-size: 31px;
+    }
+
+
+    .summary-item-info strong {
+        font-size: 12px;
+    }
+
+
+    .summary-total strong {
+        font-size: 26px;
+    }
+
+}

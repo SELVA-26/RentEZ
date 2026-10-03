@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+          rel="stylesheet">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"> 
+
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/equipment.css') }}">
+    
+    <title>RentEZ | Browse Equipment</title>
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    >
+</head>
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <a href="/" class="logo">
+
+        <img
+            src="{{ url_for('static', filename='images/logo.png') }}"
+            alt="RentEZ">
+
+        <p class="rent">Rent<span>EZ</span></p>
+
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/equipment" class="active">
+            Equipment
+        </a>
+
+        <a href="{{ url_for('packages') }}">Packages</a>
+        <a href="{{ url_for('home') }}#businesses">Businesses</a>
+        <a href="{{ url_for('home') }}#how-it-works">How It Works</a>
+        <a href="{{ url_for('contact') }}">Contact</a>
+
+    </div>
+
+
+    <div class="nav-right">
+        <a
+            href="{{ url_for('cart') }}"
+            class="cart-link"
+            aria-label="Shopping cart"
+            title="Shopping cart"
+        >
+            <i class="ri-shopping-cart-2-line" aria-hidden="true"></i>
+
+            {% if cart_count > 0 %}
+                <span class="cart-badge">{{ cart_count }}</span>
+            {% endif %}
+        </a>
+        
+        <a href="{{ url_for('dashboard') }}" class="user">
+
+            <div class="avatar">
+                {{ user_name[0] | upper }}
+            </div>
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- ================= PAGE ================= -->
+
+<main class="page">
+
+
+    <!-- PAGE HEADER -->
+
+    <div class="page-header">
+
+        <p class="eyebrow">
+            RENT PROFESSIONAL EQUIPMENT
+        </p>
+
+        <h1>
+            Browse Equipment
+        </h1>
+
+        <p class="subtitle">
+            Find the right equipment for your next event.
+        </p>
+
+    </div>
+
+
+    <!-- ================= SEARCH & FILTER ================= -->
+
+    <section class="filters">
+
+
+        <div class="search-box">
+
+            <i class="ri-search-line"></i>
+
+            <input
+                type="text"
+                id="searchInput"
+                placeholder="Search equipment...">
+
+        </div>
+
+
+        <div class="category-filter">
+
+            <i class="ri-filter-3-line"></i>
+
+            <select id="categoryFilter">
+
+                <option value="all">
+                    All Categories
+                </option>
+
+                <option value="Cameras">
+                    Cameras
+                </option>
+
+                <option value="Audio">
+                    Audio
+                </option>
+
+                <option value="Lighting">
+                    Lighting
+                </option>
+
+                <option value="Projectors">
+                    Projectors
+                </option>
+                
+                <option value="DJ Equipment">
+                    DJ Equipment
+                </option>
+
+                <option value="Musical Instruments">
+                    Musical Instruments
+                </option>
+
+                <option value="Others">
+                    Others
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <div class="category-filter">
+
+            <i class="ri-sort-desc"></i>
+
+            <select id="sortFilter">
+
+                <option value="default">
+                    Sort: Featured
+                </option>
+
+                <option value="price-asc">
+                    Price: Low to High
+                </option>
+
+                <option value="price-desc">
+                    Price: High to Low
+                </option>
+
+                <option value="name-asc">
+                    Name: A to Z
+                </option>
+
+            </select>
+
+        </div>
+
+    </section>
+
+
+    <p class="results-count" id="resultsCount"></p>
+
+
+    <!-- ================= EQUIPMENT GRID ================= -->
+
+    <section class="equipment-grid" id="equipmentGrid">
+
+        {% if equipment_list %}
+
+            {% for item in equipment_list %}
+
+            <div class="equipment-card-wrap">
+
+                <a
+                    href="{{ url_for('equipment_details', equipment_id=item[0]) }}"
+                    class="equipment-card"
+                    data-name="{{ item[1] | lower }}"
+                    data-category="{{ item[2] }}"
+                    data-price="{{ item[4] }}"
+                >
+
+                    <div class="equipment-image">
+
+                        {% if item[5] %}
+
+                            <img
+                                src="{{ url_for('equipment_image', filename=item[5]) }}"
+                                alt="{{ item[1] }}"
+                            >
+
+                        {% else %}
+
+                            <div class="image-placeholder">
+
+                                <i class="ri-image-line"></i>
+
+                                <span>
+                                    No image available
+                                </span>
+
+                            </div>
+
+                        {% endif %}
+
+
+                        {% if item[6] %}
+
+                            <span class="available-badge">
+
+                                <span class="status-dot"></span>
+
+                                In Stock
+
+                            </span>
+
+                        {% else %}
+
+                            <span class="unavailable-badge">
+
+                                <span class="status-dot"></span>
+
+                                Currently Out of Stock
+
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <div class="equipment-info">
+
+                        <span class="category">
+                            {{ item[2] }}
+                        </span>
+
+                        <h2>
+                            {{ item[1] }}
+                        </h2>
+
+                        <p class="description">
+                            {{ item[3] }}
+                        </p>
+
+
+                        <div class="card-bottom">
+
+                            <div class="price">
+
+                                <strong>
+                                    ₹{{ "%.0f"|format(item[4]) }}
+                                </strong>
+
+                                <span>
+                                    / day
+                                </span>
+
+                            </div>
+
+
+                            <span class="details-btn">
+
+                                View Details
+
+                                <i class="ri-arrow-right-line"></i>
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </a>
+
+
+                <button
+                    type="button"
+                    class="wishlist-btn {% if item[0] in wishlist_ids %}active{% endif %}"
+                    data-equipment-id="{{ item[0] }}"
+                    aria-label="Toggle wishlist"
+                >
+
+                    <i
+                        class="{% if item[0] in wishlist_ids %}ri-heart-3-fill{% else %}ri-heart-3-line{% endif %}"
+                    ></i>
+
+                </button>
+
+            </div>
+
+            {% endfor %} 
+
+        {% endif %}
+
+    </section>
+
+
+    <!-- ================= NO RESULTS ================= -->
+
+    <div class="no-results" id="noResults">
+
+    <i class="ri-box-3-line"></i>
+
+    <h3 id="noResultsTitle">
+        No equipment currently available
+    </h3>
+
+    <p id="noResultsMessage">
+        Verified businesses haven't listed any equipment yet.
+    </p>
+
+    </div>
+
+
+</main>
+
+
+<script
+    src="{{ url_for('static', filename='js/rentz_ui.js') }}"
+></script>
+
+<script
+    src="{{ url_for('static', filename='js/equipment.js') }}"
+></script>
+
+<script
+    src="{{ url_for('static', filename='js/wishlist.js') }}"
+></script>
+
+</body>
+
+</html>

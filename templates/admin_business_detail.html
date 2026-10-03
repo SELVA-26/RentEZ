@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {{ business.name }} | RentEZ Admin
+    </title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.6.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/admin_dashboard.css') }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="admin-navbar">
+
+    <a
+        href="{{ url_for('admin_dashboard') }}"
+        class="admin-logo"
+    >
+
+        <img
+            src="{{ url_for('static', filename='images/logobg.png') }}"
+            alt="RentEZ"
+        >
+
+        <span>
+            Rent<span>EZ</span>
+        </span>
+
+    </a>
+
+
+    <div class="admin-title">
+        Admin Panel
+    </div>
+
+
+    <form
+        action="{{ url_for('logout') }}"
+        method="POST"
+        class="admin-logout-form"
+    >
+    <input
+        type="hidden"
+        name="csrf_token"
+        value="{{ csrf_token() }}"
+    >
+
+        <button
+            type="submit"
+            class="admin-logout"
+        >
+            Logout
+        </button>
+
+    </form>
+
+</nav>
+
+
+
+<main class="admin-detail-page">
+
+
+    <!-- =================================================
+         BACK
+    ================================================== -->
+
+    <a
+        href="{{ url_for('admin_dashboard') }}"
+        class="admin-back-link"
+    >
+        <i class="ri-arrow-left-line"></i>
+        Back to Dashboard
+    </a>
+
+
+
+    <!-- =================================================
+         BUSINESS HEADER
+    ================================================== -->
+
+    <section class="admin-detail-header">
+
+        <div class="admin-detail-title">
+
+            <div class="business-icon">
+
+                <i class="ri-building-line"></i>
+
+            </div>
+
+
+            <div>
+
+                <span class="eyebrow">
+                    BUSINESS PROFILE
+                </span>
+
+                <h1>
+                    {{ business.name }}
+                </h1>
+
+                <p>
+                    Registered on
+                    {{ business.created_at.strftime("%d %b %Y") }}
+                </p>
+
+            </div>
+
+        </div>
+
+
+        {% if business.status == "Pending" %}
+
+            <span class="status pending">
+                <span></span>
+                Pending
+            </span>
+
+        {% elif business.status == "Approved" %}
+
+            <span class="status approved">
+                <span></span>
+                Approved
+            </span>
+
+        {% else %}
+
+            <span class="status rejected">
+                <span></span>
+                Rejected
+            </span>
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- =================================================
+         SUMMARY
+    ================================================== -->
+
+    <section class="detail-summary-grid">
+
+        <div class="overview-card">
+
+            <span>
+                Equipment
+            </span>
+
+            <strong>
+                {{ equipment_count }}
+            </strong>
+
+            <small>
+                {{ active_equipment_count }} active
+            </small>
+
+        </div>
+
+
+        <div class="overview-card">
+
+            <span>
+                Bookings
+            </span>
+
+            <strong>
+                {{ booking_count }}
+            </strong>
+
+            <small>
+                {{ paid_booking_count }} paid
+            </small>
+
+        </div>
+
+
+        <div class="overview-card">
+
+            <span>
+                Documents
+            </span>
+
+            <strong>
+                {{ documents|length }}
+            </strong>
+
+            <small>
+                Verification files
+            </small>
+
+        </div>
+
+
+        <div class="overview-card">
+
+            <span>
+                Verification Decisions
+            </span>
+
+            <strong>
+                {{ audit_history|length }}
+            </strong>
+
+            <small>
+                Recorded by admins
+            </small>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         BUSINESS INFORMATION
+    ================================================== -->
+
+    <section class="detail-panel">
+
+        <div class="detail-panel-header">
+
+            <div>
+
+                <span class="eyebrow">
+                    PROFILE
+                </span>
+
+                <h2>
+                    Business Information
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        <div class="detail-info-grid">
+
+
+            <div class="detail-info-item">
+
+                <span>
+                    Business Name
+                </span>
+
+                <strong>
+                    {{ business.name }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-info-item">
+
+                <span>
+                    Registration Number
+                </span>
+
+                <strong>
+                    {{ business.registration_number }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-info-item">
+
+                <span>
+                    Email
+                </span>
+
+                <strong>
+                    {{ business.email }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-info-item">
+
+                <span>
+                    Phone
+                </span>
+
+                <strong>
+                    {{ business.phone }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-info-item">
+
+                <span>
+                    City
+                </span>
+
+                <strong>
+                    {{ business.city }}
+                </strong>
+
+            </div>
+
+
+            <div class="detail-info-item">
+
+                <span>
+                    Address
+                </span>
+
+                <strong>
+                    {{ business.address }}
+                </strong>
+
+            </div>
+
+        </div>
+
+
+        {% if business.description %}
+
+        <div class="detail-description">
+
+            <span>
+                Description
+            </span>
+
+            <p>
+                {{ business.description }}
+            </p>
+
+        </div>
+
+        {% endif %}
+
+
+        {% if business.status == "Rejected"
+              and business.rejection_reason %}
+
+        <div class="rejection-box">
+
+            <i class="ri-information-line"></i>
+
+            <div>
+
+                <strong>
+                    Rejection Reason
+                </strong>
+
+                <p>
+                    {{ business.rejection_reason }}
+                </p>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- =================================================
+         DOCUMENTS
+    ================================================== -->
+
+    <section class="detail-panel">
+
+        <div class="detail-panel-header">
+
+            <div>
+
+                <span class="eyebrow">
+                    VERIFICATION
+                </span>
+
+                <h2>
+                    Documents
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        {% if documents %}
+
+            <div class="detail-document-grid">
+
+                {% for document in documents %}
+
+                <a
+                    href="{{ url_for(
+                        'admin_business_document',
+                        document_id=document.id
+                    ) }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="detail-document"
+                >
+
+                    <div class="detail-document-icon">
+                        <i class="ri-file-text-line"></i>
+                    </div>
+
+
+                    <div>
+
+                        <strong>
+                            {{ document.type }}
+                        </strong>
+
+                        <span>
+                            Uploaded
+                            {{ document.uploaded_at.strftime(
+                                "%d %b %Y, %I:%M %p"
+                            ) }}
+                        </span>
+
+                    </div>
+
+
+                    <i class="ri-external-link-line"></i>
+
+                </a>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <div class="detail-empty">
+
+                <i class="ri-file-warning-line"></i>
+
+                <p>
+                    No verification documents uploaded.
+                </p>
+
+            </div>
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- =================================================
+         EQUIPMENT
+    ================================================== -->
+
+    <section class="detail-panel">
+
+        <div class="detail-panel-header">
+
+            <div>
+
+                <span class="eyebrow">
+                    INVENTORY
+                </span>
+
+                <h2>
+                    Equipment
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        {% if equipment %}
+
+        <div class="admin-table-wrap">
+
+            <table class="admin-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Equipment
+                        </th>
+
+                        <th>
+                            Category
+                        </th>
+
+                        <th>
+                            Price / Day
+                        </th>
+
+                        <th>
+                            Stock
+                        </th>
+
+                        <th>
+                            Status
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for item in equipment %}
+
+                    <tr>
+
+                        <td>
+
+                            <strong>
+                                {{ item.name }}
+                            </strong>
+
+                            {% if item.description %}
+
+                            <small class="table-subtext">
+                                {{ item.description }}
+                            </small>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+                            {{ item.category }}
+                        </td>
+
+
+                        <td>
+                            ₹{{ "%.2f"|format(item.price_per_day) }}
+                        </td>
+
+
+                        <td>
+                            {{ item.available_quantity }}
+                            /
+                            {{ item.total_quantity }}
+                        </td>
+
+
+                        <td>
+
+                            {% if item.is_active %}
+
+                                <span class="table-status active">
+                                    Active
+                                </span>
+
+                            {% else %}
+
+                                <span class="table-status inactive">
+                                    Archived
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="detail-empty">
+
+            <i class="ri-camera-off-line"></i>
+
+            <p>
+                This business has no equipment listings.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- =================================================
+         BOOKINGS
+    ================================================== -->
+
+    <section class="detail-panel">
+
+        <div class="detail-panel-header">
+
+            <div>
+
+                <span class="eyebrow">
+                    OPERATIONS
+                </span>
+
+                <h2>
+                    Booking History
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        {% if bookings %}
+
+        <div class="admin-table-wrap">
+
+            <table class="admin-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Booking
+                        </th>
+
+                        <th>
+                            Customer
+                        </th>
+
+                        <th>
+                            Dates
+                        </th>
+
+                        <th>
+                            Amount
+                        </th>
+
+                        <th>
+                            Booking Status
+                        </th>
+
+                        <th>
+                            Payment
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                    {% for booking in bookings %}
+
+                    <tr>
+
+                        <td>
+
+                            <strong>
+                                #{{ booking.id }}
+                            </strong>
+
+                            <small class="table-subtext">
+                                {{ booking.equipment_name }}
+                            </small>
+
+                        </td>
+
+
+                        <td>
+
+                            <strong>
+                                {{ booking.customer_name }}
+                            </strong>
+
+                            <small class="table-subtext">
+                                {{ booking.customer_email }}
+                            </small>
+
+                        </td>
+
+
+                        <td>
+                            {{ booking.start_date.strftime("%d %b %Y") }}
+                            -
+                            {{ booking.end_date.strftime("%d %b %Y") }}
+                        </td>
+
+
+                        <td>
+                            ₹{{ "%.2f"|format(booking.total_amount) }}
+                        </td>
+
+
+                        <td>
+                            <span class="table-status">
+                                {{ booking.booking_status }}
+                            </span>
+                        </td>
+
+
+                        <td>
+                            <span class="table-status">
+                                {{ booking.payment_status }}
+                            </span>
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        {% else %}
+
+        <div class="detail-empty">
+
+            <i class="ri-calendar-close-line"></i>
+
+            <p>
+                No bookings for this business yet.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </section>
+
+
+
+    <!-- =================================================
+         AUDIT HISTORY
+    ================================================== -->
+
+    <section class="detail-panel">
+
+        <div class="detail-panel-header">
+
+            <div>
+
+                <span class="eyebrow">
+                    AUDIT
+                </span>
+
+                <h2>
+                    Verification History
+                </h2>
+
+            </div>
+
+        </div>
+
+
+        {% if audit_history %}
+
+        <div class="history-list">
+
+            {% for audit in audit_history %}
+
+            <div class="history-item">
+
+                <div class="
+                    history-indicator
+                    {% if audit.new_status == 'Approved' %}
+                        approved
+                    {% else %}
+                        rejected
+                    {% endif %}
+                ">
+
+                    {% if audit.new_status == "Approved" %}
+
+                        <i class="ri-check-line"></i>
+
+                    {% else %}
+
+                        <i class="ri-close-line"></i>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="history-content">
+
+                    <div class="history-top">
+
+                        <strong>
+
+                            {{ audit.old_status }}
+
+                            <i class="ri-arrow-right-line"></i>
+
+                            {{ audit.new_status }}
+
+                        </strong>
+
+                        <time>
+                            {{ audit.created_at.strftime(
+                                "%d %b %Y, %I:%M %p"
+                            ) }}
+                        </time>
+
+                    </div>
+
+
+                    <p class="history-admin">
+
+                        Decided by
+                        <strong>
+                            {{ audit.admin_name }}
+                        </strong>
+
+                        {% if audit.admin_email %}
+                            · {{ audit.admin_email }}
+                        {% endif %}
+
+                    </p>
+
+
+                    {% if audit.reason %}
+
+                    <p class="history-reason">
+                        {{ audit.reason }}
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+       {% else %}
+
+            <div class="detail-empty">
+
+                {% if business.status == "Pending" %}
+
+                    <i class="ri-time-line"></i>
+
+                    <p>
+                        No verification decision has been made yet.
+                    </p>
+
+                    <small>
+                        This business is still awaiting admin verification.
+                    </small>
+
+                {% elif business.status == "Approved" %}
+
+                    <i class="ri-history-line"></i>
+
+                    <p>
+                        No verification audit history is available.
+                    </p>
+
+
+                {% elif business.status == "Rejected" %}
+
+                    <i class="ri-history-line"></i>
+
+                    <p>
+                        No verification audit history is available.
+                    </p>
+
+                    <small>
+                        This business was rejected before verification auditing
+                        was enabled.
+                    </small>
+
+                {% endif %}
+
+            </div>
+
+        {% endif %}
+    </section>
+
+
+
+</main>
+
+</body>
+
+</html>

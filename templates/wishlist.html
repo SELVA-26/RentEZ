@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+    
+    <meta
+    name="csrf-token"
+    content="{{ csrf_token() }}"
+>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/wishlist.css') }}"
+    >
+
+    <title>Wishlist | RentEZ</title>
+
+</head>
+
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar">
+
+    <a href="/" class="logo">
+
+        <img
+            src="{{ url_for('static', filename='images/logo.png') }}"
+            alt="RentEZ"
+        >
+
+        <p class="rent">
+            Rent<span>EZ</span>
+        </p>
+
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="{{ url_for('equipment') }}">
+            Equipment
+        </a>
+
+        <a href="{{ url_for('packages') }}">
+            Packages
+        </a>
+
+        <a href="{{ url_for('home') }}#businesses">
+            Businesses
+        </a>
+
+        <a href="{{ url_for('home') }}#how-it-works">
+            How It Works
+        </a>
+
+        <a href="{{ url_for('contact') }}">
+            Contact
+        </a>
+
+    </div>
+
+
+    <div class="nav-right">
+
+        <a
+            href="{{ url_for('cart') }}"
+            class="cart-link"
+            aria-label="Shopping cart"
+            title="Shopping cart"
+        >
+
+            <i class="ri-shopping-cart-2-line"></i>
+
+            {% if cart_count > 0 %}
+
+                <span class="cart-badge">
+                    {{ cart_count }}
+                </span>
+
+            {% endif %}
+
+        </a>
+
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="user"
+        >
+
+            <div class="avatar">
+                {{ user_name[0] | upper }}
+            </div>
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+<main class="wishlist-page">
+
+    <div class="page-heading">
+
+        <span class="eyebrow">
+            SAVED EQUIPMENT
+        </span>
+
+        <h1>
+            My Wishlist
+        </h1>
+
+        <p>
+            Equipment you've saved for later.
+        </p>
+
+    </div>
+
+
+    {% if wishlist_items %}
+
+    <div class="wishlist-grid">
+
+        {% for item in wishlist_items %}
+
+        <article class="wishlist-card">
+
+            <!-- IMAGE -->
+
+            <div class="equipment-image">
+
+                <a
+                    href="{{ url_for(
+                        'equipment_details',
+                        equipment_id=item[0]
+                    ) }}"
+                    class="image-link"
+                >
+
+                    {% if item[5] %}
+
+                        <img
+                            src="{{ url_for(
+                                'equipment_image',
+                                filename=item[5]
+                            ) }}"
+                            alt="{{ item[1] }}"
+                        >
+
+                    {% else %}
+
+                        <div class="image-placeholder">
+
+                            <i class="ri-image-line"></i>
+
+                            <span>
+                                No image available
+                            </span>
+
+                        </div>
+
+                    {% endif %}
+
+                </a>
+
+
+                <!-- HEART -->
+
+                <button
+                    type="button"
+                    class="wishlist-btn active"
+                    data-equipment-id="{{ item[0] }}"
+                    aria-label="Remove from wishlist"
+                    title="Remove from wishlist"
+                >
+
+                    <i class="ri-heart-3-fill"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- CONTENT -->
+
+            <div class="equipment-info">
+
+                <span class="category">
+                    {{ item[2] }}
+                </span>
+
+                <h2>
+                    {{ item[1] }}
+                </h2>
+
+                <p class="description">
+                    {{ item[3] }}
+                </p>
+
+
+                <div class="card-bottom">
+
+                    <div class="price">
+
+                        <strong>
+                            ₹{{ "%.0f"|format(item[4]) }}
+                        </strong>
+
+                        <span>
+                            / day
+                        </span>
+
+                    </div>
+
+
+                    <a
+                        href="{{ url_for(
+                            'rent_equipment',
+                            equipment_id=item[0]
+                        ) }}"
+                        class="details-btn"
+                    >
+
+                        Add to Cart
+
+                        <i class="ri-shopping-cart-line"></i>
+
+                    </a>
+
+                </div>
+
+            </div>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <section class="wishlist-empty">
+
+        <div class="empty-icon">
+
+            <i class="ri-heart-3-line"></i>
+
+        </div>
+
+        <h2>
+            Your wishlist is empty
+        </h2>
+
+        <p>
+            Save equipment you're interested in and
+            come back to it whenever you're ready.
+        </p>
+
+        <a
+            href="{{ url_for('equipment') }}"
+            class="browse-btn"
+        >
+            Browse Equipment
+        </a>
+
+    </section>
+
+    {% endif %}
+
+</main>
+
+
+
+
+<script
+    src="{{ url_for('static', filename='js/rentz_ui.js') }}"
+></script>
+
+<script
+    src="{{ url_for('static', filename='js/wishlist.js') }}"
+></script>
+
+</body>
+
+</html>

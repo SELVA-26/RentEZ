@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile | RentEZ</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/customer_profile.css') }}"
+    >
+
+</head>
+
+<body>
+
+<div class="profile-page">
+
+    <div class="profile-header">
+
+        <div>
+
+            <span class="eyebrow">
+                CUSTOMER ACCOUNT
+            </span>
+
+            <h1>
+                My Profile
+            </h1>
+
+            <p>
+                Manage your personal information and account security.
+            </p>
+
+        </div>
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="back-link"
+        >
+            <i class="ri-arrow-left-line"></i>
+            Back to Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- ================= PROFILE ================= -->
+
+    <section class="profile-card">
+
+        <div class="section-header">
+
+            <div class="section-icon">
+                <i class="ri-user-line"></i>
+            </div>
+
+            <div>
+
+                <h2>
+                    Personal Information
+                </h2>
+
+                <p>
+                    Update your name and contact details.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form
+            method="POST"
+            action="{{ url_for('profile') }}"
+        >
+
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+            >
+
+            <input
+                type="hidden"
+                name="form_type"
+                value="profile"
+            >
+
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label for="full_name">
+                        Full Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="full_name"
+                        name="full_name"
+                        value="{{ user[1] }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="email">
+                        Email Address
+                    </label>
+
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        value="{{ user[2] }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="phone">
+                        Phone Number
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="phone"
+                        name="phone"
+                        value="{{ user[3] }}"
+                        maxlength="10"
+                        required
+                    >
+
+                </div>
+
+            </div>
+            
+
+            <div class="form-section-divider"></div>
+
+                <div class="address-section">
+
+                    <div class="section-header">
+
+                        <div class="section-icon">
+                            <i class="ri-map-pin-line"></i>
+                        </div>
+
+                        <div>
+                            <h2>Delivery Address</h2>
+
+                            <p>
+                                Save your usual rental delivery location.
+                            </p>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-grid">
+
+                        <div class="form-group full-width">
+
+                            <label for="delivery_address">
+                                Address
+                            </label>
+
+                            <input
+                                type="text"
+                                id="delivery_address"
+                                name="delivery_address"
+                                value="{{ user[5] or '' }}"
+                                placeholder="House number, street, area"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="delivery_city">
+                                City
+                            </label>
+
+                            <input
+                                type="text"
+                                id="delivery_city"
+                                name="delivery_city"
+                                value="{{ user[6] or '' }}"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="delivery_state">
+                                State
+                            </label>
+
+                            <input
+                                type="text"
+                                id="delivery_state"
+                                name="delivery_state"
+                                value="{{ user[7] or '' }}"
+                            >
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="delivery_pincode">
+                                Pincode
+                            </label>
+
+                            <input
+                                type="text"
+                                id="delivery_pincode"
+                                name="delivery_pincode"
+                                value="{{ user[8] or '' }}"
+                                maxlength="6"
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% if profile_error %}
+
+            <div class="message error">
+
+                <i class="ri-error-warning-line"></i>
+
+                {{ profile_error }}
+
+            </div>
+
+            {% endif %}
+
+
+            {% if profile_success %}
+
+            <div class="message success">
+
+                <i class="ri-checkbox-circle-line"></i>
+
+                {{ profile_success }}
+
+            </div>
+
+            {% endif %}
+
+
+            <div class="form-actions">
+
+                <a
+                    href="{{ url_for('dashboard') }}"
+                    class="secondary-btn"
+                >
+                    Cancel
+                </a>
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    <i class="ri-save-line"></i>
+                    Save Changes
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <!-- ================= PASSWORD ================= -->
+
+    <section class="profile-card">
+
+        <div class="section-header">
+
+            <div class="section-icon">
+                <i class="ri-lock-password-line"></i>
+            </div>
+
+            <div>
+
+                <h2>
+                    Change Password
+                </h2>
+
+                <p>
+                    Keep your RentEZ account secure.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form
+            method="POST"
+            action="{{ url_for('profile') }}"
+        >
+
+            <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+            >
+
+            <input
+                type="hidden"
+                name="form_type"
+                value="password"
+            >
+
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label for="current_password">
+                        Current Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="current_password"
+                        name="current_password"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="new_password">
+                        New Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="new_password"
+                        name="new_password"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="confirm_password">
+                        Confirm New Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirm_password"
+                        name="confirm_password"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            {% if password_error %}
+
+            <div class="message error">
+
+                <i class="ri-error-warning-line"></i>
+
+                {{ password_error }}
+
+            </div>
+
+            {% endif %}
+
+
+            {% if password_success %}
+
+            <div class="message success">
+
+                <i class="ri-checkbox-circle-line"></i>
+
+                {{ password_success }}
+
+            </div>
+
+            {% endif %}
+
+
+            <div class="form-actions">
+
+                <button
+                    type="submit"
+                    class="primary-btn"
+                >
+                    <i class="ri-lock-password-line"></i>
+                    Change Password
+                </button>
+
+            </div>
+
+        </form>
+
+    </section>
+
+
+    <section class="info-card">
+
+        <i class="ri-information-line"></i>
+
+        <div>
+
+            <strong>
+                Password security
+            </strong>
+
+            <p>
+                Your password is securely stored and never displayed.
+            </p>
+
+        </div>
+
+    </section>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta
+    name="csrf-token"
+    content="{{ csrf_token() }}"
+>
+    <title>RentEZ - Business Dashboard</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/business_dashboard.css') }}"
+    >
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+    <link
+    rel="stylesheet"
+    href="{{ url_for(
+        'static',
+        filename='css/notifications.css'
+    ) }}"
+>
+</head>
+
+<body>
+
+<div class="dashboard-container">
+
+    <!-- =========================
+         SIDEBAR
+    ========================== -->
+
+    <aside class="sidebar">
+
+        <a href="{{ url_for('business_dashboard') }}" class="logo">
+
+            <img
+                src="{{ url_for('static', filename='images/logo.png') }}"
+                alt="RentEZ"
+            >
+
+            <p class="rent">
+                Rent<span>EZ</span>
+            </p>
+
+        </a>
+
+
+        <div class="user-profile">
+
+            <div class="avatar">
+                {{ business[1][0]|upper }}
+            </div>
+
+            <div class="user-info">
+
+                <span class="user-name">
+                    {{ business[1] }}
+                </span>
+
+                <span class="user-loc">
+                    {{ business[2] }}
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            <p class="nav-heading">
+                BUSINESS
+            </p>
+
+            <ul>
+
+                <li class="active">
+                    <a href="{{ url_for('business_dashboard') }}">
+                        Overview
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for('business_equipment') }}">
+                        My Equipment
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for('business_bookings') }}">
+                        Bookings
+                    </a>
+                </li>
+            
+                <li>
+                    <a href="{{ url_for('business_packages') }}">
+                        My Packages
+                    </a>
+                </li>
+
+                <li>
+                    <a href="{{ url_for('business_profile') }}">
+                        Business Profile
+                    </a>
+                </li>
+
+            </ul>
+
+
+            <p class="nav-heading system-heading">
+                SYSTEM
+            </p>
+
+            <ul>
+
+                <li>
+                    <a href="{{ url_for('business_settings') }}">
+                        Settings
+                    </a>
+                </li>
+
+                <li>
+                    <a
+                        href="{{ url_for('logout') }}"
+                        class="logout"
+                    >
+                        Log Out
+                    </a>
+                </li>
+
+            </ul>
+
+        </nav>
+
+    </aside>
+
+
+    <!-- =========================
+         MAIN CONTENT
+    ========================== -->
+
+    <main class="main-content">
+
+        <!-- HEADER -->
+
+        <header class="top-header">
+
+            <div class="header-titles">
+
+                <span class="portal-label">
+                    BUSINESS PORTAL
+                </span>
+
+                <h2>
+                    Your Rental Store
+                </h2>
+
+            </div>
+
+
+            <div class="business-header-actions">
+
+                <div class="notification-wrapper">
+
+                    <button
+                        type="button"
+                        class="icon-btn notification-btn"
+                        id="notificationButton"
+                    >
+
+                        <i class="ri-notification-3-line"></i>
+
+                        {% if unread_notification_count > 0 %}
+
+                        <span class="notification-badge">
+                            {{ unread_notification_count }}
+                        </span>
+
+                        {% endif %}
+
+                    </button>
+
+
+                    <div
+                        class="notification-panel"
+                        id="notificationPanel"
+                    >
+
+                        <div class="notification-panel-header">
+
+                            <div>
+
+                                <strong>
+                                    Notifications
+                                </strong>
+
+                                <span>
+                                    {{ unread_notification_count }}
+                                    unread
+                                </span>
+
+                            </div>
+
+
+                            {% if unread_notification_count > 0 %}
+
+                            <button
+                                type="button"
+                                class="mark-read-btn"
+                                id="markAllNotificationsRead"
+                            >
+                                Mark all read
+                            </button>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="notification-list">
+
+                            {% for notification in notifications %}
+
+                            <a
+                                href="{{ notification[4] or '#' }}"
+                                class="notification-item{% if not notification[5] %} unread{% endif %}"
+                                data-notification-id="{{ notification[0] }}"
+                            >
+
+                                <div class="notification-item-icon">
+
+                                    {% if notification[1] == "business_approved" %}
+
+                                        <i class="ri-shield-check-line"></i>
+
+                                    {% elif notification[1] == "business_rejected" %}
+
+                                        <i class="ri-error-warning-line"></i>
+
+                                    {% elif notification[1] == "payout_released" %}
+
+                                        <i class="ri-money-rupee-circle-line"></i>
+
+                                    {% else %}
+
+                                        <i class="ri-notification-3-line"></i>
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <div class="notification-item-content">
+
+                                    <strong>
+                                        {{ notification[2] }}
+                                    </strong>
+
+                                    <p>
+                                        {{ notification[3] }}
+                                    </p>
+
+                                    <time>
+                                        {{ notification[6].strftime(
+                                            "%d %b %Y, %I:%M %p"
+                                        ) }}
+                                    </time>
+
+                                </div>
+
+                            </a>
+
+                            {% else %}
+
+                            <div class="notification-empty">
+
+                                <i class="ri-notification-off-line"></i>
+
+                                <p>
+                                    No notifications yet.
+                                </p>
+
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </header>
+
+
+        <!-- =========================
+             HERO BANNER
+        ========================== -->
+
+        <section class="hero-banner">
+
+            <div class="hero-content">
+
+                <span class="badge">
+                    ✓ VERIFIED BUSINESS
+                </span>
+
+                <h1>
+                    Welcome to your
+                    <br>
+                    RentEZ Store.
+                </h1>
+
+                <p>
+                    Your business is verified and ready to rent
+                    professional equipment to customers.
+                </p>
+
+                <div class="hero-buttons">
+
+                    <a
+                        href="{{ url_for('business_equipment') }}"
+                        class="btn btn-primary"
+                    >
+                        Manage Equipment
+                    </a>
+
+                    <button
+                        class="btn btn-outline"
+                        onclick="window.location.href='{{ url_for('business_bookings') }}'"
+                    >
+                        View Bookings
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="hero-status">
+
+                <div class="status-indicator">
+
+                    <span class="dot active"></span>
+
+                    <span>
+                        Store Active
+                    </span>
+
+                </div>
+
+
+                <div class="location-info">
+
+                    <small>
+                        OPERATING LOCATION
+                    </small>
+
+                    <strong>
+                        {{ business[2] }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             STATS
+        ========================== -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+
+                <span class="stat-label">
+                    EQUIPMENT
+                </span>
+
+                <h3>
+                    {{ total_equipment }}
+                </h3>
+
+                <p>
+                    Items listed
+                </p>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span class="stat-label">
+                    AVAILABLE
+                </span>
+
+                <h3>
+                    {{ available_equipment }}
+                </h3>
+
+                <p>
+                    Ready to rent
+                </p>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <span class="stat-label">
+                    BOOKINGS
+                </span>
+
+                <h3>
+                    {{ total_bookings }}
+                </h3>
+
+                <p>
+                    Active rentals
+                </p>
+
+            </div>
+
+
+            <div class="stat-card earnings">
+
+                <span class="stat-label">
+                    EARNINGS
+                </span>
+
+                <h3>
+                    ₹{{ "%.0f"|format(total_earnings) }}
+                </h3>
+
+                <p>
+                    Total business earnings
+                </p>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             PAYOUT SUMMARY
+        ========================== -->
+
+        <section class="payout-summary">
+
+            <div class="payout-card held">
+
+                <span>
+                    HELD
+                </span>
+
+                <strong>
+                    ₹{{ "%.0f"|format(held_payouts) }}
+                </strong>
+
+                <small>
+                    Awaiting delivery
+                </small>
+
+            </div>
+
+
+            <div class="payout-card released">
+
+                <span>
+                    RELEASED
+                </span>
+
+                <strong>
+                    ₹{{ "%.0f"|format(released_payouts) }}
+                </strong>
+
+                <small>
+                    Automatically released
+                </small>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+             OPERATIONS
+        ========================== -->
+
+        <section class="operations-section">
+
+            <div class="section-header">
+
+                <div>
+
+                    <span class="section-label">
+                        OPERATIONS
+                    </span>
+
+                    <h2>
+                        Rental Activity
+                    </h2>
+
+                    <p>
+                        Keep track of deliveries and active rentals.
+                    </p>
+
+                </div>
+
+                <a
+                    href="{{ url_for('business_bookings') }}"
+                    class="btn btn-primary btn-sm"
+                >
+                    View All Bookings
+                </a>
+
+            </div>
+
+
+            <div class="operations-grid">
+
+                <div class="operation-card delivery">
+
+                    <div class="operation-icon">
+                        <i class="ri-truck-line"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {{ upcoming_deliveries }}
+                        </strong>
+
+                        <span>
+                            Upcoming Deliveries
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="operation-card transit">
+
+                    <div class="operation-icon">
+                        <i class="ri-route-line"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {{ out_for_delivery }}
+                        </strong>
+
+                        <span>
+                            Out for Delivery
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="operation-card active">
+
+                    <div class="operation-icon">
+                        <i class="ri-home-heart-line"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {{ active_rentals }}
+                        </strong>
+
+                        <span>
+                            Active Rentals
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="operation-card return">
+
+                    <div class="operation-icon">
+                        <i class="ri-inbox-unarchive-line"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {{ returns_due_today }}
+                        </strong>
+
+                        <span>
+                            Returns Due Today
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="operation-card overdue">
+
+                    <div class="operation-icon">
+                        <i class="ri-alarm-warning-line"></i>
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            {{ overdue_returns }}
+                        </strong>
+
+                        <span>
+                            Overdue Returns
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =========================
+     UPCOMING DELIVERIES
+========================== -->
+
+<section class="upcoming-section dashboard-upcoming-section">
+
+    <div class="section-header">
+
+        <div>
+
+            <span class="section-label">
+                NEXT DELIVERIES
+            </span>
+
+            <h2>
+                Upcoming Deliveries
+            </h2>
+
+            <p>
+                Keep track of your upcoming customer rentals.
+            </p>
+
+        </div>
+
+        <a
+            href="{{ url_for('business_bookings') }}"
+            class="text-link"
+        >
+            View all
+        </a>
+
+    </div>
+
+
+    {% if upcoming_delivery_list %}
+
+        <div class="upcoming-list">
+
+            {% for delivery in upcoming_delivery_list %}
+
+                <div class="upcoming-item">
+
+                    <div class="upcoming-date">
+
+                        <strong>
+                            {{ delivery[1].strftime('%d') }}
+                        </strong>
+
+                        <span>
+                            {{ delivery[1].strftime('%b') }}
+                        </span>
+
+                    </div>
+
+
+                    <div class="upcoming-info">
+
+                        <strong>
+                            {{ delivery[4] }}
+                        </strong>
+
+                        <span>
+                            {{ delivery[5] }}
+                            · {{ delivery[3] }}
+                            {{ 'unit' if delivery[3] == 1 else 'units' }}
+                        </span>
+
+                    </div>
+
+
+                    <i class="ri-arrow-right-s-line"></i>
+
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="upcoming-empty">
+
+            <i class="ri-calendar-check-line"></i>
+
+            <span>
+                No upcoming deliveries.
+            </span>
+
+        </div>
+
+    {% endif %}
+
+</section>
+    </main>
+
+</div>
+
+<script
+    src="{{ url_for('static', filename='js/rentz_ui.js') }}"
+></script>
+<script src="{{ url_for('static', filename='js/business_dashboard.js') }}"></script>
+
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/notifications.js'
+    ) }}"
+></script>
+</body>
+</html>

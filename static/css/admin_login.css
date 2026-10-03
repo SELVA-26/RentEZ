@@ -1,0 +1,342 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+    font-family: "Poppins", sans-serif;
+}
+
+
+body {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 100px 20px 40px;
+
+    background:
+        linear-gradient(
+            rgba(248,250,252,.84),
+            rgba(248,250,252,.84)
+        ),
+        url("../images/loginbg.png");
+
+    background-size: cover;
+
+    background-position: center;
+
+    background-repeat: no-repeat;
+}
+
+
+/* =====================================================
+   LOGO
+===================================================== */
+
+.logo {
+
+    position: fixed;
+
+    top: 28px;
+    left: 34px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    text-decoration: none;
+}
+
+
+.logo img {
+
+    width: 72px;
+    height: 72px;
+
+    object-fit: contain;
+}
+
+
+.rent {
+
+    color: #111827;
+
+    font-size: 34px;
+
+    font-weight: 700;
+}
+
+
+.ez {
+
+    color: #2563EB;
+}
+
+
+/* =====================================================
+   CARD
+===================================================== */
+
+.admin-card {
+
+    width: min(500px, 100%);
+
+    padding: 43px 44px 34px;
+
+    background: rgba(255,255,255,.96);
+
+    backdrop-filter: blur(18px);
+
+    -webkit-backdrop-filter: blur(18px);
+
+    border: 1px solid rgba(255,255,255,.7);
+
+    border-radius: 22px;
+
+    box-shadow:
+        0 22px 65px rgba(37,99,235,.11);
+}
+
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.admin-header {
+
+    margin-bottom: 30px;
+}
+
+
+.eyebrow {
+
+    color: #2563EB;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 8px;
+}
+
+
+.admin-header h1 {
+
+    color: #172033;
+
+    font-size: 32px;
+
+    font-weight: 700;
+
+    margin-bottom: 8px;
+}
+
+
+.admin-header p {
+
+    color: #64748B;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   ERROR
+===================================================== */
+
+.login-error {
+
+    margin-bottom: 22px;
+
+    padding: 13px 15px;
+
+    border-radius: 10px;
+
+    background: #FFF5F5;
+
+    border: 1px solid #FECACA;
+
+    color: #B91C1C;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+/* =====================================================
+   FORM
+===================================================== */
+
+.form-group {
+
+    margin-bottom: 21px;
+}
+
+
+.form-group label {
+
+    display: block;
+
+    margin-bottom: 8px;
+
+    color: #273449;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+
+.form-group input {
+
+    width: 100%;
+
+    height: 55px;
+
+    padding: 0 16px;
+
+    border: 1px solid #D2DEEC;
+
+    border-radius: 11px;
+
+    background: #FFFFFF;
+
+    color: #172033;
+
+    font-family: inherit;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition: .2s ease;
+}
+
+
+.form-group input::placeholder {
+
+    color: #9AA7B8;
+}
+
+
+.form-group input:focus {
+
+    border-color: #2563EB;
+
+    box-shadow:
+        0 0 0 3px rgba(37,99,235,.08);
+}
+
+
+/* =====================================================
+   PASSWORD
+===================================================== */
+
+.password-field {
+
+    position: relative;
+}
+
+
+.password-field input {
+
+    padding-right: 50px;
+}
+
+
+.eye {
+
+    position: absolute;
+
+    top: 50%;
+    right: 16px;
+
+    transform: translateY(-50%);
+
+    color: #8A99AE;
+
+    font-size: 20px;
+
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   BUTTON
+===================================================== */
+
+.admin-login-btn {
+
+    width: 100%;
+
+    height: 56px;
+
+    margin-top: 4px;
+
+    border: none;
+
+    border-radius: 11px;
+
+    background: #2563EB;
+
+    color: #FFFFFF;
+
+    font-family: inherit;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: .2s ease;
+}
+
+
+.admin-login-btn:hover {
+
+    background: #1D4ED8;
+
+    transform: translateY(-1px);
+}
+
+
+/* =====================================================
+   BACK
+===================================================== */
+
+.back-link {
+
+    margin-top: 22px;
+
+    text-align: center;
+}
+
+
+.back-link a {
+
+    color: #64748B;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+}
+
+
+.back-link a:hover {
+
+    color: #2563EB;
+}

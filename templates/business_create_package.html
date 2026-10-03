@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% if package %}
+            Edit Package
+        {% else %}
+            Create Package
+        {% endif %}
+        | RentEZ
+    </title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/business_create_package.css'
+        ) }}"
+    >
+
+</head>
+
+<body>
+
+<main class="package-form-page">
+
+    <header class="form-header">
+
+        <a
+            href="{{ url_for('business_packages') }}"
+            class="back-link"
+        >
+            <i class="ri-arrow-left-line"></i>
+            My Packages
+        </a>
+
+        <span class="eyebrow">
+            PACKAGE BUILDER
+        </span>
+
+        <h1>
+            {% if package %}
+                Edit Package
+            {% else %}
+                Create Rental Package
+            {% endif %}
+        </h1>
+
+        <p>
+            Combine your equipment into one complete rental solution.
+        </p>
+
+    </header>
+
+
+    {% if error %}
+
+    <div class="form-alert">
+
+        <i class="ri-error-warning-line"></i>
+
+        {{ error }}
+
+    </div>
+
+    {% endif %}
+
+
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+        class="package-form"
+    >
+
+        <input
+            type="hidden"
+            name="csrf_token"
+            value="{{ csrf_token() }}"
+        >
+
+
+        <!-- BASIC INFO -->
+
+        <section class="form-section">
+
+            <div class="section-heading">
+
+                <span>
+                    01
+                </span>
+
+                <div>
+
+                    <h2>
+                        Package Details
+                    </h2>
+
+                    <p>
+                        Give your package a clear name and description.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="field full">
+
+                    <label for="name">
+                        Package Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value="{{ package[1] if package else '' }}"
+                        placeholder="e.g. Wedding Audio Package"
+                        maxlength="150"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="field full">
+
+                    <label for="description">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        maxlength="1000"
+                        rows="5"
+                        placeholder="Describe what this package is ideal for..."
+                    >{{ package[2] if package and package[2] else '' }}</textarea>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="price_per_day">
+                        Package Price
+                    </label>
+
+                    <div class="price-input">
+
+                        <span>₹</span>
+
+                        <input
+                            type="number"
+                            id="price_per_day"
+                            name="price_per_day"
+                            min="1"
+                            step="0.01"
+                            value="{{ package[4] if package else '' }}"
+                            placeholder="6500"
+                            required
+                        >
+
+                        <small>
+                            / day
+                        </small>
+
+                    </div>
+
+                </div>
+
+
+                <div class="field">
+
+                    <label for="image">
+                        Package Image
+                    </label>
+
+                    <input
+                        type="file"
+                        id="image"
+                        name="image"
+                        accept=".jpg,.jpeg,.png,.webp"
+                    >
+
+                    <small class="field-help">
+                        JPG, JPEG, PNG or WEBP · Max 5MB
+                    </small>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- EQUIPMENT -->
+
+        <section class="form-section">
+
+            <div class="section-heading">
+
+                <span>
+                    02
+                </span>
+
+                <div>
+
+                    <h2>
+                        Package Equipment
+                    </h2>
+
+                    <p>
+                        Select the equipment included in this package
+                        and set how many units are required.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            {% if equipment %}
+
+            <div class="equipment-table">
+
+                <div class="equipment-table-header">
+
+                    <span>
+                        Equipment
+                    </span>
+
+                    <span>
+                        Daily Rate
+                    </span>
+
+                    <span>
+                        Stock
+                    </span>
+
+                    <span>
+                        Quantity
+                    </span>
+
+                </div>
+
+
+                {% for item in equipment %}
+
+                <div class="equipment-row">
+
+                    <div class="equipment-name">
+
+                        <label>
+
+                            <input
+                                type="checkbox"
+                                class="equipment-check"
+                                data-equipment-id="{{ item[0] }}"
+                                {% if item[0] in selected_items %}
+                                    checked
+                                {% endif %}
+                            >
+
+                            <span>
+                                {{ item[1] }}
+                            </span>
+
+                        </label>
+
+                        {% if not item[5] %}
+
+                        <small class="archived-label">
+                            Archived
+                        </small>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <span class="equipment-rate">
+                        ₹{{ "%.0f"|format(item[2]) }}/day
+                    </span>
+
+
+                    <span class="equipment-stock">
+                        {{ item[4] }}/{{ item[3] }}
+                    </span>
+
+
+                    <input
+                        type="number"
+                        class="equipment-quantity"
+                        name="quantity_{{ item[0] }}"
+                        min="1"
+                        max="{{ item[3] }}"
+                        value="{{ selected_items[item[0]] if item[0] in selected_items else '' }}"
+                        {% if item[0] not in selected_items %}
+                            disabled
+                        {% endif %}
+                    >
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <div class="no-equipment">
+
+                <i class="ri-inbox-line"></i>
+
+                <h3>
+                    No equipment available
+                </h3>
+
+                <p>
+                    Add and activate equipment before creating a package.
+                </p>
+
+                <a
+                    href="{{ url_for('add_equipment') }}"
+                    class="secondary-btn"
+                >
+                    Add Equipment
+                </a>
+
+            </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- SUMMARY -->
+
+        <section class="summary-section">
+
+            <div>
+
+                <span>
+                    COMPONENT VALUE
+                </span>
+
+                <strong id="componentTotal">
+                    ₹0/day
+                </strong>
+
+            </div>
+
+            <div>
+
+                <span>
+                    PACKAGE PRICE
+                </span>
+
+                <strong id="packagePricePreview">
+                    ₹0/day
+                </strong>
+
+            </div>
+
+            <p id="packageSavings">
+                Set a package price to see your customer savings.
+            </p>
+
+        </section>
+
+
+        <div class="form-actions">
+
+            <a
+                href="{{ url_for('business_packages') }}"
+                class="secondary-btn"
+            >
+                Cancel
+            </a>
+
+            <button
+                type="submit"
+                class="primary-btn"
+                {% if not equipment %}disabled{% endif %}
+            >
+
+                <i class="ri-save-line"></i>
+
+                {% if package %}
+                    Save Package
+                {% else %}
+                    Create Package
+                {% endif %}
+
+            </button>
+
+        </div>
+
+    </form>
+
+</main>
+
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/business_create_package.js'
+    ) }}"
+></script>
+
+</body>
+</html>

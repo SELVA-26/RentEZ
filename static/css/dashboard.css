@@ -1,0 +1,1421 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background: #f5f8fd;
+    color: #172033;
+    min-height: 100vh;
+}
+
+
+/* =====================================================
+   SIDEBAR
+===================================================== */
+
+.sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+
+    width: 240px;
+    height: 100vh;
+
+    background: #ffffff;
+    border-right: 1px solid #e7edf6;
+
+    display: flex;
+    flex-direction: column;
+
+    padding: 27px 17px;
+
+    z-index: 100;
+}
+
+
+/* ================= LOGO ================= */
+
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    font-size:30px;
+    font-weight:700;
+    color:#0F172A;
+    margin-bottom: 38px;
+}
+
+
+.logo img {
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+}
+
+p span{
+    color:#2563EB;
+}
+
+
+/* ================= NAVIGATION ================= */
+
+.sidebar-nav {
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+.nav-item {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+
+    gap: 13px;
+
+    height: 47px;
+
+    padding: 0 14px;
+
+    border-radius: 11px;
+
+    color: #64748b;
+
+    text-decoration: none;
+
+    font-size: 15px;
+    font-weight: 500;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.nav-item i {
+    width: 21px;
+
+    font-size: 22px;
+
+    text-align: center;
+}
+
+.nav-item:hover {
+    background: #f3f7ff;
+    color: #2563eb;
+}
+
+.nav-item.active {
+    background: #edf4ff;
+    color: #2563eb;
+
+    font-weight: 600;
+}
+
+.nav-item.active::before {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    top: 9px;
+
+    width: 3px;
+    height: 29px;
+
+    border-radius: 0 4px 4px 0;
+
+    background: #2563eb;
+}
+
+
+/* ================= SIDEBAR BOTTOM ================= */
+
+.sidebar-bottom {
+    margin-top: auto;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 6px;
+
+    padding-top: 18px;
+
+    border-top: 1px solid #edf1f6;
+}
+
+.nav-item.logout {
+    color: #ef4444;
+
+    font-weight: 700;
+
+    background: transparent;
+
+    border: none;
+
+    cursor: pointer;
+
+    width: 100%;
+
+    text-align: left;
+}
+
+.nav-item.logout:hover {
+    background: transparent;
+
+    color: #dc2626;
+}
+
+/* =====================================================
+   MAIN CONTENT
+===================================================== */
+
+.main-content {
+    margin-left: 240px;
+
+    min-height: 100vh;
+
+    padding: 38px 48px 70px;
+}
+
+/* =====================================================
+   DASHBOARD WELCOME HEADING
+===================================================== */
+
+.dashboard-heading {
+    display: flex;
+    align-items: center;
+}
+
+.dashboard-heading h1 {
+    margin: 0;
+
+    color: #0f172a;
+
+    font-size: 36px;
+    font-weight: 700;
+
+    line-height: 1.2;
+    letter-spacing: -0.6px;
+}
+
+.dashboard-heading h1 span {
+    color: #2563eb;
+    font-weight: 700;
+}
+/* =====================================================
+   TOP BAR
+===================================================== */
+
+.topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    width: 100%;
+
+    margin-bottom: 60px;
+}
+
+.page-label {
+    color: #2563eb;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+
+    margin-bottom: 7px;
+}
+
+
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+
+    margin-right: 18px;
+}
+
+
+
+
+/* ================= NOTIFICATION ================= */
+
+.icon-btn {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 14px;
+
+    background: #ffffff;
+
+    color: #53575d;
+
+    font-size: 23px;
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.icon-btn:hover {
+    color: #2563eb;
+    border-color: #c9dcff;
+    background: #fafdff;
+}
+
+
+
+
+/* =====================================================
+   STAT CARDS
+===================================================== */
+
+.stats {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 16px;
+
+    margin-bottom: 36px;
+}
+
+.stat-card {
+    min-height: 112px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5ebf4;
+
+    border-radius: 17px;
+
+    padding: 20px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    box-shadow: 0 7px 25px rgba(37, 99, 235, 0.035);
+
+    transition:
+        transform 0.22s ease,
+        box-shadow 0.22s ease,
+        border-color 0.22s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+
+    border-color: #d3e1f7;
+
+    box-shadow: 0 14px 30px rgba(37, 99, 235, 0.07);
+}
+
+
+/* ================= STAT ICONS ================= */
+
+.stat-icon {
+    width: 47px;
+    height: 47px;
+
+    flex-shrink: 0;
+
+    border-radius: 13px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 21px;
+}
+
+.stat-icon.blue {
+    background: #edf4ff;
+    color: #2563eb;
+}
+
+.stat-icon.red {
+    background: #fff1f2;
+    color: #ef4444;
+}
+
+.stat-icon.green {
+    background: #ecfdf5;
+    color: #10b981;
+}
+
+.stat-icon.purple {
+    background: #f4f1ff;
+    color: #7c3aed;
+}
+
+
+/* ================= STAT TEXT ================= */
+
+.stat-content p {
+    color: #64748b;
+
+    font-size: 12px;
+
+    margin-bottom: 3px;
+}
+
+.stat-content h3 {
+    color: #111827;
+
+    font-size: 25px;
+    line-height: 1;
+
+    font-weight: 700;
+}
+
+
+/* =====================================================
+   SECTION HEADINGS
+===================================================== */
+
+.section-heading {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: flex-end;
+
+    margin-bottom: 16px;
+}
+
+.section-heading h3 {
+    color: #111827;
+
+    font-size: 21px;
+    font-weight: 700;
+
+    margin-bottom: 5px;
+}
+
+.section-heading p {
+    color: #94a3b8;
+
+    font-size: 14px;
+}
+
+.view-all {
+    color: #2563eb;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    text-decoration: none;
+
+    transition: 0.2s ease;
+}
+
+.view-all:hover {
+    color: #1d4ed8;
+}
+
+.view-all:hover {
+    color: #1d4ed8;
+}
+
+
+
+
+/* =====================================================
+   CONTENT SECTIONS
+===================================================== */
+
+.content-section {
+    margin-bottom: 36px;
+}
+
+
+/* =====================================================
+   EMPTY RENTAL CARD
+===================================================== */
+
+.empty-card {
+    min-height: 270px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5ebf4;
+
+    border-radius: 18px;
+
+    padding: 40px 25px;
+
+    text-align: center;
+
+    box-shadow: 0 7px 25px rgba(37, 99, 235, 0.025);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* ================= EMPTY ICON ================= */
+
+.empty-icon {
+    width: 56px;
+    height: 56px;
+
+    margin-bottom: 15px;
+
+    border-radius: 16px;
+
+    background: #edf4ff;
+
+    color: #2563eb;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 24px;
+}
+
+
+/* ================= EMPTY TEXT ================= */
+
+.empty-card h4 {
+    color: #1e293b;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    margin-bottom: 7px;
+}
+
+.empty-card p {
+    max-width: 450px;
+
+    margin: 0 auto 20px;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+}
+
+
+/* ================= PRIMARY BUTTON ================= */
+
+.primary-btn {
+    height: 40px;
+
+    padding: 0 21px;
+
+    border-radius: 10px;
+
+    background: #2563eb;
+
+    color: #ffffff;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    text-decoration: none;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    box-shadow: 0 6px 15px rgba(37, 99, 235, 0.14);
+
+    transition:
+        background 0.2s ease,
+        transform 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.primary-btn:hover {
+    background: #1d4ed8;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 9px 20px rgba(37, 99, 235, 0.19);
+}
+
+
+
+
+/* =====================================================
+   RECOMMENDED EQUIPMENT
+===================================================== */
+
+.recommended-section {
+    margin-top: 4px;
+}
+
+.equipment-placeholder {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 18px;
+}
+
+
+/* =====================================================
+   CATEGORY CARD
+===================================================== */
+
+.placeholder-card {
+    position: relative;
+
+    display: flex;
+    flex-direction: column;
+
+    min-height: 205px;
+
+    background: #ffffff;
+
+    border: 1px solid #e5ebf4;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    text-decoration: none;
+
+    box-shadow:
+        0 7px 24px rgba(37, 99, 235, 0.035);
+
+    transition:
+        transform 0.22s ease,
+        border-color 0.22s ease,
+        box-shadow 0.22s ease;
+}
+
+.placeholder-card:hover {
+    transform: translateY(-5px);
+
+    border-color: #c9dcff;
+
+    box-shadow:
+        0 16px 32px rgba(37, 99, 235, 0.10);
+}
+
+
+/* =====================================================
+   VISUAL AREA
+===================================================== */
+
+.placeholder-visual {
+    height: 128px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    position: relative;
+}
+
+
+
+
+
+/* =====================================================
+   CATEGORY VISUAL COLORS
+===================================================== */
+
+.camera-visual {
+    background: linear-gradient(
+        135deg,
+        #eef5ff,
+        #f7faff
+    );
+}
+
+.audio-visual {
+    background: linear-gradient(
+        135deg,
+        #ecfdf5,
+        #f7fffb
+    );
+}
+
+.lighting-visual {
+    background: linear-gradient(
+        135deg,
+        #fff8e7,
+        #fffdf5
+    );
+}
+
+
+.projector-visual {
+    background: linear-gradient(
+        135deg,
+        #f4f1ff,
+        #faf9ff
+    );
+}
+
+
+/* =====================================================
+   ICON
+===================================================== */
+
+.placeholder-icon {
+    position: relative;
+    z-index: 1;
+
+    width: auto;
+    height: auto;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 0;
+
+    background: transparent !important;
+
+    font-size: 36px;
+
+    box-shadow: none;
+
+    transition: transform 0.22s ease;
+}
+
+.placeholder-card:hover .placeholder-icon {
+    transform: scale(1.08);
+}
+
+.placeholder-arrow {
+    color: #2563eb;
+
+    font-size: 22px;
+    font-weight: 600;
+
+    flex-shrink: 0;
+
+    transition:
+        transform 0.2s ease,
+        color 0.2s ease;
+}
+
+.placeholder-card:hover .placeholder-arrow {
+    transform: translateX(4px);
+
+    color: #1d4ed8;
+}
+
+/* =====================================================
+   INDIVIDUAL ICON COLORS
+===================================================== */
+
+.camera-card .placeholder-icon {
+    background: #edf4ff;
+    color: #2563eb;
+}
+
+.audio-card .placeholder-icon {
+    background: #ecfdf5;
+    color: #10b981;
+}
+
+.lighting-card .placeholder-icon {
+    background: #fff8e7;
+    color: #f59e0b;
+}
+
+.projector-card .placeholder-icon {
+    background: #f4f1ff;
+    color: #7c3aed;
+}
+
+
+/* =====================================================
+   CARD CONTENT
+===================================================== */
+
+.placeholder-content {
+    flex: 1;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 12px;
+
+    padding: 17px 19px 18px;
+}
+
+/* =====================================================
+   CATEGORY NAME
+===================================================== */
+
+.placeholder-title {
+    color: #172033;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    line-height: 1.3;
+}
+
+
+/* =====================================================
+   EXPLORE LINK
+===================================================== */
+
+.placeholder-link {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+    color: #2563eb;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    transition:
+        gap 0.2s ease,
+        color 0.2s ease;
+}
+
+.placeholder-link i {
+    font-size: 15px;
+}
+
+.placeholder-card:hover .placeholder-link {
+    gap: 7px;
+
+    color: #1d4ed8;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1200px) {
+
+    .equipment-placeholder {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 550px) {
+
+    .equipment-placeholder {
+        grid-template-columns: 1fr;
+    }
+
+    .placeholder-card {
+        min-height: 185px;
+    }
+
+    .placeholder-visual {
+        height: 115px;
+    }
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 1200px) {
+
+    .main-content {
+        padding-left: 35px;
+        padding-right: 35px;
+    }
+
+    .stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .equipment-placeholder {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+
+@media (max-width: 950px) {
+
+    .sidebar {
+        width: 215px;
+    }
+
+    .main-content {
+        margin-left: 215px;
+
+        padding-left: 28px;
+        padding-right: 28px;
+    }
+
+
+    .action-card {
+        min-height: 82px;
+    }
+}
+
+
+@media (max-width: 750px) {
+
+    .sidebar {
+        width: 72px;
+
+        padding: 25px 11px;
+    }
+
+    .logo {
+        justify-content: center;
+
+        padding: 0;
+        margin-bottom: 38px;
+    }
+
+    .logo img {
+        width: 42px;
+        height: 42px;
+    }
+
+    .logo span,
+    .nav-item span {
+        display: none;
+    }
+
+    .nav-item {
+        justify-content: center;
+
+        padding: 0;
+    }
+
+    .nav-item.active::before {
+        display: none;
+    }
+
+    .main-content {
+        margin-left: 72px;
+
+        padding: 28px 20px 55px;
+    }
+
+    .topbar {
+        align-items: flex-start;
+    }
+
+    .topbar h2 {
+        font-size: 22px;
+    }
+
+    .topbar-right {
+        gap: 8px;
+    }
+
+    .user-info {
+        display: none;
+    }
+
+    .stats {
+        gap: 12px;
+    }
+
+    .stat-card {
+        min-height: 100px;
+
+        padding: 17px;
+    }
+}
+
+
+@media (max-width: 550px) {
+
+    .main-content {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .topbar {
+        margin-bottom: 25px;
+    }
+
+    .page-label {
+        font-size: 9px;
+    }
+
+    .topbar h2 {
+        font-size: 20px;
+    }
+
+    .stats {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .stat-card {
+        padding: 15px;
+
+        gap: 10px;
+    }
+
+    .stat-icon {
+        width: 40px;
+        height: 40px;
+
+        font-size: 18px;
+    }
+
+    .stat-content p {
+        font-size: 10px;
+    }
+
+    .stat-content h3 {
+        font-size: 21px;
+    }
+
+    .section-heading h3 {
+        font-size: 16px;
+    }
+
+    .section-heading p {
+        font-size: 11px;
+    }
+
+    .equipment-placeholder {
+        grid-template-columns: 1fr 1fr;
+
+        gap: 12px;
+    }
+
+    .placeholder-card {
+        height: 125px;
+    }
+
+    .empty-card {
+        min-height: 250px;
+
+        padding: 30px 18px;
+    }
+}
+
+
+@media (max-width: 380px) {
+
+    .stats {
+        grid-template-columns: 1fr;
+    }
+
+    .topbar-right {
+        display: none;
+    }
+
+    .equipment-placeholder {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* =====================================================
+   RECENT RENTALS
+===================================================== */
+
+.rentals-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+
+/* =====================================================
+   RENTAL CARD
+===================================================== */
+
+.rental-item {
+    display: flex;
+    align-items: center;
+
+    gap: 24px;
+
+    min-height: 135px;
+
+    padding: 20px 24px;
+
+    background: #ffffff;
+
+    border: 1px solid #e1e8f2;
+
+    border-radius: 18px;
+
+    box-shadow:
+        0 6px 22px rgba(15, 23, 42, 0.04);
+
+    transition:
+        transform 0.2s ease,
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.rental-item:hover {
+    transform: translateY(-3px);
+
+    border-color: #cbdcf5;
+
+    box-shadow:
+        0 12px 30px rgba(37, 99, 235, 0.09);
+}
+
+
+/* =====================================================
+   IMAGE
+===================================================== */
+
+.rental-image {
+    width: 110px;
+    height: 110px;
+
+    flex-shrink: 0;
+
+    overflow: hidden;
+
+    border-radius: 16px;
+
+    background: #f4f6f9;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rental-image img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+
+/* =====================================================
+   DETAILS
+===================================================== */
+
+.rental-details {
+    flex: 1;
+
+    min-width: 0;
+}
+
+.rental-details h4 {
+    margin: 0 0 8px;
+
+    color: #172033;
+
+    font-size: 19px;
+    font-weight: 700;
+
+    line-height: 1.35;
+}
+
+.rental-details p {
+    margin: 5px 0;
+
+    color: #64748b;
+
+    font-size: 15px;
+
+    line-height: 1.5;
+}
+
+.rental-details p:last-child {
+    color: #94a3b8;
+
+    font-size: 13px;
+}
+
+
+/* =====================================================
+   RIGHT SIDE
+===================================================== */
+
+.rental-status {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-end;
+    justify-content: center;
+
+    gap: 10px;
+
+    min-width: 125px;
+}
+
+
+/* =====================================================
+   STATUS
+===================================================== */
+
+.status-badge {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 32px;
+
+    padding: 0 14px;
+
+    border-radius: 999px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* =====================================================
+   PRICE
+===================================================== */
+
+.rental-status strong {
+    color: #0f172a;
+
+    font-size: 17px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 700px) {
+
+    .rental-item {
+        gap: 16px;
+        padding: 16px;
+        min-height: 110px;
+    }
+
+    .rental-image {
+        width: 82px;
+        height: 82px;
+    }
+
+    .rental-details h4 {
+        font-size: 16px;
+    }
+
+    .rental-details p {
+        font-size: 13px;
+    }
+
+    .rental-details p:last-child {
+        font-size: 12px;
+    }
+
+    .rental-status {
+        min-width: auto;
+    }
+
+    .rental-status strong {
+        font-size: 15px;
+    }
+}
+/* =====================================================
+   STATUS BADGE
+===================================================== */
+
+.status-badge {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    min-height: 28px;
+
+    padding: 0 11px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+
+    font-weight: 600;
+
+    white-space: nowrap;
+}
+
+
+/* STATUS COLORS */
+
+.status-badge.completed {
+    background: #ecfdf5;
+    color: #059669;
+}
+
+.status-badge.cancelled {
+    background: #fff1f2;
+    color: #e11d48;
+}
+
+.status-badge.active {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.status-badge.upcoming {
+    background: #fff8e7;
+    color: #d97706;
+}
+
+
+/* =====================================================
+   PRICE
+===================================================== */
+
+.rental-status strong {
+    color: #0f172a;
+
+    font-size: 15px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* =====================================================
+   RESPONSIVE
+===================================================== */
+
+@media (max-width: 650px) {
+
+    .rental-item {
+        align-items: flex-start;
+
+        padding: 14px;
+
+        gap: 14px;
+    }
+
+    .rental-image {
+        width: 72px;
+        height: 72px;
+    }
+
+    .rental-details h4 {
+        font-size: 14px;
+    }
+
+    .rental-details p {
+        font-size: 12px;
+    }
+
+    .rental-status {
+        min-width: auto;
+    }
+
+    .rental-status strong {
+        font-size: 14px;
+    }
+}
+
+/* =====================================================
+   DASHBOARD CART
+===================================================== */
+
+.dashboard-cart {
+    width: 48px;
+    height: 48px;
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 14px;
+
+    color: #475569;
+
+    background: #ffffff;
+
+    border: 1px solid #e2e8f0;
+
+    border-radius: 14px;
+
+    text-decoration: none;
+
+    font-size: 24px;
+
+    transition:
+        color 0.2s ease,
+        border-color 0.2s ease,
+        background 0.2s ease,
+        transform 0.2s ease;
+}
+
+
+.dashboard-cart:hover {
+    color: #2563eb;
+
+    border-color: #c9dcff;
+
+    background: #fafdff;
+
+    transform: translateY(-1px);
+}
+
+
+/* =====================================================
+   CART BADGE
+===================================================== */
+
+.cart-badge {
+    position: absolute;
+
+    top: -6px;
+    right: -6px;
+
+    min-width: 20px;
+    height: 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 5px;
+
+    color: #ffffff;
+
+    background: #2563eb;
+
+    border: 2px solid #f5f8fd;
+
+    border-radius: 999px;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    line-height: 1;
+}

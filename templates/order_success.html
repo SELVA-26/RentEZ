@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        Booking Confirmed | RentEZ
+    </title>
+
+
+    <!-- GOOGLE FONT -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- REMIX ICONS -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/order_success.css'
+        ) }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<div class="success-page">
+
+
+    <div class="background-grid"></div>
+
+    <div class="glow glow-one"></div>
+
+    <div class="glow glow-two"></div>
+
+
+    <main class="success-wrapper">
+
+
+        <!-- =================================================
+             BRAND
+        ================================================== -->
+
+        <header class="topbar">
+
+            <a
+                href="{{ url_for('dashboard') }}"
+                class="brand"
+            >
+
+                <img
+                    src="{{ url_for(
+                        'static',
+                        filename='images/logo.png'
+                    ) }}"
+                    alt="RentEZ"
+                >
+
+                <span>
+                    Rent<span>EZ</span>
+                </span>
+
+            </a>
+
+
+            <span class="order-number">
+                Order #{{ order[0] }}
+            </span>
+
+        </header>
+
+
+
+        <!-- =================================================
+             SUCCESS HERO
+        ================================================== -->
+
+        <section class="hero-card">
+
+
+            <div class="hero-content">
+
+
+                <div class="success-icon">
+
+                    <i class="ri-check-line"></i>
+
+                </div>
+
+
+                <div>
+
+                    <span class="eyebrow">
+                        BOOKING CONFIRMED
+                    </span>
+
+
+                    <h1>
+                        Your rental is confirmed.
+                    </h1>
+
+
+                    <p>
+                        Your payment was successful and
+                        your equipment has been reserved.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="total-block">
+
+                <span>
+                    TOTAL PAID
+                </span>
+
+
+                <strong>
+                    ₹{{ "%.2f"|format(order[6]|float) }}
+                </strong>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             RENTAL PERIOD
+        ================================================== -->
+
+        <section class="period-card">
+
+
+            <div class="card-title">
+
+                <div>
+
+                    <span class="small-label">
+                        RENTAL PERIOD
+                    </span>
+
+                    <h2>
+                        {{ order[3] }}
+                        day{% if order[3]|int != 1 %}s{% endif %}
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="dates">
+
+
+                <div class="date-block">
+
+                    <div class="date-icon">
+
+                        <i class="ri-calendar-event-line"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            START DATE
+                        </span>
+
+                        <strong>
+                            {{ order[1] }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="arrow">
+
+                    <i class="ri-arrow-right-line"></i>
+
+                </div>
+
+
+                <div class="date-block">
+
+                    <div class="date-icon">
+
+                        <i class="ri-calendar-check-line"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            END DATE
+                        </span>
+
+                        <strong>
+                            {{ order[2] }}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             MAIN DETAILS
+        ================================================== -->
+
+        <section class="details-grid">
+
+
+            <!-- =================================================
+                 ITEMS
+            ================================================== -->
+
+            <div class="items-card">
+
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="small-label">
+                            RENTAL ITEMS
+                        </span>
+
+                        <h2>
+                            Your items
+                        </h2>
+
+                    </div>
+
+
+                    <span class="item-count">
+
+                        {{ order_items|length }}
+
+                        item{% if order_items|length != 1 %}s{% endif %}
+
+                    </span>
+
+                </div>
+
+
+                <div class="items-list">
+
+
+                    {% for item in order_items %}
+
+
+                    <div class="rental-item">
+
+
+                        <div class="item-image">
+
+                            {% if item[4] %}
+
+                                {% if item[0] == "Package" %}
+
+                                    <img
+                                        src="{{ url_for(
+                                            'package_image',
+                                            filename=item[4]
+                                        ) }}"
+                                        alt="{{ item[1] }}"
+                                    >
+
+                                {% else %}
+
+                                    <img
+                                        src="{{ url_for(
+                                            'equipment_image',
+                                            filename=item[4]
+                                        ) }}"
+                                        alt="{{ item[1] }}"
+                                    >
+
+                                {% endif %}
+
+                            {% else %}
+
+                                <div class="item-image-fallback">
+
+                                    {% if item[0] == "Package" %}
+
+                                        <i class="ri-stack-line"></i>
+
+                                    {% else %}
+
+                                        <i class="ri-camera-3-line"></i>
+
+                                    {% endif %}
+
+                                </div>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="item-info">
+
+                            <h3>
+                                {{ item[1] }}
+                            </h3>
+
+
+                            <p>
+
+                                {{ item[0] }}
+
+                                ·
+
+                                {{ item[2] }}
+                                unit{% if item[2]|int != 1 %}s{% endif %}
+
+                                ·
+
+                                ₹{{ "%.0f"|format(item[3]|float) }}/day
+
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- =================================================
+                 ORDER DETAILS
+            ================================================== -->
+
+            <div class="details-card">
+
+
+                <div class="card-header">
+
+                    <div>
+
+                        <span class="small-label">
+                            ORDER DETAILS
+                        </span>
+
+                        <h2>
+                            Summary
+                        </h2>
+
+                    </div>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Rental subtotal
+                    </span>
+
+                    <strong>
+                        ₹{{ "%.2f"|format(order[4]|float) }}
+                    </strong>
+
+                </div>
+
+
+                <div class="summary-row">
+
+                    <span>
+                        Delivery
+                    </span>
+
+                    <strong>
+
+                        {% if order[5]|float > 0 %}
+
+                            ₹{{ "%.2f"|format(order[5]|float) }}
+
+                        {% else %}
+
+                            Free
+
+                        {% endif %}
+
+                    </strong>
+
+                </div>
+
+
+                <div class="divider"></div>
+
+
+                <div class="summary-total">
+
+                    <span>
+                        Total paid
+                    </span>
+
+                    <strong>
+                        ₹{{ "%.2f"|format(order[6]|float) }}
+                    </strong>
+
+                </div>
+
+
+                <div class="address">
+
+
+                    <span class="small-label">
+                        DELIVERY ADDRESS
+                    </span>
+
+
+                    <strong>
+                        {{ order[7] }}
+                    </strong>
+
+
+                    <p>
+
+                        {{ order[8] }},
+                        {{ order[9] }}
+
+                        <br>
+
+                        {{ order[10] }}
+
+                    </p>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             ACTIONS
+        ================================================== -->
+
+        <div class="actions">
+
+
+            <a
+                href="{{ url_for('my_rentals') }}"
+                class="primary-action"
+            >
+
+                View My Rentals
+
+                <i class="ri-arrow-right-line"></i>
+
+            </a>
+
+
+        </div>
+
+
+        <div class="secure-note">
+
+            <i class="ri-shield-check-line"></i>
+
+            Payment securely processed · RentEZ
+
+        </div>
+
+
+    </main>
+
+
+</div>
+
+
+</body>
+
+</html>

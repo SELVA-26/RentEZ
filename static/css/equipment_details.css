@@ -1,0 +1,763 @@
+/* =========================
+   RESET
+========================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body {
+    background: #f4f8ff;
+    color: #111827;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+nav {
+    width: 90%;
+    height: 80px;
+    margin: 30px auto;
+    padding: 0 30px 0 55px;
+    display: flex;
+    align-items: center;
+    background: rgba(255, 255, 255, .75);
+    backdrop-filter: blur(18px);
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, .5);
+    box-shadow: 0 10px 30px rgba(37, 99, 235, .08);
+}
+.logo{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    text-decoration:none;
+    font-size:30px;
+    font-weight:700;
+    color:#0F172A;
+}
+
+
+.logo img {
+    width: 58px;
+    height: 58px;
+    object-fit: contain;
+}
+
+p span{
+    color:#2563EB;
+}
+
+
+/* Navigation */
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 55px;
+
+    flex: 1;
+    margin: 0 50px;
+}
+
+.nav-links a {
+    transition: 0.2s ease;
+    margin:10px; 
+    font-size:18px;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: #2563eb;
+}
+
+
+/* Profile */
+
+.profile-menu {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    color: #1E293B;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.profile-icon {
+   width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #EFF6FF;
+    color: #2563EB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: 600;
+    margin-right:10px;
+}
+
+
+/* =========================
+   MAIN
+========================= */
+
+.details-page {
+    width: calc(100% - 170px);
+    max-width: 1450px;
+
+    margin: 45px auto 100px;
+}
+
+
+/* =========================
+   BREADCRUMB
+========================= */
+
+.breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    margin-bottom: 28px;
+
+    font-size: 14px;
+    color: #64748b;
+}
+
+.breadcrumb a {
+    color: #2563eb;
+    font-weight: 600;
+}
+
+.breadcrumb i {
+    font-size: 10px;
+    color: #94a3b8;
+}
+
+
+/* =========================
+   PRODUCT SECTION
+========================= */
+
+.product-section {
+    display: grid;
+
+    grid-template-columns: 1.05fr 0.95fr;
+
+    gap: 70px;
+
+    background: #ffffff;
+
+    border-radius: 30px;
+
+    padding: 45px;
+
+    box-shadow: 0 15px 45px rgba(15, 23, 42, 0.06);
+}
+
+
+/* =========================
+   IMAGE
+========================= */
+
+.product-image-card {
+    height: 560px;
+
+    background: #f1f6ff;
+
+    border-radius: 24px;
+
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    overflow: hidden;
+}
+
+.product-image-card img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: contain;
+
+    padding: 30px;
+}
+
+.no-image {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    gap: 15px;
+
+    color: #94a3b8;
+}
+
+.no-image i {
+    font-size: 50px;
+}
+
+
+/* Availability */
+
+.availability {
+    position: absolute;
+
+    top: 20px;
+    left: 20px;
+
+    padding: 9px 15px;
+
+    border-radius: 30px;
+
+    font-size: 13px;
+    font-weight: 600;
+
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    background: white;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+}
+
+.availability span {
+    width: 8px;
+    height: 8px;
+
+    border-radius: 50%;
+}
+
+.available {
+    color: #059669;
+}
+
+.available span {
+    background: #10b981;
+}
+
+.unavailable {
+    color: #dc2626;
+}
+
+.unavailable span {
+    background: #ef4444;
+}
+
+
+/* =========================
+   PRODUCT INFO
+========================= */
+
+.product-info {
+    padding: 20px 10px;
+
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+}
+
+.category {
+    color: #2563eb;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    text-transform: uppercase;
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 14px;
+}
+
+.product-info h1 {
+    font-size: 46px;
+
+    line-height: 1.08;
+
+    margin-bottom: 18px;
+
+    color: #0f172a;
+}
+
+/*  ---   */
+
+.equipment-type {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    color: #64748b;
+
+    font-size: 13px;
+
+    margin-bottom: 22px;
+}
+
+.equipment-type i {
+
+    color: #2563eb;
+
+    font-size: 14px;
+}
+
+/* Description */
+
+.description {
+    color: #64748b;
+
+    font-size: 16px;
+
+    line-height: 1.8;
+
+    max-width: 600px;
+
+    margin-bottom: 28px;
+}
+
+
+/* Price */
+
+.price-block {
+    display: flex;
+    align-items: baseline;
+
+    gap: 8px;
+
+    margin-bottom: 30px;
+}
+
+.price {
+    font-size: 34px;
+
+    font-weight: 800;
+
+    color: #0f172a;
+}
+
+.price-unit {
+    color: #64748b;
+
+    font-size: 15px;
+}
+
+
+/* =========================
+   TRUST
+========================= */
+
+.trust-row {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 12px;
+
+    margin-bottom: 32px;
+}
+
+.trust-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding: 14px;
+
+    background: #f7faff;
+
+    border-radius: 14px;
+}
+
+.trust-item > i {
+    color: #2563eb;
+
+    font-size: 19px;
+}
+
+.trust-item strong {
+    display: block;
+
+    font-size: 13px;
+
+    margin-bottom: 3px;
+}
+
+.trust-item small {
+    color: #94a3b8;
+
+    font-size: 11px;
+}
+
+
+/* =========================
+   RENT BUTTON
+========================= */
+
+.rent-btn {
+    width: 100%;
+
+    border: none;
+
+    background: #2563eb;
+
+    color: white;
+
+    padding: 17px 22px;
+
+    border-radius: 13px;
+
+    font-size: 15px;
+
+    font-weight: 700;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 15px;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+}
+
+.rent-btn:hover {
+    background: #1d4ed8;
+
+    transform: translateY(-2px);
+
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.25);
+}
+
+.rent-btn.disabled {
+    background: #cbd5e1;
+
+    cursor: not-allowed;
+
+    transform: none;
+
+    box-shadow: none;
+}
+
+.booking-note {
+    text-align: center;
+
+    margin-top: 13px;
+
+    color: #94a3b8;
+
+    font-size: 12px;
+}
+
+.booking-note i {
+    margin-right: 5px;
+}
+
+
+/* =========================
+   WISHLIST
+========================= */
+
+.wishlist-detail-btn {
+    position: absolute;
+
+    top: 20px;
+    right: 20px;
+
+    z-index: 5;
+
+    width: 46px;
+    height: 46px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 0;
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    color: #64748b;
+
+    box-shadow:
+        0 6px 18px rgba(15,23,42,.10);
+
+    font-size: 21px;
+
+    cursor: pointer; 
+
+    transition:
+        transform .2s ease,
+        color .2s ease,
+        background .2s ease;
+}
+
+.wishlist-detail-btn:hover {
+    transform: scale(1.05);
+}
+
+.wishlist-detail-btn.active {
+    color: #dc2626;
+    background: #fff1f2;
+}
+
+
+/* =====================================================
+   RECOMMENDATIONS
+===================================================== */
+
+.recommendations {
+    max-width: 1350px;
+    margin: 60px auto 80px;
+}
+
+.recommendations-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 30px;
+    margin-bottom: 25px;
+}
+
+.recommendations-header > div span {
+    color: #2563eb;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.recommendations-header h2 {
+    margin-top: 6px;
+    font-size: 26px;
+}
+
+.recommendations-header p {
+    margin-top: 5px;
+    color: #94a3b8;
+    font-size: 11px;
+}
+
+.recommendations-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    color: #2563eb;
+    text-decoration: none;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.recommendations-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 24px;
+}
+
+.recommendation-card {
+    overflow: hidden;
+
+    background: #ffffff;
+
+    border: 1px solid #dfe7f2;
+    border-radius: 18px;
+
+    box-shadow:
+        0 8px 24px rgba(15, 23, 42, .04);
+}
+
+.recommendation-image {
+    display: block;
+
+    height: 190px;
+
+    background: #f1f5f9;
+}
+
+.recommendation-image img {
+    width: 100%;
+    height: 100%;
+
+    display: block;
+
+    object-fit: cover;
+}
+
+.recommendation-content {
+    padding: 17px;
+}
+
+.recommendation-category {
+    color: #2563eb;
+    font-size: 8px;
+    font-weight: 700;
+    text-transform: uppercase;
+}
+
+.recommendation-content h3 {
+    margin-top: 6px;
+    font-size: 16px;
+}
+
+.recommendation-content p {
+    margin-top: 6px;
+
+    color: #64748b;
+
+    font-size: 10px;
+    line-height: 1.55;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.recommendation-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    margin-top: 16px;
+    padding-top: 14px;
+
+    border-top: 1px solid #edf1f6;
+}
+
+.recommendation-footer strong {
+    font-size: 16px;
+}
+
+.recommendation-footer small {
+    color: #94a3b8;
+    font-size: 8px;
+    font-weight: 400;
+}
+
+.recommendation-footer a {
+    padding: 8px 10px;
+
+    border-radius: 8px;
+
+    background: #2563eb;
+    color: #ffffff;
+
+    text-decoration: none;
+
+    font-size: 8px;
+    font-weight: 600;
+}
+
+@media (max-width: 950px) {
+    .recommendations {
+        margin-left: 25px;
+        margin-right: 25px;
+    }
+
+    .recommendations-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 550px) {
+    .recommendations-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .recommendations-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================================================
+   RENTEZ NAVBAR CART
+========================================================= */
+
+.cart-link {
+    position: relative;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 42px;
+    height: 42px;
+
+    margin-right: 22px;
+
+    text-decoration: none;
+
+    color: #334155;
+
+    flex-shrink: 0;
+
+    transition: color 0.2s ease;
+}
+
+.cart-link i {
+    font-size: 24px;
+    line-height: 1;
+}
+
+.cart-link:hover {
+    color: #2563eb;
+}
+
+.cart-link span {
+    position: absolute;
+
+    top: -3px;
+    right: -6px;
+
+    min-width: 19px;
+    height: 19px;
+
+    padding: 0 5px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 999px;
+
+    background: #2563eb;
+    color: #ffffff;
+
+    border: 2px solid #ffffff;
+
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+
+    box-sizing: border-box;
+}

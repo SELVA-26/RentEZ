@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>RentEZ | Shopping Cart</title>
+    <meta
+    name="csrf-token"
+    content="{{ csrf_token() }}"
+>
+
+    <!-- GOOGLE FONT -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- REMIX ICONS -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- CART CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/cart.css'
+        ) }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+     SAME RENTEZ NAVBAR
+     CART REMOVED FROM NAVBAR
+====================================================== -->
+
+<nav class="navbar">
+
+
+    <a
+        href="/"
+        class="logo"
+    >
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='images/logo.png'
+            ) }}"
+            alt="RentEZ"
+        >
+
+        <p class="rent">
+            Rent<span>EZ</span>
+        </p>
+
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="{{ url_for('equipment') }}">
+            Equipment
+        </a>
+
+        <a href="{{ url_for('packages') }}">
+            Packages
+        </a>
+
+        <a href="{{ url_for('home') }}#businesses">
+            Businesses
+        </a>
+
+        <a href="{{ url_for('home') }}#how-it-works">
+            How It Works
+        </a>
+
+        <a href="{{ url_for('contact') }}">
+            Contact
+        </a>
+
+    </div>
+
+
+    <div class="nav-right">
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="user"
+            aria-label="Profile"
+        >
+
+            <div class="avatar">
+                {{ user_name[0] | upper }}
+            </div>
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     MAIN PAGE
+====================================================== -->
+
+<main class="cart-page" data-total-days="{{ total_days }}">
+
+
+    <!-- BACK -->
+
+    <a
+        href="{{ url_for('equipment') }}"
+        class="back-link"
+    >
+
+        <i class="ri-arrow-left-line"></i>
+
+        Continue browsing
+
+    </a>
+
+
+
+    {% if cart_items %}
+
+
+    <!-- =================================================
+         HEADER
+         RED-MARKED HEADER LABEL + ITEM COUNT REMOVED
+    ================================================== -->
+
+    <section class="page-header">
+
+        <h1>
+            Shopping cart
+        </h1>
+
+        <p>
+            Review your selected equipment and rental dates
+            before checkout.
+        </p>
+
+    </section>
+
+
+
+    <!-- =================================================
+         RENTAL PERIOD
+    ================================================== -->
+
+    <section class="rental-period">
+
+        <div class="period-heading">
+
+            <div class="period-icon">
+                <i class="ri-calendar-check-line"></i>
+            </div>
+
+            <div>
+                <span>
+                    RENTAL PERIOD
+                </span>
+
+                <strong>
+                    Selected dates
+                </strong>
+            </div>
+
+        </div>
+
+
+        <div class="rental-timeline">
+
+
+            <div class="timeline-date pickup">
+
+                <span>
+                    PICKUP
+                </span>
+
+                <strong>
+                    {{ start_date }}
+                </strong>
+
+            </div>
+
+
+            <div class="timeline-connector">
+
+                <span class="timeline-dot left"></span>
+
+                <span class="timeline-track"></span>
+
+                <span class="timeline-duration">
+
+                    {{ total_days }}
+                    day{% if total_days != 1 %}s{% endif %}
+
+                </span>
+
+                <span class="timeline-track"></span>
+
+                <span class="timeline-dot right"></span>
+
+            </div>
+
+
+            <div class="timeline-date return">
+
+                <span>
+                    RETURN
+                </span>
+
+                <strong>
+                    {{ end_date }}
+                </strong>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         SELECTED EQUIPMENT
+    ================================================== -->
+
+    <section class="items-section">
+
+
+        <div class="section-header">
+
+            <div>
+
+                <span>
+                    YOUR ITEMS
+                </span>
+
+                <h2>
+                    Selected equipment
+                </h2>
+
+            </div>
+
+
+            <form
+                method="POST"
+                action="{{ url_for('clear_customer_cart') }}"
+                class="clear-cart-form"
+            >
+
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                >
+
+                <button
+                    type="submit"
+                    class="clear-cart-button"
+                >
+
+                    <i class="ri-delete-bin-6-line"></i>
+
+                    <span>
+                        Clear cart
+                    </span>
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+
+        <div class="cart-items">
+
+
+            {% for item in cart_items %}
+
+
+            <article class="cart-item">
+
+
+                <!-- IMAGE -->
+
+                <div class="item-image">
+
+                    {% if item.image %}
+
+
+                        {% if item.item_type == "Package" %}
+
+                            <img
+                                src="{{ url_for(
+                                    'package_image',
+                                    filename=item.image
+                                ) }}"
+                                alt="{{ item.name }}"
+                            >
+
+                        {% else %}
+
+                            <img
+                                src="{{ url_for(
+                                    'equipment_image',
+                                    filename=item.image
+                                ) }}"
+                                alt="{{ item.name }}"
+                            >
+
+                        {% endif %}
+
+
+                    {% else %}
+
+                        <div class="image-placeholder">
+
+                            <i class="ri-image-line"></i>
+
+                        </div>
+
+                    {% endif %}
+
+                </div>
+
+
+
+                <!-- ITEM INFO -->
+
+                <div class="item-info">
+
+
+                    <span class="item-category">
+                        {{ item.category or item.item_type }}
+                    </span>
+
+
+                    <h3>
+                        {{ item.name }}
+                    </h3>
+
+
+                    <div class="business-name">
+
+                        <i class="ri-store-2-line"></i>
+
+                        <span>
+                            {{ item.business_name }}
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- PRICE -->
+
+                <div class="item-price">
+
+                    <span>
+                        PRICE / DAY
+                    </span>
+
+
+                    <strong>
+                        ₹{{ "%.0f"|format(item.unit_price) }}
+                    </strong>
+
+
+                    <small
+                        class="item-line-total"
+                        data-line-total
+                    >
+
+                        ₹{{ "%.0f"|format(
+                            item.unit_price
+                            * item.quantity
+                            * total_days
+                        ) }} total
+
+                    </small>
+
+                </div>
+
+
+
+                <!-- QUANTITY -->
+
+                <div class="item-quantity">
+
+                <span>
+                    QUANTITY
+                </span>
+
+
+                <div
+                    class="cart-quantity-control"
+                    data-item-type="{{ item.item_type }}"
+                    data-item-id="{{ item.item_id }}"
+                    data-quantity="{{ item.quantity }}"
+                    data-max-quantity="{{ item.max_quantity }}"
+                    data-unit-price="{{ item.unit_price }}"
+                >
+
+
+                    <button
+                        type="button"
+                        class="cart-quantity-btn cart-quantity-decrease"
+                        aria-label="Decrease {{ item.name }} quantity"
+                    >
+                        −
+                    </button>
+
+
+                    <span class="cart-quantity-value">
+                        {{ item.quantity }}
+                    </span>
+
+
+                    <button
+                        type="button"
+                        class="cart-quantity-btn cart-quantity-increase"
+                        aria-label="Increase {{ item.name }} quantity"
+                    >
+                        +
+                    </button>
+
+
+                </div>
+
+            </div>
+
+            </article>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+    </section>
+
+    <!-- =================================================
+         RECOMMENDATIONS
+         ONE ROW ONLY
+    ================================================== -->
+
+    {% if recommended_items %}
+
+
+    <section class="recommendations">
+
+
+        <div class="recommendations-header">
+
+            <div>
+
+                <span>
+                    ADD MORE
+                </span>
+
+                <h2>
+                    You might also like
+                </h2>
+
+            </div>
+
+
+            <a
+                href="{{ url_for('equipment') }}"
+                class="browse-more"
+            >
+
+                Browse all
+
+                <i class="ri-arrow-right-line"></i>
+
+            </a>
+
+        </div>
+
+
+
+        <div class="recommendation-row">
+
+
+            {% for rec in recommended_items %}
+
+
+            <article class="recommendation-card">
+
+
+                <!-- RECOMMENDATION IMAGE -->
+
+                <div class="recommendation-image">
+
+
+                    {% if rec.image %}
+
+                        <img
+                            src="{{ url_for(
+                                'equipment_image',
+                                filename=rec.image
+                            ) }}"
+                            alt="{{ rec.name }}"
+                        >
+
+                    {% else %}
+
+                        <i class="ri-image-line"></i>
+
+                    {% endif %}
+
+
+                </div>
+
+
+
+                <!-- RECOMMENDATION CONTENT -->
+
+                <div class="recommendation-content">
+
+
+                    <span>
+                        {{ rec.category }}
+                    </span>
+
+
+                    <h3>
+                        {{ rec.name }}
+                    </h3>
+
+
+                    <p>
+
+                        <i class="ri-store-2-line"></i>
+
+                        {{ rec.business_name }}
+
+                    </p>
+
+
+                    <div class="recommendation-bottom">
+
+
+                        <div class="recommendation-price">
+
+                            <strong>
+                                ₹{{ "%.0f"|format(rec.price) }}
+                            </strong>
+
+                            <span>
+                                / day
+                            </span>
+
+                        </div>
+
+
+                        <a
+                            href="{{ url_for(
+                                'rent_equipment',
+                                equipment_id=rec.id,
+                                start_date=start_date,
+                                end_date=end_date
+                            ) }}"
+                            class="recommendation-add"
+                        >
+
+                            <i class="ri-add-line"></i>
+
+                            Add
+
+                        </a>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </article>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+    </section>
+
+
+    {% endif %}
+
+
+
+    <!-- =================================================
+         FINAL CHECKOUT
+         LARGE / VERTICAL / CLEAN
+====================================================== -->
+
+   <!-- =================================================
+     FINAL CHECKOUT
+================================================= -->
+
+    <section class="checkout-box">
+
+
+        <!-- HEADER -->
+
+        <div class="checkout-header">
+
+            <div>
+
+                <span>
+                    BILL DETAILS
+                </span>
+
+                <h2>
+                    Rental summary
+                </h2>
+
+            </div>
+
+
+            <div class="checkout-date">
+
+                <i class="ri-calendar-line"></i>
+
+                <span>
+                    {{ total_days }}
+                    day{% if total_days != 1 %}s{% endif %}
+                </span>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- BILL DETAILS -->
+
+        <div class="bill-list">
+
+
+            <div class="bill-row">
+
+                <span>
+                    Rental subtotal
+                </span>
+
+                <strong data-cart-subtotal>
+                    ₹{{ "%.0f"|format(subtotal) }}
+                </strong>
+
+            </div>
+
+
+            <div class="bill-row">
+
+                <span>
+                    Rental duration
+                </span>
+
+                <strong>
+                    {{ total_days }}
+                    day{% if total_days != 1 %}s{% endif %}
+                </strong>
+
+            </div>
+
+
+            <div class="bill-row">
+
+                <span>
+                    Delivery
+                </span>
+
+                <strong class="muted">
+                    Calculated next
+                </strong>
+
+            </div>
+
+
+        </div>
+
+
+
+        <!-- TOTAL -->
+
+        <div class="checkout-total">
+
+            <span>
+                Total
+            </span>
+
+
+            <strong data-cart-total>
+                ₹{{ "%.0f"|format(subtotal) }}
+            </strong>
+
+        </div>
+
+
+
+        <!-- CHECKOUT ACTION -->
+
+        <div class="checkout-action">
+
+
+            <a
+                href="{{ url_for('checkout') }}"
+                class="checkout-button"
+            >
+
+                <span>
+                    Continue to Checkout
+                </span>
+
+                <i class="ri-arrow-right-line"></i>
+
+            </a>
+
+
+
+            <!-- SECURE PAYMENT -->
+
+            <div class="secure-checkout">
+
+                <i class="ri-lock-2-line"></i>
+
+                <span>
+                    Secure checkout
+                </span>
+
+                <span class="separator">
+                    •
+                </span>
+
+                <span>
+                    No payment yet
+                </span>
+
+            </div>
+
+
+        </div>
+
+
+    </section>
+
+
+
+    {% else %}
+
+
+    <!-- =================================================
+         EMPTY CART
+    ================================================== -->
+
+    <section class="empty-cart">
+
+
+        <div class="empty-icon">
+
+            <i class="ri-shopping-cart-2-line"></i>
+
+        </div>
+
+
+        <span>
+            YOUR CART
+        </span>
+
+
+        <h2>
+            Your cart is empty
+        </h2>
+
+
+        <p>
+            Browse professional equipment and rental packages
+            and add what you need to get started.
+        </p>
+
+
+        <a
+            href="{{ url_for('equipment') }}"
+            class="checkout-button empty-button"
+        >
+
+            Browse Equipment
+
+            <i class="ri-arrow-right-line"></i>
+
+        </a>
+
+
+    </section>
+
+
+    {% endif %}
+
+
+</main>
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/cart.js'
+    ) }}"
+></script>
+</body>
+
+</html>

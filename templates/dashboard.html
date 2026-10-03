@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/notifications.css'
+        ) }}"
+    >
+
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    >
+ 
+    <title>RentEZ | Dashboard</title>
+</head>
+
+<body>
+
+    <!-- ================= SIDEBAR ================= -->
+
+    <aside class="sidebar">
+
+        <a href="/" class="logo">
+            <img src="{{ url_for('static', filename='images/logo.png') }}" alt="RentEZ">
+            <p class="rent">Rent<span>EZ</span></p>
+        </a>
+
+        <nav class="sidebar-nav">
+
+            <a href="/dashboard" class="nav-item active">
+                <i class="ri-dashboard-line"></i>
+                <span>Dashboard</span>
+            </a>
+
+            <a href="/equipment" class="nav-item">
+                <i class="ri-camera-3-line"></i>
+                <span>Browse Equipment</span>
+            </a>
+
+            <a href="{{ url_for('my_rentals') }}" class="nav-item">
+                <i class="ri-shopping-bag-3-line"></i>
+                <span>My Rentals</span>
+            </a>
+            
+            <a
+                href="{{ url_for('wishlist') }}"
+                class="nav-item"
+            >
+                <i class="ri-heart-3-line"></i>
+                <span>Wishlist</span>
+            </a>
+
+            <a href="{{ url_for('profile') }}" class="nav-item">
+                <i class="ri-user-3-line"></i>
+                <span>My Profile</span>
+            </a>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+
+            <a href="/" class="nav-item">
+                <i class="ri-home-5-line"></i>
+                <span>Back to Home</span>
+            </a>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="nav-item logout"
+            >
+                <i class="ri-logout-box-r-line"></i>
+                <span>Logout</span>
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <!-- ================= MAIN CONTENT ================= -->
+
+    <main class="main-content">
+        
+        <!-- TOP BAR -->
+
+        <header class="topbar">
+
+            <div class="dashboard-heading">
+                <h1>
+                    Welcome back,
+                    <span>{{ user_name }}</span> 👋
+                </h1>
+            </div>
+
+            <div class="topbar-right">
+
+
+                <!-- CART -->
+
+                <a
+                    href="{{ url_for('cart') }}"
+                    class="dashboard-cart"
+                    aria-label="Shopping Cart"
+                >
+
+                    <i class="ri-shopping-cart-2-line"></i>
+
+
+                    {% if cart_count > 0 %}
+
+                    <span class="cart-badge">
+                        {{ cart_count }}
+                    </span>
+
+                    {% endif %}
+
+                </a>
+
+
+
+                <!-- NOTIFICATIONS -->
+
+                <div class="notification-wrapper">
+
+                    <button
+                        type="button"
+                        class="icon-btn notification-btn"
+                        id="notificationButton"
+                    >
+
+                        <i class="ri-notification-3-line"></i>
+
+
+                        {% if unread_notification_count > 0 %}
+
+                        <span class="notification-badge">
+                            {{ unread_notification_count }}
+                        </span>
+
+                        {% endif %}
+
+                    </button>
+
+
+                    <div
+                        class="notification-panel"
+                        id="notificationPanel"
+                    >
+
+                        <div class="notification-panel-header">
+
+                            <div>
+
+                                <strong>
+                                    Notifications
+                                </strong>
+
+                                <span>
+                                    {{ unread_notification_count }}
+                                    unread
+                                </span>
+
+                            </div>
+
+
+                            {% if unread_notification_count > 0 %}
+
+                            <button
+                                type="button"
+                                class="mark-read-btn"
+                                id="markAllNotificationsRead"
+                            >
+                                Mark all read
+                            </button>
+
+                            {% endif %}
+
+                        </div>
+
+
+                        <div class="notification-list">
+
+                            {% for notification in notifications %}
+
+                            <a
+                                href="{{ notification[4] or '#' }}"
+                                class="notification-item{% if not notification[5] %} unread{% endif %}"
+                                data-notification-id="{{ notification[0] }}"
+                            >
+
+                                <div class="notification-item-icon">
+
+                                    {% if notification[1] == "booking_confirmed" %}
+
+                                        <i class="ri-checkbox-circle-line"></i>
+
+                                    {% elif notification[1] == "booking_cancelled" %}
+
+                                        <i class="ri-close-circle-line"></i>
+
+                                    {% elif notification[1] == "delivery_started" %}
+
+                                        <i class="ri-truck-line"></i>
+
+                                    {% elif notification[1] == "rental_active" %}
+
+                                        <i class="ri-home-heart-line"></i>
+
+                                    {% elif notification[1] == "equipment_returned" %}
+
+                                        <i class="ri-arrow-go-back-line"></i>
+
+                                    {% elif notification[1] == "booking_completed" %}
+
+                                        <i class="ri-checkbox-circle-line"></i>
+
+                                    {% else %}
+
+                                        <i class="ri-notification-3-line"></i>
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <div class="notification-item-content">
+
+                                    <strong>
+                                        {{ notification[2] }}
+                                    </strong>
+
+                                    <p>
+                                        {{ notification[3] }}
+                                    </p>
+
+                                    <time>
+                                        {{ notification[6].strftime(
+                                            "%d %b %Y, %I:%M %p"
+                                        ) }}
+                                    </time>
+
+                                </div>
+
+                            </a>
+
+                            {% else %}
+
+                            <div class="notification-empty">
+
+                                <i class="ri-notification-off-line"></i>
+
+                                <p>
+                                    No notifications yet.
+                                </p>
+
+                            </div>
+
+                            {% endfor %}
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </header>
+
+
+        <!-- ================= STAT CARDS ================= -->
+
+        <section class="stats">
+
+            <div class="stat-card">
+
+                <div class="stat-icon blue">
+                    <i class="ri-shopping-bag-3-line"></i>
+                </div>
+
+                <div class="stat-content">
+                    <p>Active Rentals</p>
+                    <h3>{{ active_rentals }}</h3>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon red">
+                    <i class="ri-heart-3-line"></i>
+                </div>
+
+                <div class="stat-content">
+                    <p>Wishlist</p>
+                    <h3>{{ wishlist_count }}</h3>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon green">
+                    <i class="ri-calendar-check-line"></i>
+                </div>
+
+                <div class="stat-content">
+                    <p>Upcoming Bookings</p>
+                    <h3>{{ upcoming_bookings }}</h3>
+                </div>
+
+            </div>
+
+
+            <div class="stat-card">
+
+                <div class="stat-icon purple">
+                    <i class="ri-history-line"></i>
+                </div>
+
+                <div class="stat-content">
+                    <p>Total Rentals</p>
+                    <h3>{{ total_rentals }}</h3>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= RECENT RENTALS ================= -->
+
+        <section class="content-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h3>Recent Rentals</h3>
+                    <p>Your latest rental activity.</p>
+                </div>
+
+                <a href="{{ url_for('my_rentals') }}" class="view-all">
+                    View All
+                </a>
+
+            </div>
+
+
+            {% if recent_rentals %}
+
+                <div class="rentals-list">
+
+                    {% for rental in recent_rentals %}
+
+                        <div class="rental-item">
+
+                            <div class="rental-image">
+
+                                {% if rental[11] %}
+
+                                    {% if rental[12] %}
+
+                                        <img
+                                            src="{{ url_for(
+                                                'package_image',
+                                                filename=rental[11]
+                                            ) }}"
+                                            alt="{{ rental[9] }}"
+                                        >
+
+                                    {% else %}
+
+                                        <img
+                                            src="{{ url_for(
+                                                'equipment_image',
+                                                filename=rental[11]
+                                            ) }}"
+                                            alt="{{ rental[9] }}"
+                                        >
+
+                                    {% endif %}
+
+                                {% else %}
+
+                                    <div class="empty-icon">
+                                        <i class="ri-image-line"></i>
+                                    </div>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div class="rental-details">
+
+                                <h4>{{ rental[9] }}</h4>
+
+                                <p>
+                                    {{ rental[10] }}
+                                </p>
+
+                                <p>
+                                    {{ rental[1] }} → {{ rental[2] }}
+                                </p>
+
+                            </div>
+
+
+                            <div class="rental-status">
+
+                                <span class="status-badge
+                                    {% if rental[6] == 'Completed' %}
+                                        completed
+                                    {% elif rental[6] == 'Cancelled' %}
+                                        cancelled
+                                    {% elif rental[6] == 'Delivered' %}
+                                        active
+                                    {% else %}
+                                        upcoming
+                                    {% endif %}
+                                ">
+                                    {{ rental[6] }}
+                                </span>
+
+                                <strong>
+                                    ₹{{ "%.2f"|format(rental[5]|float) }}
+                                </strong>
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="empty-card">
+
+                    <div class="empty-icon">
+                        <i class="ri-shopping-bag-3-line"></i>
+                    </div>
+
+                    <h4>No rentals yet</h4>
+
+                    <p>
+                        You haven't rented any equipment yet.
+                        Start exploring professional equipment for your next event.
+                    </p>
+
+                    <a href="{{ url_for('equipment') }}" class="primary-btn">
+                        Browse Equipment
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </section>
+
+
+        <!-- ================= RECOMMENDED EQUIPMENT ================= -->
+
+        <section class="content-section recommended-section">
+
+            <div class="section-heading">
+
+                <div>
+                    <h3>Recommended Equipment</h3>
+                    <p>Explore popular equipment categories.</p>
+                </div>
+
+                <a
+                    href="{{ url_for('equipment') }}"
+                    class="view-all"
+                >
+                    Browse All
+                </a>
+
+            </div>
+
+
+            <div class="equipment-placeholder">
+
+                <!-- CAMERAS -->
+
+                <a
+                    href="{{ url_for('equipment', category='Cameras') }}"
+                    class="placeholder-card camera-card"
+                >
+
+                    <div class="placeholder-visual camera-visual">
+                        <div class="placeholder-icon">
+                            <i class="ri-camera-3-line"></i>
+                        </div>
+                    </div>
+
+                    <div class="placeholder-content">
+
+                        <span class="placeholder-title">
+                            Cameras
+                        </span>
+
+                        <i class="ri-arrow-right-line placeholder-arrow"></i>
+
+                    </div>
+
+                </a>
+
+
+                <!-- AUDIO -->
+
+                <a
+                    href="{{ url_for('equipment', category='Audio') }}"
+                    class="placeholder-card audio-card"
+                >
+
+                    <div class="placeholder-visual audio-visual">
+                        <div class="placeholder-icon">
+                            <i class="ri-volume-up-line"></i>
+                        </div>
+                    </div>
+
+                    <div class="placeholder-content">
+
+                        <span class="placeholder-title">
+                            Audio
+                        </span>
+
+                        <i class="ri-arrow-right-line placeholder-arrow"></i>
+
+                    </div>
+
+                </a>
+
+
+                <!-- LIGHTING -->
+
+                <a
+                    href="{{ url_for('equipment', category='Lighting') }}"
+                    class="placeholder-card lighting-card"
+                >
+
+                    <div class="placeholder-visual lighting-visual">
+                        <div class="placeholder-icon">
+                            <i class="ri-lightbulb-line"></i>
+                        </div>
+                    </div>
+
+                    <div class="placeholder-content">
+
+                        <span class="placeholder-title">
+                            Lighting
+                        </span>
+
+                        <i class="ri-arrow-right-line placeholder-arrow"></i>
+
+                    </div>
+
+                </a>
+
+
+                <!-- PROJECTORS -->
+
+                <a
+                    href="{{ url_for('equipment', category='Projectors') }}"
+                    class="placeholder-card projector-card"
+                >
+
+                    <div class="placeholder-visual projector-visual">
+                        <div class="placeholder-icon">
+                            <i class="ri-projector-2-line"></i>
+                        </div>
+                    </div>
+
+                    <div class="placeholder-content">
+
+                        <span class="placeholder-title">
+                            Projectors
+                        </span>
+
+                        <i class="ri-arrow-right-line placeholder-arrow"></i>
+
+                    </div>
+
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/notifications.js'
+    ) }}"
+></script>
+</body>
+
+</html>

@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="static/css/auth.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+          rel="stylesheet">
+
+    <title>RentEZ Register</title>
+</head>
+
+<body>
+    <!-- Logo -->
+    <a href="/" class="logo">
+        <img src="static/images/logobg.png" alt="RentEZ">
+        <p class="rent">Rent<span class="ez">EZ</span></p>
+    </a>
+
+    <!-- Register Card -->
+    <div class="login-card register-card">
+
+        <h2>Create Account</h2>
+
+        <p class="welcome">
+            Create your RentEZ account and start renting professional event equipment.
+        </p>
+        
+        <form method="POST" action="/register">
+              <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                >
+            <label>Full Name</label>
+            <input
+                type="text"
+                id="fullname"
+                name="fullname"
+                placeholder="Enter your full name"
+                maxlength="100"
+                autocomplete="name"
+                pattern="[A-Za-z .'-]{2,100}"
+                required>
+
+            <label>Email Address</label>
+            <input type="email" id="email" name="email" placeholder="Enter your email" required>
+
+            <label>Phone Number</label>
+            <input
+            type="tel"
+            id="phone"
+            name="phone"
+            placeholder="Enter your 10-digit mobile number"
+            inputmode="numeric"
+            maxlength="10"
+            pattern="[6-9][0-9]{9}"
+            autocomplete="tel"
+            required>
+
+            <label>Password</label>
+
+            <div class="password-field">
+                <input type="password"  id="password" name="password" placeholder="Create a password" required>
+
+                <i id="togglePassword" class="ri-eye-off-line eye"></i>
+            </div>
+
+            <label>Confirm Password</label>
+
+            <div class="password-field">
+                <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+
+                <i id="toggleConfirmPassword" class="ri-eye-off-line eye"></i>
+            </div>
+
+            <label class="remember terms">
+                <input
+                    type="checkbox"
+                    id="terms"
+                    name="terms"
+                    required
+                >
+
+                I agree to
+                <a href="{{ url_for('terms_conditions') }}" target="_blank">
+                    Terms & Conditions
+                </a>
+            </label>
+
+            <button
+                type="submit"
+                class="login-btn">
+                Create Account
+            </button>
+
+        </form>
+
+
+        <p class="register">
+            Already have an account?
+            <a href="/login">Login</a>
+        </p>
+
+    </div>
+<script src="{{ url_for('static', filename='js/rentz_ui.js') }}"></script>
+<script src="{{ url_for('static', filename='js/register.js') }}"></script>
+
+{% if error_message %}
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+
+        rentEZMessage(
+            "{{ error_message|e }}",
+            "error",
+            "Registration Error"
+        );
+
+    });
+</script>
+{% endif %}
+
+</body>
+</html>

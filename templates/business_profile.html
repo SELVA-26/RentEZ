@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Business Profile | RentEZ</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/business_profile.css') }}"
+    >
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+    <aside class="sidebar">
+
+        <div class="sidebar-logo">
+
+            <img
+                src="{{ url_for('static', filename='images/logo.png') }}"
+                alt="RentEZ"
+            >
+
+            <span>
+                Rent<span>EZ</span>
+            </span>
+
+        </div>
+
+
+        <nav class="sidebar-nav">
+
+            {% if business[8] == 'Approved' %}
+
+                <a href="{{ url_for('business_dashboard') }}">
+                    <i class="ri-dashboard-line"></i>
+                    Overview
+                </a>
+
+                <a href="{{ url_for('business_dashboard') }}#my-equipment">
+                    <i class="ri-camera-line"></i>
+                    My Equipment
+                </a>
+
+                <a href="{{ url_for('business_bookings') }}">
+                    <i class="ri-calendar-check-line"></i>
+                    Bookings
+                </a>
+
+            {% else %}
+
+                <a href="{{ url_for('business_status') }}">
+                    <i class="ri-shield-check-line"></i>
+                    Application Status
+                </a>
+
+            {% endif %}
+
+
+            <a
+                href="{{ url_for('business_profile') }}"
+                class="active"
+            >
+                <i class="ri-store-2-line"></i>
+                Business Profile
+            </a>
+
+        </nav>
+
+
+        <div class="sidebar-bottom">
+
+            <span class="system-label">
+                SYSTEM
+            </span>
+
+            <a href="{{ url_for('business_settings') }}">
+                <i class="ri-settings-3-line"></i>
+                Settings
+            </a>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="logout"
+            >
+                Log Out
+            </a>
+
+        </div>
+
+    </aside>
+
+
+    <main class="main-content">
+
+        <div class="top-bar">
+
+            <div>
+
+                <span class="eyebrow">
+                    BUSINESS PORTAL
+                </span>
+
+                <h1>
+                    Business Profile
+                </h1>
+
+                <p>
+                    Manage your business information and application details.
+                </p>
+
+            </div>
+
+
+            <a
+                href="{% if business[8] == 'Approved' %}{{ url_for('business_dashboard') }}{% else %}{{ url_for('business_status') }}{% endif %}"
+                class="back-link"
+            >
+
+                <i class="ri-arrow-left-line"></i>
+
+                Back
+
+            </a>
+
+        </div>
+
+
+        {% if profile_success %}
+
+        <div class="profile-alert success">
+
+            <i class="ri-checkbox-circle-line"></i>
+
+            <div>
+
+                <strong>
+                    Success
+                </strong>
+
+                <span>
+                    {{ profile_success }}
+                </span>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        {% if profile_error %}
+
+        <div class="profile-alert error">
+
+            <i class="ri-error-warning-line"></i>
+
+            <div>
+
+                <strong>
+                    Unable to Save Changes
+                </strong>
+
+                <span>
+                    {{ profile_error }}
+                </span>
+
+            </div>
+
+        </div>
+
+        {% endif %}
+
+
+        {% if business[8] == 'Rejected' %}
+
+        <section class="rejection-box">
+
+            <div class="rejection-icon">
+                <i class="ri-close-circle-line"></i>
+            </div>
+
+            <div>
+
+                <strong>
+                    Application Rejected
+                </strong>
+
+                <p>
+                    Your application was rejected by RentEZ Admin.
+                </p>
+
+                {% if business[9] %}
+
+                <div class="rejection-reason-box">
+
+                    <span>
+                        Rejection Reason
+                    </span>
+
+                    <p>
+                        {{ business[9] }}
+                    </p>
+
+                </div>
+
+                {% endif %}
+
+                <p class="reapply-help">
+                    Update your application details and upload
+                    a new verification document, then resubmit
+                    your application for review.
+                </p>
+
+            </div>
+
+        </section>
+
+        {% elif business[8] == 'Pending' %}
+
+        <section class="pending-box">
+
+            <div class="pending-icon">
+                <i class="ri-time-line"></i>
+            </div>
+
+            <div>
+
+                <strong>
+                    Application Under Review
+                </strong>
+
+                <p>
+                    Your business application is currently being
+                    reviewed by RentEZ Admin.
+                </p>
+
+            </div>
+
+        </section>
+
+        {% endif %}
+
+
+        <section class="profile-card">
+
+            <div class="profile-header">
+
+                <div class="profile-icon">
+                    <i class="ri-store-2-line"></i>
+                </div>
+
+                <div>
+
+                    <h2>
+                        Store Information
+                    </h2>
+
+                    <p>
+                        Manage your business information.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form
+                method="POST"
+                action="{{ url_for('business_profile') }}"
+                enctype="multipart/form-data"
+            >
+
+                <input
+                    type="hidden"
+                    name="csrf_token"
+                    value="{{ csrf_token() }}"
+                >
+
+
+                <div class="form-group full">
+
+                    <label for="business_name">
+                        Business Name
+                    </label>
+
+                    <input
+                        type="text"
+                        id="business_name"
+                        name="business_name"
+                        value="{{ business[1] }}"
+                        {% if business[8] == 'Pending' %}readonly{% endif %}
+                        required
+                    >
+
+                    {% if business[8] == 'Pending' %}
+
+                    <small class="form-help">
+                        <i class="ri-lock-line"></i>
+                        Business name cannot be changed while the
+                        application is under review.
+                    </small>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="form-row">
+
+                    <div class="form-group">
+
+                        <label for="business_email">
+                            Business Email
+                        </label>
+
+                        <input
+                            type="email"
+                            id="business_email"
+                            name="business_email"
+                            value="{{ business[2] }}"
+                            required
+                        >
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="business_phone">
+                            Phone Number
+                        </label>
+
+                        <input
+                            type="text"
+                            id="business_phone"
+                            name="business_phone"
+                            value="{{ business[3] }}"
+                            maxlength="10"
+                            required
+                        >
+
+                    </div>
+
+                </div>
+
+
+                <small class="form-help account-help">
+
+                    <i class="ri-information-line"></i>
+
+                    These details are also used for your business
+                    account login and contact information.
+
+                </small>
+
+
+                <div class="form-group full">
+
+                    <label>
+                        Registration Number
+                    </label>
+
+                    <input
+                        type="text"
+                        value="{{ business[4] }}"
+                        readonly
+                    >
+
+                    <small class="form-help">
+                        <i class="ri-lock-line"></i>
+                        Registration number is permanently fixed
+                        after registration.
+                    </small>
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label for="address">
+                        Business Address
+                    </label>
+
+                    <input
+                        type="text"
+                        id="address"
+                        name="address"
+                        value="{{ business[5] }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label for="city">
+                        City
+                    </label>
+
+                    <input
+                        type="text"
+                        id="city"
+                        name="city"
+                        value="{{ business[6] }}"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group full">
+
+                    <label for="description">
+                        Business Description
+                    </label>
+
+                    <textarea
+                        id="description"
+                        name="description"
+                        rows="6"
+                        placeholder="Tell customers about your business..."
+                    >{{ business[7] or '' }}</textarea>
+
+                </div>
+
+
+                {% if business[8] == 'Rejected' %}
+
+                <div class="resubmission-document">
+
+                    <div class="document-heading">
+
+                        <div>
+
+                            <h3>
+                                New Verification Document
+                            </h3>
+
+                            <p>
+                                Upload an updated document before resubmitting.
+                            </p>
+
+                        </div>
+
+                        <i class="ri-file-shield-2-line"></i>
+
+                    </div>
+
+
+                    <div class="form-row">
+
+                        <div class="form-group">
+
+                            <label for="document_type">
+                                Document Type
+                            </label>
+
+                            <select
+                                id="document_type"
+                                name="document_type"
+                                required
+                            >
+
+                                <option value="">
+                                    Select document type
+                                </option>
+
+                                <option value="Business Registration Certificate">
+                                    Business Registration Certificate
+                                </option>
+
+                                <option value="GST Certificate">
+                                    GST Certificate
+                                </option>
+
+                                <option value="Trade License">
+                                    Trade License
+                                </option>
+
+                                <option value="Other">
+                                    Other
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="form-group">
+
+                            <label for="verification_document">
+                                Verification Document
+                            </label>
+
+                            <input
+                                type="file"
+                                id="verification_document"
+                                name="verification_document"
+                                accept=".pdf,.jpg,.jpeg,.png"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+
+                    <small class="form-help">
+
+                        PDF, JPG, JPEG or PNG. Maximum size: 10 MB.
+
+                    </small>
+
+                </div>
+
+                {% endif %}
+
+
+                <div class="approval-box">
+
+                    <div class="approval-icon">
+
+                        {% if business[8] == 'Approved' %}
+                            <i class="ri-checkbox-circle-fill"></i>
+                        {% elif business[8] == 'Rejected' %}
+                            <i class="ri-close-circle-fill"></i>
+                        {% else %}
+                            <i class="ri-time-fill"></i>
+                        {% endif %}
+
+                    </div>
+
+                    <div>
+
+                        <strong>
+                            Business Status
+                        </strong>
+
+                        <span>
+                            Your business is {{ business[8] }}.
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <a
+                        href="{% if business[8] == 'Approved' %}{{ url_for('business_dashboard') }}{% else %}{{ url_for('business_status') }}{% endif %}"
+                        class="cancel-btn"
+                    >
+                        Cancel
+                    </a>
+
+
+                    {% if business[8] == 'Rejected' %}
+
+                    <button
+                        type="submit"
+                        name="resubmit_application"
+                        value="1"
+                        class="save-btn resubmit-btn"
+                    >
+
+                        <i class="ri-send-plane-line"></i>
+
+                        Resubmit Application
+
+                    </button>
+
+                    {% else %}
+
+                    <button
+                        type="submit"
+                        class="save-btn"
+                    >
+
+                        <i class="ri-save-line"></i>
+
+                        Save Changes
+
+                    </button>
+
+                    {% endif %}
+
+                </div>
+
+            </form>
+
+        </section>
+
+    </main>
+
+</div>
+
+</body>
+</html>

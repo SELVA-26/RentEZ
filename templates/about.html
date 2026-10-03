@@ -1,0 +1,210 @@
+{% extends "info_base.html" %}
+
+{% set page_title = "About RentEZ" %}
+
+
+{% block content %}
+
+
+<section class="info-hero">
+
+    <span class="info-eyebrow">
+        ABOUT RENTEZ
+    </span>
+
+    <h1>
+        Making professional rentals simpler.
+    </h1>
+
+    <p>
+        RentEZ brings customers and verified rental businesses
+        together on one platform, making it easier to discover,
+        compare and rent professional equipment.
+    </p>
+
+</section>
+
+
+
+<section class="info-card">
+
+
+    <h2>
+        What is RentEZ?
+    </h2>
+
+
+    <p>
+        RentEZ is a B2C rental marketplace designed for customers
+        who need professional equipment without the complexity
+        of traditional rental processes.
+    </p>
+
+
+    <p>
+        Verified rental businesses can showcase their equipment,
+        manage inventory, create rental packages and handle
+        customer bookings from one business portal.
+    </p>
+
+
+    <p>
+        Customers can browse equipment, check rental availability,
+        select rental dates, place orders and securely complete
+        payments through the platform.
+    </p>
+
+
+    <div class="about-grid">
+
+
+        <div class="about-box">
+
+            <div class="about-icon">
+                <i class="ri-shield-check-line"></i>
+            </div>
+
+            <h3>
+                Verified Businesses
+            </h3>
+
+            <p>
+                Businesses go through an administrative verification
+                process before they can offer equipment on RentEZ.
+            </p>
+
+        </div>
+
+
+        <div class="about-box">
+
+            <div class="about-icon">
+                <i class="ri-search-line"></i>
+            </div>
+
+            <h3>
+                Easy Discovery
+            </h3>
+
+            <p>
+                Find professional equipment and rental packages
+                through a single marketplace.
+            </p>
+
+        </div>
+
+
+        <div class="about-box">
+
+            <div class="about-icon">
+                <i class="ri-dashboard-3-line"></i>
+            </div>
+
+            <h3>
+                Smarter Management
+            </h3>
+
+            <p>
+                Businesses get tools for inventory, bookings,
+                packages, payouts and rental operations.
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<section class="info-card">
+
+    <h2>
+        Built for customers and businesses
+    </h2>
+
+    <p>
+        RentEZ connects people looking for professional equipment
+        with verified rental businesses that provide it.
+    </p>
+
+
+    <div class="about-grid about-grid-two">
+
+
+        <!-- CUSTOMER -->
+
+        <div class="about-box">
+
+            <div class="about-icon">
+                <i class="ri-user-3-line"></i>
+            </div>
+
+            <h3>
+                For Customers
+            </h3>
+
+            <p>
+                Discover professional equipment, compare options,
+                check availability, book securely and track your
+                rentals from one place.
+            </p>
+
+        </div>
+
+
+        <!-- BUSINESS -->
+
+        <div class="about-box">
+
+            <div class="about-icon">
+                <i class="ri-store-3-line"></i>
+            </div>
+
+            <h3>
+                For Businesses
+            </h3>
+
+            <p>
+                Showcase your equipment, manage inventory, create
+                rental packages, handle customer bookings and
+                manage your rental operations.
+            </p>
+
+        </div>
+
+
+    </div>
+
+</section>
+
+
+
+<section class="info-cta">
+
+    <div>
+
+        <h2>
+            Ready to explore RentEZ?
+        </h2>
+
+        <p>
+            Browse professional equipment from verified rental businesses.
+        </p>
+
+    </div>
+
+
+    <a href="{{ url_for('equipment') }}">
+
+        Browse Equipment
+
+        <i class="ri-arrow-right-line"></i>
+
+    </a>
+
+</section>
+
+
+{% endblock %}

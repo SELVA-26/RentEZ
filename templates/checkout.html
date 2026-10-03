@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    >
+
+    <title>RentEZ | Checkout</title>
+
+
+    <!-- =====================================================
+         GOOGLE FONT
+    ====================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         REMIX ICONS
+    ====================================================== -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- =====================================================
+         CHECKOUT CSS
+    ====================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/checkout.css'
+        ) }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+     SAME VISUAL LANGUAGE AS EQUIPMENT / MY RENTALS
+====================================================== -->
+
+<nav class="navbar">
+
+
+    <a
+        href="/"
+        class="logo"
+    >
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='images/logo.png'
+            ) }}"
+            alt="RentEZ"
+        >
+
+
+        <p class="rent">
+            Rent<span>EZ</span>
+        </p>
+
+    </a>
+
+
+    <div class="nav-links">
+
+
+        <a href="/">
+            Home
+        </a>
+
+
+        <a href="{{ url_for('equipment') }}">
+            Equipment
+        </a>
+
+
+        <a href="{{ url_for('packages') }}">
+            Packages
+        </a>
+
+
+        <a href="{{ url_for('home') }}#businesses">
+            Businesses
+        </a>
+
+
+        <a href="{{ url_for('home') }}#how-it-works">
+            How It Works
+        </a>
+
+
+        <a href="{{ url_for('contact') }}">
+            Contact
+        </a>
+
+
+    </div>
+
+
+    <div class="nav-right">
+
+
+        <!-- CART -->
+
+        <a
+            href="{{ url_for('cart') }}"
+            class="cart-link"
+            aria-label="Shopping cart"
+            title="Shopping cart"
+        >
+
+            <i
+                class="ri-shopping-cart-2-line"
+                aria-hidden="true"
+            ></i>
+
+
+            {% if cart_count > 0 %}
+
+                <span class="cart-badge">
+                    {{ cart_count }}
+                </span>
+
+            {% endif %}
+
+        </a>
+
+
+        <!-- PROFILE -->
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="user"
+            aria-label="Profile"
+        >
+
+            <div class="avatar">
+                {{ session.get('user_name', 'U')[0] | upper }}
+            </div>
+
+        </a>
+
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     MAIN CHECKOUT PAGE
+====================================================== -->
+
+<main class="checkout-page">
+
+
+    <!-- =================================================
+         BACK
+    ================================================== -->
+
+    <a
+        href="{{ url_for('cart') }}"
+        class="back-link"
+    >
+
+        <i class="ri-arrow-left-line"></i>
+
+        <span>
+            Back to Cart
+        </span>
+
+    </a>
+
+
+
+    <!-- =================================================
+         PAGE HEADER
+    ================================================== -->
+
+    <section class="page-header">
+
+
+        <div class="page-heading">
+
+
+            <span>
+                SECURE CHECKOUT
+            </span>
+
+
+            <h1>
+                Complete Your Rental
+            </h1>
+
+
+            <p>
+                Confirm your delivery details and review your
+                order before proceeding to payment.
+            </p>
+
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         ORDER FORM
+    ================================================== -->
+
+    <form
+        method="POST"
+        action="{{ url_for('create_order') }}"
+        class="checkout-form"
+    >
+
+
+        <input
+            type="hidden"
+            name="csrf_token"
+            value="{{ csrf_token() }}"
+        >
+
+
+
+        <!-- =================================================
+             MAIN GRID
+        ================================================== -->
+
+        <div class="checkout-grid">
+
+
+            <!-- =================================================
+                 DELIVERY CARD
+            ================================================== -->
+
+            <section class="checkout-card delivery-card">
+
+
+                <!-- CARD HEADER -->
+
+                <div class="card-heading">
+
+
+                    <div class="heading-icon">
+
+                        <i class="ri-map-pin-2-line"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            DELIVERY DETAILS
+                        </span>
+
+
+                        <h2>
+                            Delivery address
+                        </h2>
+
+
+                        <p>
+                            Where should we deliver your rental?
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     ADDRESS FIELD
+                ================================================== -->
+
+                <div class="field-group">
+
+
+                    <label for="delivery_address">
+                        Address
+                    </label>
+
+
+                    <div class="input-wrap">
+
+                        <i class="ri-map-pin-line"></i>
+
+
+                        <input
+                            id="delivery_address"
+                            type="text"
+                            name="delivery_address"
+                            value="{{ customer[3] or '' }}"
+                            placeholder="House number, street, area"
+                            required
+                        >
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     CITY / STATE
+                ================================================== -->
+
+                <div class="two-columns">
+
+
+                    <div class="field-group">
+
+
+                        <label for="delivery_city">
+                            City
+                        </label>
+
+
+                        <div class="input-wrap">
+
+                            <i class="ri-building-2-line"></i>
+
+
+                            <input
+                                id="delivery_city"
+                                type="text"
+                                name="delivery_city"
+                                value="{{ customer[4] or '' }}"
+                                placeholder="Mumbai"
+                                required
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+
+                    <div class="field-group">
+
+
+                        <label for="delivery_state">
+                            State
+                        </label>
+
+
+                        <div class="input-wrap">
+
+                            <i class="ri-map-2-line"></i>
+
+
+                            <input
+                                id="delivery_state"
+                                type="text"
+                                name="delivery_state"
+                                value="{{ customer[5] or '' }}"
+                                placeholder="Maharashtra"
+                                required
+                            >
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     PINCODE
+                ================================================== -->
+
+                <div class="field-group">
+
+
+                    <label for="delivery_pincode">
+                        Pincode
+                    </label>
+
+
+                    <div class="input-wrap">
+
+                        <i class="ri-mail-line"></i>
+
+
+                        <input
+                            id="delivery_pincode"
+                            type="text"
+                            name="delivery_pincode"
+                            value="{{ customer[6] or '' }}"
+                            maxlength="6"
+                            inputmode="numeric"
+                            placeholder="400001"
+                            required
+                        >
+
+                    </div>
+
+
+                </div>
+
+                <!-- =================================================
+                     ADDRESS NOTE
+                ================================================== -->
+
+                <div class="address-note">
+
+                    <i class="ri-information-line"></i>
+
+                    <span>
+                        Make sure your delivery address is accurate.
+                        You'll receive the final order details after checkout.
+                    </span>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 ORDER SUMMARY
+            ================================================== -->
+
+            <aside class="checkout-card summary-card">
+
+
+                <!-- HEADER -->
+
+                <div class="card-heading summary-heading">
+
+
+                    <div class="heading-icon">
+
+                        <i class="ri-file-list-3-line"></i>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            YOUR ORDER
+                        </span>
+
+
+                        <h2>
+                            Order summary
+                        </h2>
+
+
+                        <p>
+                            {{ checkout_items|length }}
+                            item{% if checkout_items|length != 1 %}s{% endif %}
+                        </p>
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     ITEMS
+                ================================================== -->
+
+                <div class="summary-items">
+
+
+                    {% for item in checkout_items %}
+
+
+                    <div class="summary-item">
+
+
+                        <div class="summary-item-info">
+
+                            <strong>
+                                {{ item.name }}
+                            </strong>
+
+                        </div>
+
+
+                        <strong class="summary-item-total">
+
+                            ₹{{ "%.0f"|format(
+                                item.unit_price
+                                * item.quantity
+                                * total_days
+                            ) }}
+
+                        </strong>
+
+
+                    </div>
+
+
+                    {% endfor %}
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     SUMMARY CALCULATIONS
+                ================================================== -->
+
+                <div class="summary-calculations">
+
+
+                    <div class="summary-row">
+
+
+                        <span>
+                            Rental subtotal
+                        </span>
+
+
+                        <strong>
+                            ₹{{ "%.0f"|format(subtotal) }}
+                        </strong>
+
+
+                    </div>
+
+
+
+                    <div class="summary-row">
+
+
+                        <span>
+                            Delivery
+                        </span>
+
+
+                        <strong>
+
+                            {% if delivery_fee %}
+
+                                ₹{{ "%.0f"|format(delivery_fee) }}
+
+                            {% else %}
+
+                                Free
+
+                            {% endif %}
+
+                        </strong>
+
+
+                    </div>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     TOTAL
+                ================================================== -->
+
+                <div class="summary-total">
+
+
+                    <div>
+
+                        <span>
+                            Total
+                        </span>
+
+
+                        <small>
+                            Final amount
+                        </small>
+
+                    </div>
+
+
+                    <strong>
+                        ₹{{ "%.0f"|format(total_amount) }}
+                    </strong>
+
+
+                </div>
+
+
+
+                <!-- =================================================
+                     PAYMENT BUTTON
+                ================================================== -->
+
+                <button
+                    type="submit"
+                    class="payment-button"
+                >
+
+                    <span>
+                        Proceed to Payment
+                    </span>
+
+
+                    <i class="ri-arrow-right-line"></i>
+
+                </button>
+
+
+
+                <!-- =================================================
+                     SECURE NOTE
+                ================================================== -->
+
+                <div class="secure-note">
+
+
+                    <i class="ri-shield-check-line"></i>
+
+
+                    <div>
+
+                        <strong>
+                            Secure payment
+                        </strong>
+
+
+                        <span>
+                            You'll be redirected to Razorpay
+                            to complete your payment.
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+
+            </aside>
+
+
+        </div>
+
+
+    </form>
+
+
+</main>
+
+
+</body>
+
+</html>

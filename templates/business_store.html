@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>{{ business[1] }} | RentEZ</title>
+
+
+    <!-- GOOGLE FONT -->
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- REMIX ICONS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- BUSINESS STORE CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/business_store.css'
+        ) }}"
+    >   
+    <meta
+    name="csrf-token"
+    content="{{ csrf_token() }}"
+>
+<link
+    rel="stylesheet"
+    href="{{ url_for(
+        'static',
+        filename='css/chat_launcher.css'
+    ) }}"
+>
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVBAR
+===================================================== -->
+
+<nav class="navbar">
+
+
+    <!-- LOGO -->
+
+    <a
+        href="{{ url_for('home') }}"
+        class="logo"
+    >
+
+        <img
+            src="{{ url_for(
+                'static',
+                filename='images/logo.png'
+            ) }}"
+            alt="RentEZ"
+        >
+
+        <p class="rent">
+            Rent<span>EZ</span>
+        </p>
+
+    </a>
+
+
+    <!-- NAVIGATION -->
+
+    <div class="nav-links">
+
+        <a href="{{ url_for('home') }}">
+            Home
+        </a>
+
+        <a href="{{ url_for('equipment') }}">
+            Equipment
+        </a>
+
+        <a href="{{ url_for('packages') }}">
+            Packages
+        </a>
+
+        <a
+            href="{{ url_for('home') }}#businesses"
+            class="active"
+        >
+            Businesses
+        </a>
+
+        <a href="{{ url_for('home') }}#how-it-works">
+            How It Works
+        </a>
+
+        <a href="{{ url_for('contact') }}">
+            Contact
+        </a>
+
+    </div>
+
+
+    <!-- RIGHT SIDE -->
+
+    <div class="nav-right">
+
+
+        <a
+            href="{{ url_for('cart') }}"
+            class="cart-link"
+            aria-label="Shopping cart"
+        >
+
+            <i
+                class="ri-shopping-cart-2-line"
+                aria-hidden="true"
+            ></i>
+
+            {% if cart_count > 0 %}
+
+                <span class="cart-badge">
+                    {{ cart_count }}
+                </span>
+
+            {% endif %}
+
+        </a>
+
+
+        <a
+            href="{{ url_for('dashboard') }}"
+            class="user"
+        >
+
+            <div class="avatar">
+                {{ user_name[0] | upper }}
+            </div>
+
+        </a>
+
+    </div>
+
+</nav>
+
+
+
+<!-- =====================================================
+     PAGE
+===================================================== -->
+
+<main class="store-page">
+
+
+    <!-- =================================================
+         BUSINESS HERO
+    ================================================== -->
+
+    <section class="business-hero">
+
+
+        <a
+            href="{{ url_for('home') }}"
+            class="back-link"
+        >
+
+            <i class="ri-arrow-left-line"></i>
+
+            <span>
+                Back to Home
+            </span>
+
+        </a>
+
+
+        <div class="hero-content">
+
+
+            <!-- BUSINESS ICON -->
+
+            <div class="business-avatar">
+
+                <i class="ri-store-3-line"></i>
+
+            </div>
+
+
+            <!-- BUSINESS DETAILS -->
+
+            <div class="business-details">
+
+
+                <div class="business-title-row">
+
+                    <h1>
+                        {{ business[1] }}
+                    </h1>
+
+
+                    <span class="verified-badge">
+
+                        <i class="ri-checkbox-circle-fill"></i>
+
+                        Verified Business
+
+                    </span>
+
+                </div>
+
+
+                <div class="business-location">
+
+                    <i class="ri-map-pin-line"></i>
+
+                    <span>
+                        {{ business[2] }}
+                    </span>
+
+                </div>
+
+
+                {% if business[4] %}
+
+                <p class="business-description">
+                    {{ business[4] }}
+                </p>
+
+                {% else %}
+
+                <p class="business-description">
+                    Professional rental equipment
+                    from a verified RentEZ business.
+                </p>
+
+                {% endif %}
+
+
+                <div class="business-stats">
+
+
+                    <div class="stat-item">
+
+                        <strong>
+                            {{ equipment_list|length }}
+                        </strong>
+
+                        <span>
+                            Equipment
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat-divider"></div>
+
+
+                    <div class="stat-item">
+
+                        <strong>
+                            Verified
+                        </strong>
+
+                        <span>
+                            Business
+                        </span>
+
+                    </div>
+
+
+                    <div class="stat-divider"></div>
+
+
+                    <div class="stat-item">
+
+                        <strong>
+                            RentEZ
+                        </strong>
+
+                        <span>
+                            Marketplace
+                        </span>
+
+                    </div>
+
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+
+    <!-- =================================================
+         EQUIPMENT SECTION
+    ================================================== -->
+
+    <section class="equipment-section">
+
+
+        <div class="section-header">
+
+
+            <div>
+
+                <span class="eyebrow">
+                    AVAILABLE INVENTORY
+                </span>
+
+                <h2>
+                    Equipment from {{ business[1] }}
+                </h2>
+
+                <p>
+                    Browse professional equipment available
+                    for rental from this verified business.
+                </p>
+
+            </div>
+
+
+            {% if equipment_list %}
+
+            <span class="inventory-count">
+
+                {{ equipment_list|length }}
+                item{% if equipment_list|length != 1 %}s{% endif %}
+
+            </span>
+
+            {% endif %}
+
+        </div>
+
+
+
+        {% if equipment_list %}
+
+
+        <!-- EQUIPMENT GRID -->
+
+        <div class="equipment-grid">
+
+
+            {% for item in equipment_list %}
+
+
+            <div class="equipment-card-wrap">
+
+
+                <a
+                    href="{{ url_for(
+                        'equipment_details',
+                        equipment_id=item[0]
+                    ) }}"
+                    class="equipment-card"
+                >
+
+
+                    <!-- IMAGE -->
+
+                    <div class="equipment-image">
+
+
+                        {% if item[5] %}
+
+                        <img
+                            src="{{ url_for(
+                                'equipment_image',
+                                filename=item[5]
+                            ) }}"
+                            alt="{{ item[1] }}"
+                        >
+
+                        {% else %}
+
+                        <div class="image-placeholder">
+
+                            <i class="ri-image-line"></i>
+
+                            <span>
+                                No image available
+                            </span>
+
+                        </div>
+
+                        {% endif %}
+
+
+
+                        {% if item[6] %}
+
+                        <span class="available-badge">
+
+                            <span class="status-dot"></span>
+
+                            In Stock
+
+                        </span>
+
+                        {% else %}
+
+                        <span class="unavailable-badge">
+
+                            <span class="status-dot"></span>
+
+                            Out of Stock
+
+                        </span>
+
+                        {% endif %}
+
+
+                    </div>
+
+
+
+                    <!-- INFO -->
+
+                    <div class="equipment-info">
+
+
+                        <span class="category">
+                            {{ item[2] }}
+                        </span>
+
+
+                        <h3>
+                            {{ item[1] }}
+                        </h3>
+
+
+                        <p class="description">
+                            {{ item[3] }}
+                        </p>
+
+
+                        <div class="card-bottom">
+
+
+                            <div class="price">
+
+                                <strong>
+                                    ₹{{ "%.0f"|format(item[4]) }}
+                                </strong>
+
+                                <span>
+                                    / day
+                                </span>
+
+                            </div>
+
+
+                            <span class="details-btn">
+
+                                View Details
+
+                                <i class="ri-arrow-right-line"></i>
+
+                            </span>
+
+
+                        </div>
+
+
+                    </div>
+
+
+                </a>
+
+
+            </div>
+
+
+            {% endfor %}
+
+
+        </div>
+
+
+        {% else %}
+
+
+        <!-- EMPTY STATE -->
+
+        <div class="empty-state">
+
+
+            <div class="empty-icon">
+
+                <i class="ri-box-3-line"></i>
+
+            </div>
+
+
+            <h3>
+                No equipment listed yet
+            </h3>
+
+
+            <p>
+                This business hasn't listed any active
+                equipment at the moment.
+            </p>
+
+
+            <a
+                href="{{ url_for('equipment') }}"
+                class="browse-btn"
+            >
+
+                Browse Other Equipment
+
+                <i class="ri-arrow-right-line"></i>
+
+            </a>
+
+
+        </div>
+
+
+        {% endif %}
+
+
+    </section>
+
+
+</main>
+
+</body>
+</html>

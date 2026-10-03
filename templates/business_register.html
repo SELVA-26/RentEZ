@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Remix Icons -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet">
+
+    <!-- CSS -->
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/business_register.css') }}">
+
+    <title>RentEZ | Business Registration</title>
+
+</head>
+
+<body>
+
+
+<!-- =========================
+     LOGO
+========================= -->
+
+<a href="{{ url_for('home') }}" class="logo">
+
+    <img
+        src="{{ url_for('static', filename='images/logobg.png') }}"
+        alt="RentEZ">
+
+    <p class="rent">
+        Rent<span class="ez">EZ</span>
+    </p>
+
+</a>
+
+
+<!-- =========================
+     MAIN CARD
+========================= -->
+
+<div class="business-card">
+
+
+    <!-- HEADER -->
+
+    <div class="card-header">
+
+        <h1>Register Your Business</h1>
+
+        <p>
+            Submit your business details for verification and start listing
+            your equipment on RentEZ.
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         FORM
+    ========================= -->
+
+    <form
+        method="POST"
+        action="{{ url_for('business_register') }}"
+        enctype="multipart/form-data"
+        id="businessRegisterForm"
+    >
+      <input
+        type="hidden"
+        name="csrf_token"
+        value="{{ csrf_token() }}"
+    >
+
+        <!-- =========================
+             BUSINESS DETAILS
+        ========================= -->
+
+        <div class="section-heading">
+
+            <h2>Business Details</h2>
+
+        </div>
+
+
+        <div class="form-grid three-columns">
+
+
+            <!-- Business Name -->
+
+            <div class="form-group">
+
+                <label for="business_name">
+                    Business Name
+                </label>
+
+                <input
+                    type="text"
+                    id="business_name"
+                    name="business_name"
+                    placeholder="Enter business name"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Registration Number -->
+
+            <div class="form-group">
+
+                <label for="registration_number">
+                    Registration / ID Number
+                </label>
+
+                <input
+                    type="text"
+                    id="registration_number"
+                    name="registration_number"
+                    placeholder="Enter registration number"
+                    required
+                >
+
+            </div>
+
+
+            <!-- City -->
+
+            <div class="form-group">
+
+                <label for="city">
+                    City
+                </label>
+
+                <input
+                    type="text"
+                    id="city"
+                    name="city"
+                    placeholder="Enter city"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Address -->
+
+            <div class="form-group full">
+
+                <label for="address">
+                    Business Address
+                </label>
+
+                <textarea
+                    id="address"
+                    name="address"
+                    rows="2"
+                    placeholder="Enter complete business address"
+                    required
+                ></textarea>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             OWNER & CONTACT
+        ========================= -->
+
+        <div class="section-heading">
+
+            <h2>Owner & Contact</h2>
+
+        </div>
+
+
+        <div class="form-grid three-columns">
+
+
+            <!-- Owner -->
+
+            <div class="form-group">
+
+                <label for="full_name">
+                    Owner / Representative
+                </label>
+
+                <input
+                    type="text"
+                    id="full_name"
+                    name="full_name"
+                    placeholder="Enter full name"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Email -->
+
+            <div class="form-group">
+
+                <label for="email">
+                    Email Address
+                </label>
+
+                <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    placeholder="business@example.com"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Phone -->
+
+            <div class="form-group">
+
+                <label for="phone">
+                    Phone Number
+                </label>
+
+                <input
+                    type="tel"
+                    id="phone"
+                    name="phone"
+                    placeholder="Enter phone number"
+                    maxlength="15"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             ACCOUNT PASSWORD
+        ========================= -->
+
+        <div class="form-grid two-columns account-row">
+
+
+            <!-- Password -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <div class="password-field">
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Create a password"
+                        required
+                    >
+
+                    <i
+                        id="togglePassword"
+                        class="ri-eye-off-line eye">
+                    </i>
+
+                </div>
+
+            </div>
+
+
+            <!-- Confirm Password -->
+
+            <div class="form-group">
+
+                <label for="confirmPassword">
+                    Confirm Password
+                </label>
+
+                <div class="password-field">
+
+                    <input
+                        type="password"
+                        id="confirmPassword"
+                        name="confirmPassword"
+                        placeholder="Confirm your password"
+                        required
+                    >
+
+                    <i
+                        id="toggleConfirmPassword"
+                        class="ri-eye-off-line eye">
+                    </i>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             VERIFICATION
+        ========================= -->
+
+        <div class="section-heading verification-heading">
+
+            <h2>Business Verification</h2>
+
+            <p>
+                Upload an official document to verify your business.
+            </p>
+
+        </div>
+
+
+        <div class="form-grid two-columns verification-row">
+
+
+            <!-- Document Type -->
+
+            <div class="form-group">
+
+                <label for="document_type">
+                    Document Type
+                </label>
+
+                <select
+                    id="document_type"
+                    name="document_type"
+                    required
+                >
+
+                    <option value="">
+                        Select document type
+                    </option>
+
+                    <option value="GST Certificate">
+                        GST Certificate
+                    </option>
+
+                    <option value="Udyam Registration">
+                        Udyam Registration
+                    </option>
+
+                    <option value="Business Registration">
+                        Business Registration Certificate
+                    </option>
+
+                    <option value="Other">
+                        Other
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Document -->
+
+            <div class="form-group">
+
+                <label for="verification_document">
+                    Verification Document
+                </label>
+
+                <label
+                    for="verification_document"
+                    class="file-upload"
+                >
+
+                    <span id="fileName">
+                        Choose PDF, JPG or PNG
+                    </span>
+
+                    <strong>
+                        Browse
+                    </strong>
+
+                </label>
+
+                <input
+                    type="file"
+                    id="verification_document"
+                    name="verification_document"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+
+        <!-- =========================
+             APPROVAL NOTE
+        ========================= -->
+
+        <div class="approval-note">
+
+            Your application will be reviewed by RentEZ Admin.
+            You will receive an email once your verification is approved
+            or rejected.
+
+        </div>
+
+
+        <!-- =========================
+             TERMS
+        ========================= -->
+
+        <label class="terms">
+
+            <input
+                type="checkbox"
+                id="terms"
+                name="terms"
+                required
+            >
+
+            <span>
+                I confirm that the information and document provided
+                are accurate and belong to my business, and I agree to
+                the RentEZ
+                <a
+                    href="{{ url_for('terms_conditions') }}"
+                    target="_blank"
+                >
+                    Terms & Conditions
+                </a>.
+            </span>
+
+        </label>
+
+
+        <!-- =========================
+             SUBMIT
+        ========================= -->
+
+        <button
+            type="submit"
+            class="submit-btn"
+            id="submitBtn"
+        >
+
+            Submit Business Application
+
+        </button>
+
+
+    </form>
+
+
+    <!-- LOGIN -->
+
+    <div class="business-login">
+
+        Already registered?
+
+        <a href="/business-login">
+            Business Login
+        </a>
+
+    </div>
+
+
+</div>
+
+
+<!-- =========================
+     SUCCESS
+========================= -->
+
+{% if registration_success %}
+
+<div class="success-overlay" id="successOverlay">
+
+    <div class="success-modal">
+
+        <div class="success-accent"></div>
+
+        <div class="success-content">
+
+            <p class="success-label">
+                BUSINESS VERIFICATION
+            </p>
+
+            <h2>
+                Application Submitted Successfully
+            </h2>
+
+            <p class="success-main">
+                Your business application has been submitted successfully.
+                Our admin team will review your business details and
+                verification document.
+            </p>
+
+            <div class="success-info">
+
+                <strong>
+                    What happens next?
+                </strong>
+
+                <p>
+                    You will receive an email once your application has been
+                    approved or rejected.
+                </p>
+
+                <p>
+                    After your business is approved, please log in using the
+                    <strong>same email address and password</strong> you used
+                    during registration.
+                </p>
+
+                <p>
+                    You will not be able to log in until your business has
+                    been approved by RentEZ Admin.
+                </p>
+
+            </div>
+
+            <button
+                type="button"
+                class="success-button"
+                onclick="closeSuccessModal()">
+
+                Got it
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+
+<!-- =========================
+     ERROR
+========================= -->
+
+{% if registration_error %}
+
+<div class="error-popup" id="errorPopup">
+
+    <span>
+        {{ registration_error }}
+    </span>
+
+    <i
+        class="ri-close-line close-popup"
+        onclick="closePopup()">
+    </i>
+
+</div>
+
+{% endif %}
+
+<script
+    src="{{ url_for('static', filename='js/rentz_ui.js') }}"
+></script>
+
+<script
+    src="{{ url_for('static', filename='js/business_register.js') }}"
+></script>
+
+</body>
+
+</html>

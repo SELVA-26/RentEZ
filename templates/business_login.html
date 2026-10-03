@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet">
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/business_login.css') }}">
+
+    <title>RentEZ | Business Login</title>
+
+</head>
+
+<body>
+
+
+<!-- =========================
+     LOGO
+========================= -->
+
+<a href="{{ url_for('home') }}" class="logo">
+
+    <img
+        src="{{ url_for('static', filename='images/logobg.png') }}"
+        alt="RentEZ">
+
+    <p class="rent">
+        Rent<span class="ez">EZ</span>
+    </p>
+
+</a>
+
+
+<!-- =========================
+     LOGIN CARD
+========================= -->
+
+<div class="login-card">
+
+    <div class="login-header">
+
+        <p class="eyebrow">
+            BUSINESS ACCOUNT
+        </p>
+
+        <h1>
+            Welcome Back
+        </h1>
+
+        <p>
+            Sign in to manage your RentEZ business.
+        </p>
+
+    </div>
+
+
+    <!-- =========================
+         STATUS MESSAGE
+    ========================= -->
+
+    {% if login_message %}
+
+    <div class="status-message
+        {% if login_type == 'success' %}
+            success
+        {% elif login_type == 'pending' %}
+            pending
+        {% else %}
+            error
+        {% endif %}
+    ">
+
+        <strong>
+            {{ login_title }}
+        </strong>
+
+        <p>
+            {{ login_message }}
+        </p>
+
+        {% if rejection_reason %}
+
+        <div class="rejection-reason">
+
+            <span>Reason</span>
+
+            <p>
+                {{ rejection_reason }}
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- =========================
+         FORM
+    ========================= -->
+
+    <form
+        method="POST"
+        action="{{ url_for('business_login') }}"
+        id="businessLoginForm"
+    >
+      <input
+        type="hidden"
+        name="csrf_token"
+        value="{{ csrf_token() }}"
+    >
+
+
+        <div class="form-group">
+
+            <label for="email">
+                Email Address
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your business email"
+                autocomplete="email"
+                required
+            >
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="password">
+                Password
+            </label>
+
+            <div class="password-field">
+
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Enter your password"
+                    autocomplete="current-password"
+                    required
+                >
+
+                <i
+                    id="togglePassword"
+                    class="ri-eye-off-line eye">
+                </i>
+
+            </div>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="login-btn"
+        >
+
+            Login to Business Account
+
+        </button>
+
+
+    </form>
+
+
+    <!-- =========================
+         REGISTER
+    ========================= -->
+
+    <div class="register-link">
+
+        Don't have a business account?
+
+        <a href="{{ url_for('business_register') }}">
+            Register Your Business
+        </a>
+
+    </div>
+
+
+    <!-- CUSTOMER LOGIN -->
+
+    <div class="customer-login">
+
+        Customer?
+
+        <a href="{{ url_for('login') }}">
+            Customer Login
+        </a>
+
+    </div>
+
+</div>
+
+
+<script
+    src="{{ url_for('static', filename='js/business_login.js') }}">
+</script>
+
+</body>
+
+</html>

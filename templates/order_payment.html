@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    >
+
+    <title>Payment | RentEZ</title>
+
+
+    <!-- Poppins -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- Remix Icons -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- Payment CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/payment.css'
+        ) }}"
+    >
+
+</head>
+
+
+<body>
+
+
+<main class="payment-container">
+
+
+    <!-- BACK -->
+
+    <a
+        href="{{ url_for('cart') }}"
+        class="back-link"
+    >
+
+        <i class="ri-arrow-left-line"></i>
+
+        <span>
+            Back to Cart
+        </span>
+
+    </a>
+
+
+    <!-- MAIN CARD -->
+
+    <section class="payment-card">
+
+
+        <!-- HEADER -->
+
+        <div class="payment-top">
+
+            <div class="payment-icon">
+
+                <i class="ri-lock-2-line"></i>
+
+            </div>
+
+
+            <div class="payment-heading">
+
+                <span class="payment-label">
+                    SECURE CHECKOUT
+                </span>
+
+
+                <h1>
+                    Complete Your Payment
+                </h1>
+
+
+                <p>
+                    Your rental order is ready.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- ORDER INFORMATION -->
+
+        <div class="booking-details">
+
+
+            <div class="detail-block">
+
+                <div class="detail-icon">
+
+                    <i class="ri-file-list-3-line"></i>
+
+                </div>
+
+
+                <div class="detail-content">
+
+                    <span>
+                        ORDER ID
+                    </span>
+
+                    <strong>
+                        #{{ order[0] }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="detail-block">
+
+                <div class="detail-icon">
+
+                    <i class="ri-shopping-bag-3-line"></i>
+
+                </div>
+
+
+                <div class="detail-content">
+
+                    <span>
+                        RENTAL ITEMS
+                    </span>
+
+                    <strong>
+                        {{ order_items|length }}
+                        item{% if order_items|length != 1 %}s{% endif %}
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="detail-block total-block">
+
+                <div class="detail-icon total-icon">
+
+                    <i class="ri-wallet-3-line"></i>
+
+                </div>
+
+
+                <div class="detail-content">
+
+                    <span>
+                        TOTAL AMOUNT
+                    </span>
+
+                    <strong>
+                        ₹{{ "%.2f"|format(order[7]|float) }}
+                    </strong>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ORDER SUMMARY -->
+
+        <div class="rental-summary">
+
+
+            <div class="summary-heading">
+
+                <div>
+
+                    <span>
+                        YOUR RENTAL
+                    </span>
+
+                    <h2>
+                        Order Summary
+                    </h2>
+
+                </div>
+
+
+                <span class="summary-count">
+
+                    {{ order_items|length }}
+
+                    item{% if order_items|length != 1 %}s{% endif %}
+
+                </span>
+
+            </div>
+
+
+            <div class="summary-list">
+
+
+                {% for item in order_items %}
+
+                <div class="summary-item">
+
+
+                    <!-- ITEM IMAGE -->
+
+                    <div class="summary-item-image">
+
+                        {% if item[8] %}
+
+                            {% if item[3] == "Package" %}
+
+                                <img
+                                    src="{{ url_for(
+                                        'package_image',
+                                        filename=item[8]
+                                    ) }}"
+                                    alt="{{ item[4] }}"
+                                >
+
+                            {% else %}
+
+                                <img
+                                    src="{{ url_for(
+                                        'equipment_image',
+                                        filename=item[8]
+                                    ) }}"
+                                    alt="{{ item[4] }}"
+                                >
+
+                            {% endif %}
+
+                        {% else %}
+
+                            <div class="summary-item-image-fallback">
+
+                                {% if item[3] == "Package" %}
+
+                                    <i class="ri-stack-line"></i>
+
+                                {% else %}
+
+                                    <i class="ri-tools-line"></i>
+
+                                {% endif %}
+
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    <!-- ITEM INFO -->
+
+                    <div class="summary-item-info">
+
+                        <strong>
+                            {{ item[4] }}
+                        </strong>
+
+                        <span>
+
+                            {{ item[3] }}
+
+                            ·
+
+                            {{ item[5] }}
+
+                            unit{% if item[5]|int != 1 %}s{% endif %}
+
+                            ·
+
+                            ₹{{ "%.2f"|format(item[6]|float) }}/day
+
+                        </span>
+
+                    </div>
+
+
+                    <!-- ITEM TOTAL -->
+
+                    <strong class="summary-item-price">
+
+                        ₹{{ "%.2f"|format(
+                            item[6]|float * item[5]|int
+                        ) }}
+
+                    </strong>
+
+
+                </div>
+
+                {% endfor %}
+
+
+            </div>
+
+        </div>
+
+
+        <!-- SECURITY -->
+
+        <div class="payment-info">
+
+
+            <div class="secure-item">
+
+
+                <div class="secure-icon">
+
+                    <i class="ri-shield-check-line"></i>
+
+                </div>
+
+
+                <div class="secure-copy">
+
+                    <strong>
+                        Secure Payment
+                    </strong>
+
+                    <span>
+                        Your payment is securely processed by Razorpay.
+                    </span>
+
+                </div>
+
+
+                <div class="secure-provider">
+
+                    <img
+                        src="{{ url_for(
+                            'static',
+                            filename='images/razorpay.png'
+                        ) }}"
+                        alt="Razorpay"
+                    >
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- PAYMENT ACTION -->
+
+        <div class="payment-action">
+
+
+            <div class="payment-total">
+
+                <span>
+                    AMOUNT TO PAY
+                </span>
+
+
+                <strong>
+                    ₹{{ "%.2f"|format(order[7]|float) }}
+                </strong>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="pay-btn"
+                class="pay-btn"
+            >
+
+                <span>
+                    Pay ₹{{ "%.2f"|format(order[7]|float) }}
+                </span>
+
+
+                <i class="ri-arrow-right-line"></i>
+
+            </button>
+
+        </div>
+
+
+        <!-- FOOTER -->
+
+        <div class="protected-text">
+
+            <i class="ri-lock-2-line"></i>
+
+            <span>
+                Secure payment powered by RentEZ
+            </span>
+
+        </div>
+
+
+    </section>
+
+
+</main>
+
+
+<!-- RAZORPAY -->
+
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+
+<script>
+
+    const orderId =
+        "{{ order[0] }}";
+
+    const razorpayKey =
+        "{{ razorpay_key }}";
+
+    const razorpayAmount =
+        {{ razorpay_order.amount }};
+
+    const razorpayOrderId =
+        "{{ razorpay_order.id }}";
+
+</script>
+
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/order_payment.js'
+    ) }}"
+></script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Terms & Conditions | RentEZ</title>
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: "Poppins", sans-serif;
+        }
+
+        body {
+            background: #f5f8fd;
+            color: #172033;
+        }
+
+        .page {
+            max-width: 900px;
+            margin: 50px auto;
+            padding: 0 25px 60px;
+        }
+
+        .card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 18px;
+            padding: 35px;
+        }
+
+        .logo {
+            display: inline-flex;
+
+            align-items: center;
+
+            gap: 10px;
+
+            margin-bottom: 25px;
+
+            text-decoration: none;
+
+            color: #172033;
+        }
+
+
+        .logo img {
+            width: 52px;
+
+            height: 52px;
+
+            object-fit: contain;
+        }
+
+
+        .logo .rent {
+            margin: 0;
+
+            color: #111827;
+
+            font-size: 28px;
+
+            font-weight: 700;
+
+            letter-spacing: -.5px;
+        }
+
+
+        .logo .rent span {
+            color: #2563EB;
+        }
+
+        .eyebrow {
+            color: #2563eb;
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        h1 {
+            margin-top: 7px;
+            font-size: 30px;
+        }
+
+        .intro {
+            margin-top: 8px;
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        section {
+            margin-top: 30px;
+        }
+
+        h2 {
+            margin-bottom: 8px;
+            font-size: 17px;
+        }
+
+        p {
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.8;
+        }
+
+        ul {
+            margin: 10px 0 0 20px;
+        }
+
+        li {
+            margin: 6px 0;
+            color: #64748b;
+            font-size: 12px;
+            line-height: 1.7;
+        }
+
+        .back {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            margin-top: 30px;
+            color: #2563eb;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<div class="page">
+
+    <div class="card">
+
+        <a
+            href="{{ url_for('home') }}"
+            class="logo"
+        >
+            <img
+                src="{{ url_for(
+                    'static',
+                    filename='images/logo.png'
+                ) }}"
+                alt="RentEZ"
+            >
+
+            <p class="rent">
+                Rent<span>EZ</span>
+            </p>
+        </a>
+
+
+
+        <h1>
+            Terms & Conditions
+        </h1>
+
+        <p class="intro">
+            By using RentEZ, you agree to the following terms
+            governing equipment rentals, payments and use of
+            the platform.
+        </p>
+
+
+        <section>
+
+            <h2>
+                1. Account Responsibility
+            </h2>
+
+            <p>
+                Users must provide accurate information when
+                creating and maintaining an account and are
+                responsible for keeping their login credentials secure.
+            </p>
+
+        </section>
+
+
+        <section>
+
+            <h2>
+                2. Equipment Rentals
+            </h2>
+
+            <p>
+                Customers must provide accurate rental dates and
+                quantities. Equipment remains subject to availability
+                and the applicable rental terms shown during booking.
+            </p>
+
+        </section>
+
+
+        <section>
+
+            <h2>
+                3. Payments
+            </h2>
+
+            <p>
+                Payments are processed through the payment gateway
+                provided by RentEZ. A booking is confirmed only after
+                successful payment verification.
+            </p>
+
+        </section>
+
+
+        <section>
+
+            <h2>
+                4. Cancellation & Refunds
+            </h2>
+
+            <p>
+                Cancellation and refund eligibility depends on the
+                booking status and RentEZ cancellation policy applicable
+                to the booking.
+            </p>
+
+        </section>
+
+
+        <section>
+
+            <h2>
+                5. Business Accounts
+            </h2>
+
+            <p>
+                Businesses must provide genuine business information
+                and valid verification documents. RentEZ may approve,
+                reject or request resubmission of a business application.
+            </p>
+
+        </section>
+
+
+        <section>
+
+            <h2>
+                6. Equipment Condition
+            </h2>
+
+            <p>
+                Customers are responsible for taking reasonable care
+                of rented equipment during the rental period and
+                returning it according to the applicable rental terms.
+            </p>
+
+        </section>
+
+
+        <section>
+
+            <h2>
+                7. Platform Use
+            </h2>
+
+            <p>
+                Users must not misuse the platform, attempt
+                unauthorized access, submit fraudulent information,
+                or interfere with RentEZ services.
+            </p>
+
+        </section>
+
+
+        <section>
+
+            <h2>
+                8. Changes
+            </h2>
+
+            <p>
+                RentEZ may update these terms when necessary.
+                Continued use of the platform after an update
+                constitutes acceptance of the revised terms.
+            </p>
+
+        </section>
+
+
+        <a
+            href="javascript:history.back()"
+            class="back"
+        >
+            <i class="ri-arrow-left-line"></i>
+            Back
+        </a>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Poppins -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="static/css/auth.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+          rel="stylesheet">
+
+    <title>RentEZ Login</title>
+</head>
+
+<body>
+
+    <!-- Logo -->
+    <a href="/" class="logo">
+        <img src="static/images/logobg.png" alt="RentEZ">
+        <p class="rent">Rent<span class="ez">EZ</span></p>
+    </a>
+
+    <!-- Login Card -->
+    <div class="login-card">
+
+        <h2>Customer Login</h2>
+
+        <p class="welcome">
+            Welcome back! Please sign in to continue.
+        </p>
+
+        <form method="POST" action="/login">
+              <input
+                type="hidden"
+                name="csrf_token"
+                value="{{ csrf_token() }}"
+            >
+
+        <label>Email Address</label>
+        <input type="email"  name="email" placeholder="Enter your email">
+
+        <label>Password</label>
+
+        <div class="password-field">
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password">
+
+            <i id="togglePassword" class="ri-eye-off-line eye"></i>
+        </div>
+
+        <div class="options">
+
+            <label class="remember">
+                <input type="checkbox">
+                Remember me
+            </label>
+
+            <a href="{{ url_for('forgot_password') }}">
+                Forgot password?
+            </a>
+
+        </div>
+
+        <button class="login-btn">
+            Login
+        </button>
+        </form>
+
+        <p class="register">
+            Don't have an account?
+            <a href="/register">Register now</a>
+        </p>
+
+    </div>
+
+    <script src="static/js/login.js"></script>
+
+</body>
+{% if login_error %}
+<div class="error-popup" id="errorPopup">
+    <i class="ri-error-warning-line"></i>
+    <span>{{ login_error }}</span>
+    <i class="ri-close-line close-popup" onclick="closePopup()"></i>
+</div>
+{% endif %}
+
+</html>

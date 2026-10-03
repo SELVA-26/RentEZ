@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>My Packages | RentEZ</title>
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/remixicon@4.3.0/fonts/remixicon.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for(
+            'static',
+            filename='css/business_packages.css'
+        ) }}"
+    >
+
+    <meta
+        name="csrf-token"
+        content="{{ csrf_token() }}"
+    >
+
+</head>
+
+<body>
+
+<div class="packages-page">
+
+    <header class="page-header">
+
+        <div>
+
+            <span class="eyebrow">
+                BUSINESS PORTAL
+            </span>
+
+            <h1>
+                My Packages
+            </h1>
+
+            <p>
+                Create bundled rental packages using your equipment.
+            </p>
+
+        </div>
+
+        <div class="header-actions">
+
+            <a
+                href="{{ url_for('business_dashboard') }}"
+                class="secondary-btn"
+            >
+                <i class="ri-arrow-left-line"></i>
+                Dashboard
+            </a>
+
+            <a
+                href="{{ url_for('create_business_package') }}"
+                class="primary-btn"
+            >
+                <i class="ri-add-line"></i>
+                Create Package
+            </a>
+
+        </div>
+
+    </header>
+
+
+    {% if packages %}
+
+    <div class="packages-grid">
+
+        {% for package in packages %}
+
+        <article class="package-card">
+
+            <div class="package-image">
+
+                {% if package[3] %}
+
+                    <img
+                        src="{{ url_for(
+                            'package_image',
+                            filename=package[3]
+                        ) }}"
+                        alt="{{ package[1] }}"
+                    >
+
+                {% else %}
+
+                    <div class="package-placeholder">
+                        <i class="ri-stack-line"></i>
+                    </div>
+
+                {% endif %}
+
+
+                <span class="
+                    package-status
+                    {% if package[5] %}
+                        active
+                    {% else %}
+                        inactive
+                    {% endif %}
+                ">
+
+                    {% if package[5] %}
+                        Active
+                    {% else %}
+                        Inactive
+                    {% endif %}
+
+                </span>
+
+            </div>
+
+
+            <div class="package-content">
+
+                <span class="item-count">
+                    {{ package[7] }}
+                    {% if package[7] == 1 %}
+                        Equipment Item
+                    {% else %}
+                        Equipment Items
+                    {% endif %}
+                </span>
+
+                <h2>
+                    {{ package[1] }}
+                </h2>
+
+                <p>
+                    {{ package[2] or
+                       'No description provided.' }}
+                </p>
+
+
+                <div class="package-price">
+
+                    <strong>
+                        ₹{{ "%.0f"|format(package[4]) }}
+                    </strong>
+
+                    <span>
+                        / day
+                    </span>
+
+                </div>
+
+
+                <div class="package-actions">
+
+                    <a
+                        href="{{ url_for(
+                            'edit_business_package',
+                            package_id=package[0]
+                        ) }}"
+                        class="manage-btn"
+                    >
+                        Edit
+                    </a>
+
+                    <button
+                        type="button"
+                        class="toggle-btn"
+                        data-package-id="{{ package[0] }}"
+                    >
+                        {% if package[5] %}
+                            Deactivate
+                        {% else %}
+                            Activate
+                        {% endif %}
+                    </button>
+
+                </div>
+
+            </div>
+
+        </article>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <section class="empty-state">
+
+        <div class="empty-icon">
+            <i class="ri-stack-line"></i>
+        </div>
+
+        <h2>
+            No packages yet
+        </h2>
+
+        <p>
+            Bundle your equipment into complete event solutions
+            and offer customers a simpler way to rent.
+        </p>
+
+        <a
+            href="{{ url_for('create_business_package') }}"
+            class="primary-btn"
+        >
+            <i class="ri-add-line"></i>
+            Create Your First Package
+        </a>
+
+    </section>
+
+    {% endif %}
+
+</div>
+
+
+<script
+    src="{{ url_for(
+        'static',
+        filename='js/business_packages.js'
+    ) }}"
+></script>
+
+</body>
+</html>
