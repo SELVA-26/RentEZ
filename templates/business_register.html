@@ -120,21 +120,38 @@
 
             <!-- Registration Number -->
 
-            <div class="form-group">
+            <!-- Registration Number -->
 
-                <label for="registration_number">
-                    Registration / ID Number
-                </label>
+                <div class="form-group">
 
-                <input
-                    type="text"
-                    id="registration_number"
-                    name="registration_number"
-                    placeholder="Enter registration number"
-                    required
-                >
+                    <label for="registration_number">
+                        Registration / ID Number
+                    </label>
 
-            </div>
+                    <input
+                        type="text"
+                        id="registration_number"
+                        name="registration_number"
+                        placeholder="Select document type first"
+                        autocomplete="off"
+                        required
+                    >
+
+                    <small
+                        id="registrationHelp"
+                        style="
+                            display:block;
+                            margin-top:6px;
+                            color:#94A3B8;
+                            font-size:10px;
+                            line-height:1.5;
+                        "
+                    >
+                        GST Certificate: 15-character GSTIN |
+                        Udyam Registration: UDYAM-XX-00-0000000
+                    </small>
+
+                </div>
 
 
             <!-- City -->

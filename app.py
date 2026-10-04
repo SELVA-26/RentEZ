@@ -70,6 +70,11 @@ SMTP_FROM = os.getenv(
     SMTP_USERNAME
 )
 
+CONTACT_EMAIL = os.getenv(
+    "CONTACT_EMAIL",
+    "selvathevar2601@gmail.com"
+)
+
 # =========================
 # FLASK APP
 # =========================
@@ -2110,6 +2115,15 @@ def business_register():
         "document_type", ""
     ).strip()
 
+    registration_number = (
+        request.form.get(
+            "registration_number",
+            ""
+        )
+        .strip()
+        .upper()
+    )
+    
     document = request.files.get(
         "verification_document"
     )
@@ -2159,7 +2173,49 @@ def business_register():
         )
 
     
+    # =========================
+    # REGISTRATION NUMBER VALIDATION
+    # =========================
 
+    if document_type == "GST Certificate":
+
+        gstin_pattern = (
+            r"^[0-9]{2}[A-Z]{5}[0-9]{4}"
+            r"[A-Z][1-9A-Z]Z[0-9A-Z]$"
+        )
+
+        if not re.fullmatch(
+            gstin_pattern,
+            registration_number
+        ):
+
+            return render_template(
+                "business_register.html",
+                registration_error=(
+                    "Invalid GSTIN. Please enter a valid "
+                    "15-character GSTIN."
+                )
+            )
+
+
+    elif document_type == "Udyam Registration":
+
+        udyam_pattern = (
+            r"^UDYAM-[A-Z]{2}-[0-9]{2}-[0-9]{7}$"
+        )
+
+        if not re.fullmatch(
+            udyam_pattern,
+            registration_number
+        ):
+
+            return render_template(
+                "business_register.html",
+                registration_error=(
+                    "Invalid Udyam Registration Number. "
+                    "Use the format UDYAM-XX-00-0000000."
+                )
+            )
     # =========================
     # FILE VALIDATION
     # =========================
@@ -15606,8 +15662,97 @@ def faq():
     )
 
 
-@app.route("/contact")
+@app.route(
+    "/contact",
+    methods=["GET", "POST"]
+)
 def contact():
+
+    if request.method == "POST":
+
+        name = request.form.get(
+            "name",
+            ""
+        ).strip()
+
+        sender_email = request.form.get(
+            "email",
+            ""
+        ).strip()
+
+        topic = request.form.get(
+            "topic",
+            ""
+        ).strip()
+
+        message = request.form.get(
+            "message",
+            ""
+        ).strip()
+
+
+        if not all([
+            name,
+            sender_email,
+            topic,
+            message
+        ]):
+
+            return render_template(
+                "contact.html",
+                contact_error=(
+                    "Please fill in all fields before sending your message."
+                )
+            )
+
+
+        email_body = f"""
+New message received through the RentEZ Contact Form
+
+Name:
+{name}
+
+Email:
+{sender_email}
+
+Topic:
+{topic}
+
+Message:
+{message}
+
+--------------------------------
+RentEZ Contact Form
+"""
+
+
+        sent = send_email(
+            CONTACT_EMAIL,
+            f"RentEZ Contact Form - {topic.title()}",
+            email_body
+        )
+
+
+        if sent:
+
+            return render_template(
+                "contact.html",
+                contact_success=(
+                    "Your message has been sent successfully. "
+                    "The RentEZ admin will get back to you soon."
+                )
+            )
+
+
+        return render_template(
+            "contact.html",
+            contact_error=(
+                "Unable to send your message right now. "
+                "Please try again later."
+            )
+        )
+
+
     return render_template(
         "contact.html"
     )

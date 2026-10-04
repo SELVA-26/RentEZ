@@ -23,7 +23,44 @@
 
 </section>
 
+{% if contact_success %}
 
+<div
+    style="
+        margin-bottom:20px;
+        padding:14px 18px;
+        border-radius:12px;
+        background:#ECFDF5;
+        border:1px solid #A7F3D0;
+        color:#047857;
+        font-size:12px;
+        font-weight:500;
+    "
+>
+    {{ contact_success }}
+</div>
+
+{% endif %}
+
+
+{% if contact_error %}
+
+<div
+    style="
+        margin-bottom:20px;
+        padding:14px 18px;
+        border-radius:12px;
+        background:#FEF2F2;
+        border:1px solid #FECACA;
+        color:#B91C1C;
+        font-size:12px;
+        font-weight:500;
+    "
+>
+    {{ contact_error }}
+</div>
+
+{% endif %}
 
 <section class="contact-grid">
 
@@ -57,8 +94,8 @@
                         Email
                     </strong>
 
-                    <a href="mailto:support@rentez.com">
-                        support@rentez.com
+                    <a href="mailto:selvathevar2601@gmail.com">
+                        selvathevar2601@gmail.com
                     </a>
 
                 </div>
@@ -154,11 +191,14 @@
 
 
         <form
-            action="mailto:support@rentez.com"
+            action="{{ url_for('contact') }}"
             method="POST"
-            enctype="text/plain"
         >
-
+        <input
+            type="hidden"
+            name="csrf_token"
+            value="{{ csrf_token() }}"
+        >
 
             <div class="contact-field">
 
@@ -268,8 +308,7 @@
 
 
             <p class="contact-note">
-                This contact form opens your default email
-                application with the message prepared.
+                Your message will be sent directly to the RentEZ administration team.
             </p>
 
 

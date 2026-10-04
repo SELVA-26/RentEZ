@@ -255,30 +255,25 @@
 
     {% else %}
 
-    <section class="empty-state">
+<div class="featured-empty">
 
-        <div class="empty-icon">
-            <i class="ri-stack-line"></i>
-        </div>
+    <i class="ri-box-3-line"></i>
 
-        <h2>
-            No packages available
-        </h2>
+    <h3>
+        No Packages Available Yet
+    </h3>
 
-        <p>
-            Verified businesses haven't listed any rental packages yet.
-        </p>
+    <p>
+        Packages listed by verified businesses will appear here.
+    </p>
 
-        <a
-            href="{{ url_for('equipment') }}"
-            class="view-btn"
-        >
-            Browse Equipment
-        </a>
+    <a href="{{ url_for('equipment') }}">
+        Browse Equipment
+    </a>
 
-    </section>
+</div>
 
-    {% endif %}
+{% endif %}
 
 </main>
 

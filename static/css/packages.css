@@ -711,3 +711,76 @@ body {
         font-size: 31px;
     }
 }
+
+/* ================= FEATURED EMPTY STATE ================= */
+
+.featured-empty {
+
+    min-height: 330px;
+
+    background: white;
+
+    border-radius: 22px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 40px;
+
+    box-shadow:
+        0 20px 35px rgba(0, 0, 0, .05);
+
+}
+
+
+.featured-empty > i {
+
+    font-size: 50px;
+
+    color: #2563EB;
+
+    margin-bottom: 18px;
+
+}
+
+
+.featured-empty h3 {
+
+    font-size: 23px;
+
+    margin-bottom: 10px;
+
+}
+
+
+.featured-empty p {
+
+    color: #64748B;
+
+    margin-bottom: 22px;
+
+}
+
+
+.featured-empty a {
+
+    background: #2563EB;
+
+    color: white;
+
+    padding: 12px 22px;
+
+    border-radius: 12px;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+}

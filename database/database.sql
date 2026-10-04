@@ -674,34 +674,51 @@ WHERE b.equipment_id IS NOT NULL
 
 
 /* =========================================================
-   TEST TRANSACTION DATA RESET
+   RENTEZ - COMPLETE DEMO DATA RESET
    ---------------------------------------------------------
-   RUN THIS ONLY WHEN YOU WANT TO CLEAR TEST TRANSACTIONS.
-
    PRESERVED:
-   - users
-   - businesses
-   - business_documents
-   - equipment
-   - packages
-   - package_items
-   - wishlist
-   - notifications
-   - password_reset_tokens
-   - business_verification_audit
+   - Database
+   - All table structures
+   - Columns
+   - Foreign keys
+   - Indexes
+   - ENUM definitions
+   - ALL ADMIN ACCOUNTS
 
-   RESET:
-   - orders
-   - order_items
-   - bookings
-   - booking_items
-   - payments
-   - payment_refunds
-   - payouts
+   DELETED:
+   - Customers
+   - Businesses
+   - Business documents
+   - Verification history
+   - Equipment
+   - Packages
+   - Package items
+   - Orders
+   - Order items
+   - Bookings
+   - Booking items
+   - Payments
+   - Payouts
+   - Refunds
+   - Wishlists
+   - Notifications
+   - Password reset tokens
+
+   RESULT:
+   - Database becomes a clean demo state
+   - Admin login remains available
+   - No application functionality is removed
 ========================================================= */
 
-SET SQL_SAFE_UPDATES = 0;
+USE rentez;
+
 SET FOREIGN_KEY_CHECKS = 0;
+SET SQL_SAFE_UPDATES = 0;
+
+
+/* =========================================================
+   1. CLEAR TRANSACTION / BOOKING DATA
+========================================================= */
 
 TRUNCATE TABLE payment_refunds;
 TRUNCATE TABLE booking_items;
@@ -711,15 +728,66 @@ TRUNCATE TABLE payments;
 TRUNCATE TABLE bookings;
 TRUNCATE TABLE orders;
 
+
+/* =========================================================
+   2. CLEAR PACKAGE DATA
+========================================================= */
+
+TRUNCATE TABLE package_items;
+TRUNCATE TABLE packages;
+
+
+/* =========================================================
+   3. CLEAR EQUIPMENT
+========================================================= */
+
+TRUNCATE TABLE equipment;
+
+
+/* =========================================================
+   4. CLEAR BUSINESS-RELATED DATA
+========================================================= */
+
+TRUNCATE TABLE business_documents;
+TRUNCATE TABLE business_verification_audit;
+TRUNCATE TABLE businesses;
+
+
+/* =========================================================
+   5. CLEAR CUSTOMER-RELATED DATA
+========================================================= */
+
+TRUNCATE TABLE wishlist;
+TRUNCATE TABLE notifications;
+TRUNCATE TABLE password_reset_tokens;
+
+
+/* =========================================================
+   6. DELETE ONLY CUSTOMER AND BUSINESS USERS
+   ---------------------------------------------------------
+   ADMIN USERS ARE PRESERVED.
+========================================================= */
+
+DELETE FROM users
+WHERE user_type IN ('Customer', 'Business');
+
+
+/* =========================================================
+   7. RESTORE NORMAL SETTINGS
+========================================================= */
+
 SET FOREIGN_KEY_CHECKS = 1;
+SET SQL_SAFE_UPDATES = 1;
 
-UPDATE equipment
-SET
-    available_quantity = total_quantity,
-    available = CASE
-        WHEN total_quantity > 0 THEN 1
-        ELSE 0
-    END;
 
-SET SQL_SAFE_UPDATES = 1; 
+/* =========================================================
+   8. OPTIONAL VERIFICATION
+========================================================= */
 
+SELECT
+    id,
+    full_name,
+    email,
+    user_type
+FROM users
+ORDER BY id;
