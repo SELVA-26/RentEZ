@@ -171,60 +171,7 @@
                 </div>
 
 
-                <div class="order-status">
-
-                    {% if rental.status == 'Confirmed' %}
-
-                        <span class="status confirmed">
-                            <span></span>
-                            Confirmed
-                        </span>
-
-                    {% elif rental.status == 'Out for Delivery' %}
-
-                        <span class="status delivery">
-                            <span></span>
-                            Out for Delivery
-                        </span>
-
-                    {% elif rental.status == 'Active Rental' %}
-
-                        <span class="status active">
-                            <span></span>
-                            Active Rental
-                        </span>
-
-                    {% elif rental.status == 'Completed' %}
-
-                        <span class="status completed">
-                            <span></span>
-                            Completed
-                        </span>
-
-                    {% elif rental.status == 'Cancelled' %}
-
-                        <span class="status cancelled">
-                            <span></span>
-                            Cancelled
-                        </span>
-
-                    {% elif rental.payment_status == 'Refund Pending' %}
-
-                        <span class="status pending">
-                            <span></span>
-                            Refund Pending
-                        </span>
-
-                    {% else %}
-
-                        <span class="status pending">
-                            <span></span>
-                            Pending
-                        </span>
-
-                    {% endif %}
-
-                </div>
+                
 
             </div>
 
@@ -282,112 +229,298 @@
                     </span>
 
                     <span class="items-count">
+
                         {{ rental["items"]|length }}
+
                         item{% if rental["items"]|length != 1 %}s{% endif %}
+
                     </span>
 
                 </div>
 
 
-                <div class="rental-items">
+                <div class="business-groups">
 
-                    {% for item in rental["items"] %}
+                    {% for business in rental["businesses"] %}
 
-                    <div class="rental-item">
+                    <section class="business-group">
 
-                        <!-- IMAGE -->
 
-                        <div class="item-visual">
+                        <!-- ================= BUSINESS HEADER ================= -->
 
-                            {% if item.image %}
+                        <div class="business-heading">
 
-                                {% if item.is_package %}
+                            <div class="business-heading-left">
 
-                                    <img
-                                        src="{{ url_for(
-                                            'package_image',
-                                            filename=item.image
-                                        ) }}"
-                                        alt="{{ item.name }}"
-                                    >
+                                <i class="ri-store-2-line"></i>
+
+                                <div>
+
+                                    <span class="business-label">
+                                        RENTAL BUSINESS
+                                    </span>
+
+                                    <h3>
+                                        {{ business.business_name }}
+                                    </h3>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="business-status">
+
+                                {% if business.status == 'Confirmed' %}
+
+                                    <span class="status confirmed">
+                                        <span></span>
+                                        Confirmed
+                                    </span>
+
+                                {% elif business.status == 'Out for Delivery' %}
+
+                                    <span class="status delivery">
+                                        <span></span>
+                                        Out for Delivery
+                                    </span>
+
+                                {% elif business.status == 'Active Rental' %}
+
+                                    <span class="status active">
+                                        <span></span>
+                                        Active Rental
+                                    </span>
+
+                                {% elif business.status == 'Completed' %}
+
+                                    <span class="status completed">
+                                        <span></span>
+                                        Completed
+                                    </span>
+
+                                {% elif business.status == 'Partially Cancelled' %}
+
+                                    <span class="status partial">
+                                        <span></span>
+                                        Partially Cancelled
+                                    </span>
+
+                                {% elif business.status == 'Cancelled' %}
+
+                                    <span class="status cancelled">
+                                        <span></span>
+                                        Cancelled
+                                    </span>
 
                                 {% else %}
 
-                                    <img
-                                        src="{{ url_for(
-                                            'equipment_image',
-                                            filename=item.image
-                                        ) }}"
-                                        alt="{{ item.name }}"
-                                    >
+                                    <span class="status pending">
+                                        <span></span>
+                                        Pending
+                                    </span>
 
                                 {% endif %}
-
-                            {% else %}
-
-                                <div class="no-image">
-                                    <i class="ri-image-line"></i>
-                                </div>
-
-                            {% endif %}
-
-                            <div class="visual-glow"></div>
-
-                        </div>
-
-
-                        <!-- DETAILS -->
-
-                        <div class="item-details">
-
-                            <span class="item-category">
-                                {{ item.category }}
-                            </span>
-
-                            <h3>
-                                {{ item.name }}
-                            </h3>
-
-                            <div class="item-specs">
-
-                                <span>
-                                    <i class="ri-stack-line"></i>
-                                    {{ item.quantity }}
-                                    unit{% if item.quantity != 1 %}s{% endif %}
-                                </span>
-
-                                <span>
-                                    <i class="ri-price-tag-3-line"></i>
-                                    ₹{{ "%.0f"|format(item.daily_rate) }}/day
-                                </span>
 
                             </div>
 
                         </div>
 
 
-                        <!-- ITEM TOTAL -->
+                        <!-- ================= BUSINESS ITEMS ================= -->
 
-                        <div class="item-total">
+                        <div class="rental-items">
 
-                            <span>
-                                ITEM TOTAL
-                            </span>
+                            {% for item in business["items"] %}
 
-                            <strong>
-                                ₹{{ "%.0f"|format(item.total_amount) }}
-                            </strong>
+                            <div class="rental-item">
+
+
+                                <!-- IMAGE -->
+
+                                <div class="item-visual">
+
+                                    {% if item.image %}
+
+                                        {% if item.is_package %}
+
+                                            <img
+                                                src="{{ url_for(
+                                                    'package_image',
+                                                    filename=item.image
+                                                ) }}"
+                                                alt="{{ item.name }}"
+                                            >
+
+                                        {% else %}
+
+                                            <img
+                                                src="{{ url_for(
+                                                    'equipment_image',
+                                                    filename=item.image
+                                                ) }}"
+                                                alt="{{ item.name }}"
+                                            >
+
+                                        {% endif %}
+
+                                    {% else %}
+
+                                        <div class="no-image">
+                                            <i class="ri-image-line"></i>
+                                        </div>
+
+                                    {% endif %}
+
+                                    <div class="visual-glow"></div>
+
+                                </div>
+
+
+                                <!-- DETAILS -->
+
+                                <div class="item-details">
+
+                                    <span class="item-category">
+                                        {{ item.category }}
+                                    </span>
+
+                                    <h3>
+                                        {{ item.name }}
+                                    </h3>
+
+                                    <div class="item-specs">
+
+                                        <span>
+
+                                            <i class="ri-stack-line"></i>
+
+                                            {{ item.quantity }}
+
+                                            unit{% if item.quantity != 1 %}s{% endif %}
+
+                                        </span>
+
+
+                                        <span>
+
+                                            <i class="ri-price-tag-3-line"></i>
+
+                                            ₹{{ "%.0f"|format(
+                                                item.daily_rate
+                                            ) }}/day
+
+                                        </span>
+
+                                    </div>
+
+
+                                    <!-- BOOKING STATUS -->
+
+                                    {% if item.booking_status == 'Cancelled' %}
+
+                                    <span class="item-booking-status cancelled">
+
+                                        <i class="ri-close-circle-line"></i>
+
+                                        Cancelled
+
+                                    </span>
+
+                                    {% elif item.booking_status == 'Confirmed' %}
+
+                                    <span class="item-booking-status confirmed">
+
+                                        <i class="ri-checkbox-circle-line"></i>
+
+                                        Confirmed
+
+                                    </span>
+
+                                    {% elif item.booking_status == 'Out for Delivery' %}
+
+                                    <span class="item-booking-status delivery">
+
+                                        <i class="ri-truck-line"></i>
+
+                                        Out for Delivery
+
+                                    </span>
+
+                                    {% elif item.booking_status == 'Delivered' %}
+
+                                    <span class="item-booking-status active">
+
+                                        <i class="ri-truck-line"></i>
+
+                                        Delivered
+
+                                    </span>
+
+                                    {% elif item.booking_status == 'Returned' %}
+
+                                    <span class="item-booking-status active">
+
+                                        <i class="ri-arrow-go-back-line"></i>
+
+                                        Returned
+
+                                    </span>
+
+                                    {% elif item.booking_status == 'Completed' %}
+
+                                    <span class="item-booking-status completed">
+
+                                        <i class="ri-check-double-line"></i>
+
+                                        Completed
+
+                                    </span>
+
+                                    {% else %}
+
+                                    <span class="item-booking-status pending">
+
+                                        <i class="ri-time-line"></i>
+
+                                        Pending
+
+                                    </span>
+
+                                    {% endif %}
+
+                                </div>
+
+
+                                <!-- ITEM TOTAL -->
+
+                                <div class="item-total">
+
+                                    <span>
+                                        ITEM TOTAL
+                                    </span>
+
+                                    <strong>
+                                        ₹{{ "%.0f"|format(
+                                            item.total_amount
+                                        ) }}
+                                    </strong>
+
+                                </div>
+
+                            </div>
+
+                            {% endfor %}
 
                         </div>
 
-                    </div>
+                    </section>
 
                     {% endfor %}
 
                 </div>
 
             </div>
-
 
             <!-- ================= BOTTOM DETAILS ================= -->
 

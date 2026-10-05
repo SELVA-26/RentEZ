@@ -465,7 +465,8 @@ button {
    STATUS
 ========================================================= */
 
-.order-status .status {
+.order-status .status,
+.business-status .status {
     display: inline-flex;
 
     align-items: center;
@@ -525,6 +526,171 @@ button {
 .status.pending {
     color: #ea580c;
     background: #fff7ed;
+}
+
+/* =========================================================
+   BUSINESS GROUPS
+========================================================= */
+
+.business-groups {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+
+.business-group {
+    border: 1px solid #e3eaf4;
+
+    border-radius: 16px;
+
+    background: #ffffff;
+
+    overflow: hidden;
+}
+
+
+.business-heading {
+    min-height: 76px;
+
+    padding: 16px 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 18px;
+
+    background: #f8fbff;
+
+    border-bottom: 1px solid #e7edf5;
+}
+
+
+.business-heading-left {
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    min-width: 0;
+}
+
+
+.business-heading-left > i {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 11px;
+
+    background: #edf4ff;
+
+    color: #2563eb;
+
+    font-size: 19px;
+}
+
+
+.business-label {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: #64748b;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: .8px;
+}
+
+
+.business-heading h3 {
+    margin: 0;
+
+    color: #172033;
+
+    font-size: 15px;
+
+    font-weight: 700;
+}
+
+
+.business-status {
+    flex-shrink: 0;
+}
+
+
+/* =========================================================
+   BUSINESS STATUS
+========================================================= */
+
+.status.partial {
+    color: #b45309;
+
+    background: #fff7ed;
+}
+
+
+/* =========================================================
+   ITEM BOOKING STATUS
+========================================================= */
+
+.item-booking-status {
+    display: inline-flex;
+
+    align-items: center;
+
+    gap: 5px;
+
+    margin-top: 9px;
+
+    font-size: 10px;
+
+    font-weight: 600;
+}
+
+
+.item-booking-status.confirmed {
+    color: #059669;
+}
+
+
+.item-booking-status.delivery {
+    color: #2563eb;
+}
+
+
+.item-booking-status.active {
+    color: #059669;
+}
+
+
+.item-booking-status.completed {
+    color: #2563eb;
+}
+
+
+.item-booking-status.cancelled {
+    color: #dc2626;
+}
+
+
+.item-booking-status.pending {
+    color: #ea580c;
 }
 
 

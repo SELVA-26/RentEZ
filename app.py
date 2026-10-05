@@ -7867,6 +7867,47 @@ def check_order_refund_status(order_id):
         cursor.close()
     
     
+# =========================================================
+# CUSTOMER BUSINESS-LEVEL RENTAL STATUS
+# =========================================================
+
+def get_customer_business_status(
+    booking_statuses
+):
+
+    statuses = set(
+        booking_statuses
+    )
+
+    if not statuses:
+        return "Pending"
+
+    # All bookings for this business are cancelled
+    if statuses == {"Cancelled"}:
+        return "Cancelled"
+
+    # Some bookings cancelled, some still active
+    if "Cancelled" in statuses:
+        return "Partially Cancelled"
+
+    # All completed
+    if statuses == {"Completed"}:
+        return "Completed"
+
+    # Rental is currently active
+    if (
+        "Delivered" in statuses
+        or "Returned" in statuses
+    ):
+        return "Active Rental"
+
+    if "Out for Delivery" in statuses:
+        return "Out for Delivery"
+
+    if "Confirmed" in statuses:
+        return "Confirmed"
+
+    return "Pending"
 
 def get_customer_rental_status(
     booking_statuses
@@ -7943,7 +7984,13 @@ def my_rentals():
                     e.image,
                     pkg.image
                 ) AS image,
+
                 b.package_id,
+
+                biz.id AS business_id,
+
+                biz.business_name AS business_name,
+
                 o.total_amount AS order_total,
                 o.delivery_address AS order_address,
                 o.delivery_city AS order_city,
@@ -7960,13 +8007,23 @@ def my_rentals():
             LEFT JOIN packages pkg
                 ON b.package_id = pkg.id
 
+            LEFT JOIN businesses biz
+                ON biz.id = COALESCE(
+                    e.business_id,
+                    pkg.business_id
+                )
+
             LEFT JOIN orders o
                 ON b.order_id = o.id
 
             WHERE b.user_id = %s
 
             ORDER BY
-                COALESCE(b.order_id, b.id) DESC,
+                COALESCE(
+                    b.order_id,
+                    b.id
+                ) DESC,
+
                 b.id DESC
         """, (
             session["user_id"],
@@ -7974,33 +8031,37 @@ def my_rentals():
 
         rows = cursor.fetchall()
 
+
         # =================================================
-        # GROUP BOOKINGS INTO CUSTOMER-FACING ORDERS
+        # GROUP BOOKINGS INTO ORDERS
         # =================================================
 
         grouped = {}
 
+
         for row in rows:
 
+            booking_id = row[0]
             order_id = row[1]
 
-            # Legacy booking with no order_id
-            # remains an individual rental.
+            # Legacy booking without an order
             group_key = (
                 f"order-{order_id}"
                 if order_id is not None
-                else f"booking-{row[0]}"
+                else f"booking-{booking_id}"
             )
+
 
             if group_key not in grouped:
 
                 grouped[group_key] = {
+
                     "order_id": order_id,
 
                     "display_id": (
                         order_id
                         if order_id is not None
-                        else row[0]
+                        else booking_id
                     ),
 
                     "is_order":
@@ -8010,73 +8071,212 @@ def my_rentals():
                     "end_date": row[3],
                     "total_days": row[4],
 
+                    # Keeps existing order cancellation
+                    # logic working internally.
                     "status": None,
 
                     "payment_status": (
-                        row[20]
+
+                        row[22]
                         if order_id is not None
-                        and row[20]
+                        and row[22]
                         else row[8]
+
                     ),
 
                     "total": (
-                        float(row[15])
+
+                        float(row[17])
                         if order_id is not None
-                        and row[15] is not None
+                        and row[17] is not None
                         else 0
+
                     ),
 
-                    "address": row[16],
-                    "city": row[17],
-                    "state": row[18],
-                    "pincode": row[19],
+                    "address": row[18],
+                    "city": row[19],
+                    "state": row[20],
+                    "pincode": row[21],
 
-                    "items": []
+                    "items": [],
+
+                    # NEW:
+                    # Separate businesses inside this order.
+                    "businesses": []
+
                 }
+
 
             group = grouped[group_key]
 
-            group["items"].append({
+
+            # =================================================
+            # ADD ITEM
+            # =================================================
+
+            item = {
+
                 "booking_id": row[0],
-                "quantity": row[9] if row[9] is not None else 1,
+
+                "quantity":
+                    row[9]
+                    if row[9] is not None
+                    else 1,
+
                 "name": row[11],
+
                 "category": row[12],
+
                 "image": row[13],
-                "is_package": row[14] is not None,
-                "total_amount": float(row[6]),
-                "daily_rate": float(row[5]),
-                "booking_status": row[7],
-                "payment_status": row[8]
-            })
+
+                "is_package":
+                    row[14] is not None,
+
+                "total_amount":
+                    float(row[6]),
+
+                "daily_rate":
+                    float(row[5]),
+
+                "booking_status":
+                    row[7],
+
+                "payment_status":
+                    row[8]
+
+            }
+
+
+            group["items"].append(item)
+
+
+            # =================================================
+            # FIND BUSINESS GROUP
+            # =================================================
+
+            business_id = row[15]
+
+            business_name = (
+                row[16]
+                if row[16]
+                else "Rental Business"
+            )
+
+
+            business_key = (
+
+                f"business-{business_id}"
+
+                if business_id is not None
+
+                else f"business-booking-{booking_id}"
+
+            )
+
+
+            business_group = None
+
+
+            for existing_business in group["businesses"]:
+
+                if existing_business["key"] == business_key:
+
+                    business_group = existing_business
+
+                    break
+
+
+            if business_group is None:
+
+                business_group = {
+
+                    "key": business_key,
+
+                    "business_id": business_id,
+
+                    "business_name": business_name,
+
+                    "items": [],
+
+                    "status": None
+
+                }
+
+                group["businesses"].append(
+                    business_group
+                )
+
+
+            business_group["items"].append(
+                item
+            )
+
 
             # Legacy booking total
             if not group["is_order"]:
-                group["total"] = float(row[6])
 
-        rentals = list(grouped.values())
+                group["total"] = float(
+                    row[6]
+                )
+
+
+        rentals = list(
+            grouped.values()
+        )
+
+
+        # =================================================
+        # CALCULATE STATUS
+        # =================================================
 
         for rental in rentals:
 
-            statuses = [
-                item["booking_status"]
-                for item in rental["items"]
-            ]
+            all_statuses = []
 
-            if not statuses:
-                rental["status"] = "Pending"
-                continue
 
-            rental["status"] = get_customer_rental_status(
-                statuses
+            for business in rental["businesses"]:
+
+                business_statuses = [
+
+                    item["booking_status"]
+
+                    for item in business["items"]
+
+                ]
+
+
+                business["status"] = (
+                    get_customer_business_status(
+                        business_statuses
+                    )
+                )
+
+
+                all_statuses.extend(
+                    business_statuses
+                )
+
+
+            # Keep existing order-level status
+            # internally for existing order actions.
+            rental["status"] = (
+                get_customer_rental_status(
+                    all_statuses
+                )
+                if all_statuses
+                else "Pending"
             )
-        
+
+
         return render_template(
             "my_rentals.html",
             rentals=rentals,
             user_name=session["user_name"]
         )
 
+
     finally:
+
         cursor.close()
     
 @app.route("/business-login", methods=["GET", "POST"])
